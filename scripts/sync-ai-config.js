@@ -263,7 +263,7 @@ function syncClaudeSettings() {
         hooks: [
           {
             type: "command",
-            command: `python ${path.relative(ROOT_DIR, bashHook)}`,
+            command: `python3 ${path.relative(ROOT_DIR, bashHook)}`,
           },
         ],
       });
@@ -275,7 +275,7 @@ function syncClaudeSettings() {
         hooks: [
           {
             type: "command",
-            command: `python ${path.relative(ROOT_DIR, writeHook)}`,
+            command: `python3 ${path.relative(ROOT_DIR, writeHook)}`,
           },
         ],
       });

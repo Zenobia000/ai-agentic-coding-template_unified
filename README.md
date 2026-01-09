@@ -145,8 +145,8 @@ project/
 ### 1. Clone and Install
 
 ```bash
-git clone https://github.com/your-username/universal-ai-copilot-template.git
-cd universal-ai-copilot-template
+git clone https://github.com/your-username/ai-agentic-coding-template_unified.git
+cd ai-agentic-coding-template_unified
 npm install
 ```
 
@@ -287,9 +287,8 @@ security:
 
 | Script | Description |
 |--------|-------------|
-| `npm run setup` | 互動式設置 (推薦) |
+| `npm run setup` | 互動式設置 (推薦，包含初始化) |
 | `npm run publish` | 首次發布到 GitHub (初始化 repo) |
-| `npm run ai-init` | 初始化專案 |
 | `npm run ai-sync` | 同步所有工具配置 |
 | `npm run ai-sync:cursor` | 僅同步 Cursor |
 | `npm run ai-sync:claude` | 僅同步 Claude Code |
@@ -412,7 +411,8 @@ memory-bank/
 ### Memory Bank 遺失
 
 ```bash
-npm run ai-init --force
+# 重新執行設置以重建基礎
+npm run setup
 ```
 
 ### 配置不同步

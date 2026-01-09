@@ -9,10 +9,11 @@ tools:
     trigger: "/reflect"
     description: "REFLECT MODE - Task review and retrospective"
   claude-code:
-    trigger: ["reflect", "retrospective", "review progress", "lessons learned"]
+    trigger: "/reflect"
     description: "Review our accomplishments and learn from the experience"
+    allowed-tools: ["Read", "Write", "Edit"]
   gemini-cli:
-    trigger: "gemini reflect"
+    trigger: "/reflect"
     description: "Conduct project retrospective and documentation"
 ---
 
@@ -283,7 +284,7 @@ Action: Add security review checkpoint to workflow
 
 ### Gemini CLI
 ```
-gemini reflect
+/reflect
 ```
 
 ---

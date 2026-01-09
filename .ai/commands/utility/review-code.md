@@ -9,10 +9,11 @@ tools:
     trigger: "/review-code"
     description: "Start comprehensive code review"
   claude-code:
-    trigger: ["ai review", "review code", "code review", "check code"]
+    trigger: "/review-code"
     description: "Comprehensive code review"
+    allowed-tools: ["Read", "Grep", "Task"]
   gemini-cli:
-    trigger: "gemini review-code"
+    trigger: "/review-code"
     description: "Code review assistance"
 ---
 
@@ -117,5 +118,5 @@ Review this code for quality issues
 
 ### Gemini CLI
 ```
-gemini review-code
+/review-code
 ```

@@ -9,10 +9,11 @@ tools:
     trigger: "/implement"
     description: "IMPLEMENT MODE - Code implementation with progress tracking"
   claude-code:
-    trigger: ["implement", "write code", "build feature", "develop"]
+    trigger: "/implement"
     description: "Implement the designed features and functionality"
+    allowed-tools: ["Read", "Write", "Edit", "Bash", "Grep", "Task"]
   gemini-cli:
-    trigger: "gemini implement"
+    trigger: "/implement"
     description: "Execute implementation tasks and track progress"
 ---
 
@@ -282,7 +283,7 @@ After implementation milestone:
 
 ### Gemini CLI
 ```
-gemini implement
+/implement
 ```
 
 ---

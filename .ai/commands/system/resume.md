@@ -9,10 +9,11 @@ tools:
     trigger: "/resume"
     description: "Resume from previous session"
   claude-code:
-    trigger: ["ai resume", "/resume", "continue", "where were we"]
+    trigger: "/resume"
     description: "Resume previous context"
+    allowed-tools: ["Read", "Write", "Edit"]
   gemini-cli:
-    trigger: "gemini resume"
+    trigger: "/resume"
     description: "Resume context"
 ---
 
@@ -147,5 +148,5 @@ Continue the previous session
 
 ### Gemini CLI
 ```
-gemini resume
+/resume
 ```

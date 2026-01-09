@@ -9,10 +9,11 @@ tools:
     trigger: "/task-next"
     description: "Get PM assistant suggestion for next task"
   claude-code:
-    trigger: ["ai task-next", "what next", "suggest task", "next priority"]
+    trigger: "/task-next"
     description: "Analyze tasks and suggest next priority"
+    allowed-tools: ["Read", "Edit"]
   gemini-cli:
-    trigger: "gemini task-next"
+    trigger: "/task-next"
     description: "Suggest next task priority"
 ---
 
@@ -92,5 +93,5 @@ What should I work on next?
 
 ### Gemini CLI
 ```
-gemini task-next
+/task-next
 ```

@@ -9,10 +9,11 @@ tools:
     trigger: "/write-tests"
     description: "Generate test strategy and implementation"
   claude-code:
-    trigger: ["ai write-tests", "create tests", "add tests", "test this"]
+    trigger: "/write-tests"
     description: "Test generation and strategy"
+    allowed-tools: ["Read", "Write", "Edit", "Bash", "Grep"]
   gemini-cli:
-    trigger: "gemini write-tests"
+    trigger: "/write-tests"
     description: "Test writing assistance"
 ---
 
@@ -178,5 +179,5 @@ Write tests for [function/component name]
 
 ### Gemini CLI
 ```
-gemini write-tests
+/write-tests
 ```

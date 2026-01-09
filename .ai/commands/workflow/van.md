@@ -9,8 +9,9 @@ tools:
     trigger: "/van"
     description: "VAN MODE - Initializes project's shared memory structure"
   claude-code:
-    trigger: ["/van", "initialize", "setup memory bank", "init project"]
+    trigger: "/van"
     description: "Initialize the project memory structure"
+    allowed-tools: ["Read", "Write", "Edit", "Bash"]
   gemini-cli:
     trigger: "/van"
     description: "Initialize project with memory bank"

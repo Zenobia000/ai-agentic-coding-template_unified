@@ -9,10 +9,11 @@ tools:
     trigger: "/creative"
     description: "CREATIVE MODE - Design decisions and architecture planning"
   claude-code:
-    trigger: ["design architecture", "technical design", "system design", "creative design"]
+    trigger: "/creative"
     description: "Design the system architecture and make technical decisions"
+    allowed-tools: ["Read", "Write", "Edit", "Grep"]
   gemini-cli:
-    trigger: "gemini creative"
+    trigger: "/creative"
     description: "Create architectural designs and technical specifications"
 ---
 
@@ -225,7 +226,7 @@ After completing creative design:
 
 ### Gemini CLI
 ```
-gemini creative
+/creative
 ```
 
 ---

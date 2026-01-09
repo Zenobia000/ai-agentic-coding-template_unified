@@ -9,6 +9,7 @@ const readline = require("readline");
 const { execSync } = require("child_process");
 const fs = require("fs");
 const path = require("path");
+const UniversalAIInitializer = require("./ai-initializer");
 
 const ROOT_DIR = path.resolve(__dirname, "..");
 
@@ -190,6 +191,13 @@ async function main() {
     const hasConfig = fs.existsSync(path.join(ROOT_DIR, ".cursorrules")) ||
                       fs.existsSync(path.join(ROOT_DIR, "CLAUDE.md")) ||
                       fs.existsSync(path.join(ROOT_DIR, "GEMINI.md"));
+
+    // Ensure foundation exists (Structure & Memory Bank)
+    const initializer = new UniversalAIInitializer(ROOT_DIR);
+    console.log(`${c.cyan}Checking project foundation...${c.reset}`);
+    initializer.initializeStructure();
+    initializer.initializeMemoryBank();
+    console.log();
 
     if (hasConfig) {
       console.log(`${c.yellow}⚠ Existing configuration detected.${c.reset}`);

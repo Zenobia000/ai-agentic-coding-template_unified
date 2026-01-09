@@ -9,10 +9,11 @@ tools:
     trigger: "/debug"
     description: "Start systematic debugging session"
   claude-code:
-    trigger: ["ai debug", "help debug", "fix bug", "troubleshoot"]
+    trigger: "/debug"
     description: "Systematic debugging assistance"
+    allowed-tools: ["Read", "Bash", "Grep", "Edit", "Write"]
   gemini-cli:
-    trigger: "gemini debug"
+    trigger: "/debug"
     description: "Debug assistance"
 ---
 
@@ -119,5 +120,5 @@ Help me debug this issue: [description]
 
 ### Gemini CLI
 ```
-gemini debug
+/debug
 ```

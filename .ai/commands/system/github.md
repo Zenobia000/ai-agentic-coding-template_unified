@@ -2,13 +2,19 @@
 name: "GitHub - Quick Push"
 description: "Stage, commit, and push changes to GitHub"
 phase: "system"
+prerequisites: ["git repository exists", "remote origin configured"]
+creates: ["git commit", "remote push"]
 tools:
   cursor:
     trigger: "/github"
+    description: "Quick push to GitHub"
   claude-code:
-    trigger: ["/github", "push to github", "git push"]
+    trigger: "/github"
+    description: "Stage, commit and push changes"
+    allowed-tools: ["Bash(git status:*)", "Bash(git add:*)", "Bash(git commit:*)", "Bash(git push:*)", "Bash(git diff:*)"]
   gemini-cli:
     trigger: "/github"
+    description: "Push to GitHub"
 ---
 
 # 🚀 GitHub Quick Push Command
@@ -40,7 +46,7 @@ git commit -m "<type>(<scope>): <description>
 
 <body>
 
-Co-Authored-By: Claude <noreply@anthropic.com>"
+Co-Authored-By: [AI Assistant] <noreply@ai.local>"
 ```
 
 **Commit Types:**
@@ -100,6 +106,19 @@ AI will:
 - Commit created with proper message
 - Code pushed to remote
 
----
+## Tool-Specific Usage
 
-**Usage:** `/github` or `/github <commit-message>`
+### Cursor
+```
+/github
+```
+
+### Claude Code
+```
+/github
+```
+
+### Gemini CLI
+```
+/github
+```

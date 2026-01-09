@@ -9,11 +9,11 @@ tools:
     trigger: "/commit"
     description: "Generate and execute commit"
   claude-code:
-    trigger: ["ai commit", "/commit", "commit changes", "generate commit"]
+    trigger: "/commit"
     description: "Generate commit message"
     allowed-tools: ["Bash(git status:*)", "Bash(git diff:*)", "Bash(git log:*)", "Bash(git commit:*)"]
   gemini-cli:
-    trigger: "gemini commit"
+    trigger: "/commit"
     description: "Generate commit message"
 ---
 
@@ -149,5 +149,5 @@ Generate a commit message for my staged changes
 
 ### Gemini CLI
 ```
-gemini commit
+/commit
 ```

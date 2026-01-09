@@ -9,10 +9,11 @@ tools:
     trigger: "/archive"
     description: "ARCHIVE MODE - Documentation and knowledge preservation"
   claude-code:
-    trigger: ["archive", "finalize documentation", "prepare handover", "knowledge preservation"]
+    trigger: "/archive"
     description: "Archive the project documentation and preserve knowledge"
+    allowed-tools: ["Read", "Write", "Edit", "Bash"]
   gemini-cli:
-    trigger: "gemini archive"
+    trigger: "/archive"
     description: "Finalize project documentation and create knowledge archive"
 ---
 
@@ -357,7 +358,7 @@ tar -czf project-complete-$(date +%Y%m%d).tar.gz \
 
 ### Gemini CLI
 ```
-gemini archive
+/archive
 ```
 
 ---

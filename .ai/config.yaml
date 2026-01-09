@@ -34,6 +34,8 @@ commands:
     - debug       # 除錯
     - review-code # 代碼審查
     - write-tests # 測試撰寫
+    - adr         # Architecture Decision Records
+    - design-validator # 設計驗證和自動生成
   system:
     - commit      # Git 提交
     - resume      # 恢復上下文

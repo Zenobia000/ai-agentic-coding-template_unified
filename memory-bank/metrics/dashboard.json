@@ -1,0 +1,25 @@
+{
+  "timestamp": "2026-01-09T06:57:59.350Z",
+  "velocity": {
+    "current_sprint_points": 0,
+    "completed_points": 0,
+    "sprint_progress": 0,
+    "velocity_trend": "stable"
+  },
+  "quality": {
+    "test_coverage": 0,
+    "bug_count": 0,
+    "code_complexity_avg": 0,
+    "technical_debt_hours": 0
+  },
+  "process": {
+    "deployment_frequency": 0,
+    "mttr_hours": 0,
+    "change_success_rate": 100
+  },
+  "ai_agents": {
+    "total_agents": 7,
+    "active_agents": 0,
+    "last_activity": null
+  }
+}

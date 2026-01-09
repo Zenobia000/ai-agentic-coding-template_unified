@@ -27,6 +27,8 @@ graph TB
             UT2["/debug<br/>除錯"]
             UT3["/review-code<br/>代碼審查"]
             UT4["/write-tests<br/>測試撰寫"]
+            UT5["/adr<br/>架構決策記錄"]
+            UT6["/design-validator<br/>設計驗證器"]
         end
 
         subgraph "⚙️ system/ - 系統功能"
@@ -43,7 +45,20 @@ graph TB
         M3["📄 projectbrief.md<br/>專案概述"]
         M4["🔧 techContext.md<br/>技術背景"]
         M5["📈 progress.md<br/>進度追蹤"]
-        M6["🎨 creative-*.md<br/>設計文件"]
+        M6["🎨 designs/<br/>設計文件和架構圖"]
+        M7["📝 decisions/<br/>架構決策記錄"]
+        M8["📊 metrics/<br/>開發指標數據"]
+    end
+
+    %% AI 代理層
+    subgraph "🧠 AI Agents - Level 4 智能代理"
+        A1["🏗️ architecture-advisor<br/>架構建議專家"]
+        A2["✅ design-validator<br/>設計驗證和規格生成"]
+        A3["📊 metrics-tracker<br/>開發指標追蹤"]
+        A4["⚡ performance-optimizer<br/>效能優化專家"]
+        A5["🛡️ security-scanner<br/>安全掃描專家"]
+        A6["👁️ code-reviewer<br/>代碼審查專家"]
+        A7["🧪 test-runner<br/>測試執行專家"]
     end
 
     %% 工作流程連接
@@ -87,6 +102,39 @@ graph TB
     UT3 -.->|"讀取標準"| M4
     UT4 -.->|"讀取規格"| M4
 
+    UT5 -.->|"創建記錄"| M7
+    UT5 -.->|"更新決策"| M4
+
+    UT6 -.->|"驗證設計"| M6
+    UT6 -.->|"生成規格"| M4
+
+    %% AI 代理連接
+    A1 -.->|"架構分析"| M6
+    A1 -.->|"決策建議"| M7
+    A1 -.->|"技術選型"| M4
+
+    A2 -.->|"設計驗證"| M6
+    A2 -.->|"規格生成"| M4
+    A2 -.->|"合規檢查"| M7
+
+    A3 -.->|"指標收集"| M8
+    A3 -.->|"進度追蹤"| M5
+    A3 -.->|"質量分析"| M1
+
+    A4 -.->|"效能監控"| M8
+    A4 -.->|"優化建議"| M4
+    A4 -.->|"瓶頸分析"| M2
+
+    A5 -.->|"安全掃描"| M6
+    A5 -.->|"合規檢查"| M4
+    A5 -.->|"風險評估"| M2
+
+    A6 -.->|"代碼分析"| M4
+    A6 -.->|"品質報告"| M5
+
+    A7 -.->|"測試執行"| M5
+    A7 -.->|"測試報告"| M8
+
     %% 系統功能連接
     S2 -.->|"恢復狀態"| M1
     S2 -.->|"恢復上下文"| M2
@@ -98,12 +146,14 @@ graph TB
     classDef system fill:#f39200,stroke:#cc7a00,stroke-width:2px,color:#ffffff
     classDef memory fill:#e6e6e6,stroke:#333333,stroke-width:2px,color:#000000
     classDef user fill:#333333,stroke:#000000,stroke-width:2px,color:#ffffff
+    classDef agent fill:#8b5cf6,stroke:#6d28d9,stroke-width:2px,color:#ffffff
 
     class W1,W2,W3,W4,W5,W6 workflow
-    class UT1,UT2,UT3,UT4 utility
+    class UT1,UT2,UT3,UT4,UT5,UT6 utility
     class S1,S2,S3 system
-    class M1,M2,M3,M4,M5,M6 memory
+    class M1,M2,M3,M4,M5,M6,M7,M8 memory
     class U1,U2,U3 user
+    class A1,A2,A3,A4,A5,A6,A7 agent
 ```
 
 ## 數據流向詳細分析

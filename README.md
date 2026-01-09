@@ -83,6 +83,7 @@ project/
 
 ## 🛠️ 可用指令
 
+### NPM 管理指令
 | NPM 指令 | 說明 |
 |----------|------|
 | `npm run setup` | 互動式初始設置 |
@@ -92,30 +93,72 @@ project/
 | `npm run ai-sync:gemini` | 僅同步 Gemini CLI |
 | `npm run ai-verify` | 驗證配置完整性 |
 
+### AI 工作流程指令
+| 指令 | 階段 | 功能 | AI 增強 |
+|------|------|------|---------|
+| `/van` | 初始化 | 建立 Memory Bank 結構 | ✅ |
+| `/plan` | 規劃 | Epic 創建與任務分解 | Architecture Advisor |
+| `/creative` | 設計 | 架構設計與技術決策 | Design Validator |
+| `/implement` | 實作 | 程式碼開發 | Performance Optimizer |
+| `/reflect` | 回顧 | 進度總結與改進 | Metrics Tracker |
+| `/archive` | 歸檔 | 知識保存 | ✅ |
+
+### 智能輔助指令
+| 指令 | 功能 | AI 代理 |
+|------|------|---------|
+| `/adr` | Architecture Decision Records | ADR 自動化 |
+| `/design-validator` | 設計驗證與規格生成 | Design Validator |
+| `/task-next` | PM 建議下一步 | Task Advisor |
+| `/debug` | 智能除錯 | Debug Assistant |
+| `/review-code` | 代碼審查 | Code Reviewer |
+| `/write-tests` | 測試撰寫 | Test Runner |
+
 ## 🔑 關鍵特性
 
-### 1. **模板優先設計**
-- 所有配置從 `.ai/template/` 直接讀取
-- 無動態生成，確保一致性
-- 修改模板後執行 `npm run ai-sync` 即可更新
+### 1. **🎯 Level 4 創新期架構成熟度**
+- **AI 賦能**: 7大智能代理系統完整覆蓋開發流程
+- **自動化設計**: API、Schema、Interface 自動生成
+- **智能決策**: Architecture Advisor 提供技術選型建議
+- **預測優化**: Performance Optimizer 主動識別瓶頸
 
-### 2. **Memory Bank 共享記憶**
+### 2. **🧠 智能代理生態系統**
+```yaml
+intelligent_agents:
+  - architecture-advisor    # 🏗️ 架構建議和技術選型
+  - design-validator       # ✅ 設計驗證和規格自動生成
+  - metrics-tracker        # 📊 開發指標和質量閘門
+  - performance-optimizer  # ⚡ 效能監控和優化建議
+  - security-scanner      # 🛡️ 安全掃描和合規檢查
+  - code-reviewer         # 👁️ 代碼審查和品質控制
+  - test-runner          # 🧪 自動化測試執行
+```
+
+### 3. **📋 七步架構設計流程 100% 對齊**
+| 步驟 | 工具 | AI 增強 | 自動化程度 |
+|------|------|---------|-----------|
+| 理解需求 | `/van` + `/plan` | Architecture Advisor | 90% |
+| 概念設計 | `/creative` | 自動領域建模 | 85% |
+| 技術選型 | `/adr` | 決策記錄自動化 | 95% |
+| 詳細設計 | `/design-validator` | 規格自動生成 | 90% |
+| 驗證評審 | Design Validator | 合規自動檢查 | 95% |
+| 實施指導 | `/implement` | Performance Guidance | 85% |
+| 演進優化 | `/reflect` + Metrics | 數據驅動改進 | 90% |
+
+### 4. **🔄 Memory Bank 共享記憶**
 - 所有 AI 工具共享專案狀態
 - 支援團隊協作（Alice 用 Cursor，Bob 用 Claude）
 - 自動追蹤進度與上下文
+- ADR 決策歷史完整保存
 
-### 3. **獨立代理配置**
-- `.claude/agents/` - Claude 專用代理
-- `.gemini/agents/` - Gemini 專用代理
-- 統一的角色與責任定義
-
-### 4. **安全防護**
+### 5. **🛡️ 企業級安全防護**
 ```yaml
 # .ai/config.yaml 內建安全規則
 security:
   protected_branches: ["main"]
   dangerous_patterns: ["rm -rf /"]
   secret_patterns: [".env", "*.key"]
+  owasp_compliance: true
+  automated_security_scans: true
 ```
 
 ## 👥 團隊協作範例
@@ -157,17 +200,50 @@ phase: custom
 
 ## 🚀 最佳實踐
 
+### 基礎流程
 1. **每次開始前執行** `/van` 確保 Memory Bank 存在
 2. **遵循六階段流程**，不要跳過階段
 3. **定期執行** `npm run ai-sync` 保持配置同步
 4. **使用** `/commit` 生成規範的提交訊息
 5. **團隊協作時**共享 `memory-bank/` 目錄
 
+### Level 4 進階實踐
+6. **設計階段使用** `/adr` 記錄重要技術決策
+7. **創建設計後執行** `/design-validator` 自動驗證和生成規格
+8. **實作前諮詢** Architecture Advisor 獲取最佳實踐建議
+9. **開發過程中啟用** Performance Optimizer 持續監控
+10. **定期執行** Security Scanner 確保合規性
+11. **使用** Metrics Tracker 追蹤開發速度和品質指標
+
+### 企業級應用
+- **建立質量閘門**: 設定自動化測試和代碼審查標準
+- **實施 ADR 流程**: 所有架構決策都要有文檔記錄
+- **啟用安全掃描**: 集成到 CI/CD pipeline 中
+- **監控開發指標**: 建立數據驅動的改進機制
+
 ## 📖 相關資源
 
-- [AI_WORKFLOW.md](./AI_WORKFLOW.md) - 詳細工作流程說明
+### 核心文檔
+- [architecture-diagram.md](./architecture-diagram.md) - 完整架構關聯圖譜
 - [.ai/config.yaml](./.ai/config.yaml) - 主配置檔案
+- [AI_WORKFLOW.md](./AI_WORKFLOW.md) - 詳細工作流程說明
+
+### 智能代理文檔
+- [architecture-advisor.md](./.ai/agents/architecture-advisor.md) - 🏗️ 架構建議專家
+- [design-validator.md](./.ai/agents/design-validator.md) - ✅ 設計驗證和規格生成
+- [metrics-tracker.md](./.ai/agents/metrics-tracker.md) - 📊 開發指標追蹤
+- [performance-optimizer.md](./.ai/agents/performance-optimizer.md) - ⚡ 效能優化專家
+- [security-scanner.md](./.ai/agents/security-scanner.md) - 🛡️ 安全掃描專家
+- [code-reviewer.md](./.ai/agents/code-reviewer.md) - 👁️ 代碼審查專家
+- [test-runner.md](./.ai/agents/test-runner.md) - 🧪 測試執行專家
+
+### 進階功能
+- [ADR 指令文檔](./.ai/commands/utility/adr.md) - Architecture Decision Records
+- [Design Validator](./.ai/commands/utility/design-validator.md) - 設計驗證器
+
+### 社群
 - [GitHub Issues](https://github.com/your-repo/issues) - 問題回報
+- [架構成熟度評估](./MATURITY_ASSESSMENT.md) - Level 4 成熟度指南
 
 ## 📄 License
 

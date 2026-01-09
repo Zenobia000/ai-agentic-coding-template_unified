@@ -1,0 +1,590 @@
+#!/usr/bin/env node
+/**
+ * Sync AI Configuration Script
+ *
+ * Synchronizes unified .ai/ configuration to tool-specific directories:
+ * - .cursor/ (Cursor IDE)
+ * - .claude/ (Claude Code)
+ * - .gemini/ (Gemini CLI)
+ * - .cursorrules, CLAUDE.md, GEMINI.md (main config files)
+ *
+ * Usage: node scripts/sync-ai-config.js [--tool cursor|claude|gemini|all]
+ */
+
+const fs = require("fs");
+const path = require("path");
+const yaml = require("js-yaml");
+
+const ROOT_DIR = path.resolve(__dirname, "..");
+const AI_DIR = path.join(ROOT_DIR, ".ai");
+
+// Tool-specific directories
+const TOOL_DIRS = {
+  cursor: path.join(ROOT_DIR, ".cursor"),
+  claude: path.join(ROOT_DIR, ".claude"),
+  gemini: path.join(ROOT_DIR, ".gemini"),
+};
+
+// Main config files
+const CONFIG_FILES = {
+  cursor: path.join(ROOT_DIR, ".cursorrules"),
+  claude: path.join(ROOT_DIR, "CLAUDE.md"),
+  gemini: path.join(ROOT_DIR, "GEMINI.md"),
+};
+
+/**
+ * Read and parse YAML front matter from markdown file
+ */
+function parseMarkdownWithFrontMatter(content) {
+  const frontMatterMatch = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+  if (frontMatterMatch) {
+    try {
+      const metadata = yaml.load(frontMatterMatch[1]);
+      const body = frontMatterMatch[2];
+      return { metadata, body };
+    } catch {
+      return { metadata: {}, body: content };
+    }
+  }
+  return { metadata: {}, body: content };
+}
+
+/**
+ * Ensure directory exists
+ */
+function ensureDir(dir) {
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+}
+
+/**
+ * Get all markdown files in a directory recursively
+ */
+function getMarkdownFiles(dir) {
+  const files = [];
+  if (!fs.existsSync(dir)) return files;
+
+  const items = fs.readdirSync(dir, { withFileTypes: true });
+  for (const item of items) {
+    const fullPath = path.join(dir, item.name);
+    if (item.isDirectory()) {
+      files.push(...getMarkdownFiles(fullPath));
+    } else if (item.name.endsWith(".md")) {
+      files.push(fullPath);
+    }
+  }
+  return files;
+}
+
+/**
+ * Generate .cursorrules content from .ai/ sources
+ */
+function generateCursorrules() {
+  const sections = [];
+
+  // Header
+  sections.push(`# Universal AI Copilot Template
+
+## System Overview
+
+This project uses the **Universal AI Workflow System** with Memory Bank for phased development workflow.
+
+**Core Principle**: Memory Bank MUST be created and verified before any operations.
+`);
+
+  // Project Info
+  const configPath = path.join(AI_DIR, "config.yaml");
+  if (fs.existsSync(configPath)) {
+    const config = yaml.load(fs.readFileSync(configPath, "utf8"));
+    sections.push(`## Project Information
+- Type: ${config.project?.type || "development-workflow"}
+- Tech Stack: ${(config.project?.tech_stack || []).join(", ")}
+- Description: ${config.project?.description || "Universal AI copilot workflow template"}
+`);
+  }
+
+  // Commands section
+  sections.push(`## Universal AI Commands
+支援簡潔指令，與所有 AI 工具一致：
+
+### Workflow Commands (Phase Sequence)
+
+\`\`\`
+/van → /plan → /creative → /implement → /reflect → /archive
+\`\`\`
+
+| Command | Description | Function |
+|---------|-------------|----------|
+| \`/van\` | 初始化專案 | Initialize project with Memory Bank creation |
+| \`/plan\` | 規劃任務 | Task planning and WBS breakdown |
+| \`/creative\` | 設計架構 | Design decisions and architecture planning |
+| \`/implement\` | 程式實作 | Code implementation with progress tracking |
+| \`/reflect\` | 回顧總結 | Task review and retrospective |
+| \`/archive\` | 文件歸檔 | Documentation and knowledge preservation |
+
+### System Commands
+- \`/commit\`: Generate a high-quality commit message.
+- \`/resume\`: Resume context from active state.
+`);
+
+  // Memory Bank section
+  sections.push(`## Memory Bank Structure
+
+\`\`\`
+./memory-bank/
+├── tasks.md           # Source of truth for all tasks
+├── activeContext.md   # Current focus and active work
+├── progress.md        # Implementation status
+├── projectbrief.md    # Project overview and goals
+├── techContext.md     # Technology stack and constraints
+└── README.md          # Memory Bank documentation
+\`\`\`
+
+**If Memory Bank doesn't exist:**
+- STOP all operations immediately
+- Run \`/van\` command to initialize
+- Wait for verification before proceeding
+`);
+
+  // AI Behavior Guidelines
+  sections.push(`## AI Behavior Guidelines
+
+### When User Runs Slash Commands
+
+1. **Verify Memory Bank first**
+   - Check if \`./memory-bank/\` directory exists
+   - Verify required files are present
+   - If missing, guide user to run \`/van\`
+
+2. **Read relevant context**
+   - Load tasks.md for current task list
+   - Load activeContext.md for current focus
+   - Load relevant files for design context
+
+3. **Execute phase-specific responsibilities**
+   - Follow command definition in \`.ai/commands/[command].md\`
+   - Create/update required Memory Bank files
+   - Provide clear next steps
+
+4. **Document actions**
+   - Update Memory Bank files with changes
+   - Suggest next command in workflow
+`);
+
+  // Rules sections
+  const rulesDir = path.join(AI_DIR, "rules");
+  const ruleFiles = getMarkdownFiles(rulesDir);
+
+  for (const ruleFile of ruleFiles) {
+    const content = fs.readFileSync(ruleFile, "utf8");
+    const { metadata, body } = parseMarkdownWithFrontMatter(content);
+
+    if (metadata.name) {
+      sections.push(`---
+
+## ${metadata.name}
+
+> ${metadata.description || ""}
+
+${body.trim()}
+`);
+    }
+  }
+
+  return sections.join("\n");
+}
+
+/**
+ * Generate CLAUDE.md content
+ */
+function generateClaudeMd() {
+  // Start with the same base as .cursorrules
+  let content = generateCursorrules();
+
+  // Add Claude-specific sections
+  content += `
+
+---
+
+## Claude Code Specific
+
+### Slash Commands
+Claude Code supports slash commands via \`.claude/commands/\` directory.
+
+### Skills
+Auto-triggered capabilities in \`.claude/skills/\` directory.
+
+### Hooks
+Pre/post tool execution hooks in \`.claude/settings.json\`.
+
+### Usage
+- Use natural language with clear intent
+- Reference Memory Bank files for context
+- Follow workflow phases for structured development
+`;
+
+  return content;
+}
+
+/**
+ * Generate GEMINI.md content
+ */
+function generateGeminiMd() {
+  // Start with the same base as .cursorrules
+  let content = generateCursorrules();
+
+  // Add Gemini-specific sections
+  content += `
+
+---
+
+## Gemini CLI Specific
+
+### Command Usage
+- \`/van\`, \`/plan\`, \`/creative\`, \`/implement\`, \`/reflect\`, \`/archive\`
+- Same slash commands as Cursor and Claude Code
+- Workflow: \`gemini workflow standard\`
+
+### Context
+Gemini CLI reads context from GEMINI.md and .gemini/ directory.
+
+### Important Instructions
+- Do what has been asked; nothing more, nothing less.
+- NEVER create files unless absolutely necessary.
+- ALWAYS prefer editing existing files over creating new ones.
+- NEVER proactively create documentation files unless explicitly requested.
+`;
+
+  return content;
+}
+
+/**
+ * Sync commands to Cursor format
+ */
+function syncCursorCommands() {
+  const srcDir = path.join(AI_DIR, "commands");
+  const destDir = path.join(TOOL_DIRS.cursor, "commands");
+
+  ensureDir(destDir);
+
+  // Get all command files
+  const commandFiles = getMarkdownFiles(srcDir);
+
+  for (const srcFile of commandFiles) {
+    const content = fs.readFileSync(srcFile, "utf8");
+    const { metadata, body } = parseMarkdownWithFrontMatter(content);
+
+    // Create Cursor-formatted command
+    const cursorTrigger = metadata.tools?.cursor?.trigger || `/${path.basename(srcFile, ".md")}`;
+    const description = metadata.tools?.cursor?.description || metadata.description || "";
+
+    const cursorContent = `---
+description: ${description}
+---
+
+${body}`;
+
+    const destFile = path.join(destDir, path.basename(srcFile));
+    fs.writeFileSync(destFile, cursorContent);
+  }
+
+  console.log(`  Synced ${commandFiles.length} commands to .cursor/commands/`);
+}
+
+/**
+ * Sync commands to Claude Code format
+ */
+function syncClaudeCommands() {
+  const srcDir = path.join(AI_DIR, "commands");
+  const destDir = path.join(TOOL_DIRS.claude, "commands");
+
+  ensureDir(destDir);
+
+  const commandFiles = getMarkdownFiles(srcDir);
+
+  for (const srcFile of commandFiles) {
+    const content = fs.readFileSync(srcFile, "utf8");
+    const { metadata, body } = parseMarkdownWithFrontMatter(content);
+
+    // Create Claude Code formatted command
+    const allowedTools = metadata.tools?.["claude-code"]?.["allowed-tools"] || [];
+    const description = metadata.tools?.["claude-code"]?.description || metadata.description || "";
+
+    let claudeContent = `---
+description: ${description}`;
+
+    if (allowedTools.length > 0) {
+      claudeContent += `
+allowed-tools: ${JSON.stringify(allowedTools)}`;
+    }
+
+    claudeContent += `
+---
+
+${body}`;
+
+    const destFile = path.join(destDir, path.basename(srcFile));
+    fs.writeFileSync(destFile, claudeContent);
+  }
+
+  console.log(`  Synced ${commandFiles.length} commands to .claude/commands/`);
+}
+
+/**
+ * Sync skills to Claude Code
+ */
+function syncClaudeSkills() {
+  const srcDir = path.join(AI_DIR, "skills");
+  const destDir = path.join(TOOL_DIRS.claude, "skills");
+
+  if (!fs.existsSync(srcDir)) return;
+
+  ensureDir(destDir);
+
+  const items = fs.readdirSync(srcDir, { withFileTypes: true });
+  for (const item of items) {
+    if (item.isDirectory()) {
+      const skillSrc = path.join(srcDir, item.name);
+      const skillDest = path.join(destDir, item.name);
+      ensureDir(skillDest);
+
+      // Copy SKILL.md
+      const skillFile = path.join(skillSrc, "SKILL.md");
+      if (fs.existsSync(skillFile)) {
+        fs.copyFileSync(skillFile, path.join(skillDest, "SKILL.md"));
+      }
+    }
+  }
+
+  console.log(`  Synced skills to .claude/skills/`);
+}
+
+/**
+ * Sync agents to Claude Code
+ */
+function syncClaudeAgents() {
+  const srcDir = path.join(AI_DIR, "agents");
+  const destDir = path.join(TOOL_DIRS.claude, "agents");
+
+  if (!fs.existsSync(srcDir)) return;
+
+  ensureDir(destDir);
+
+  const files = fs.readdirSync(srcDir).filter((f) => f.endsWith(".md"));
+  for (const file of files) {
+    fs.copyFileSync(path.join(srcDir, file), path.join(destDir, file));
+  }
+
+  console.log(`  Synced ${files.length} agents to .claude/agents/`);
+}
+
+/**
+ * Sync output styles to Claude Code
+ */
+function syncClaudeOutputStyles() {
+  const srcDir = path.join(AI_DIR, "output-styles");
+  const destDir = path.join(TOOL_DIRS.claude, "output-styles");
+
+  if (!fs.existsSync(srcDir)) return;
+
+  ensureDir(destDir);
+
+  const files = fs.readdirSync(srcDir).filter((f) => f.endsWith(".md"));
+  for (const file of files) {
+    fs.copyFileSync(path.join(srcDir, file), path.join(destDir, file));
+  }
+
+  console.log(`  Synced ${files.length} output styles to .claude/output-styles/`);
+}
+
+/**
+ * Generate Claude Code settings.json with hooks
+ */
+function syncClaudeSettings() {
+  const hooksDir = path.join(AI_DIR, "hooks");
+  const settingsFile = path.join(TOOL_DIRS.claude, "settings.json");
+
+  ensureDir(TOOL_DIRS.claude);
+
+  const settings = {
+    hooks: {
+      PreToolUse: [],
+    },
+  };
+
+  // Add hooks if they exist
+  if (fs.existsSync(hooksDir)) {
+    const bashHook = path.join(hooksDir, "deny-dangerous-bash.py");
+    const writeHook = path.join(hooksDir, "forbid-write-main.py");
+
+    if (fs.existsSync(bashHook)) {
+      settings.hooks.PreToolUse.push({
+        matcher: "Bash",
+        hooks: [
+          {
+            type: "command",
+            command: `python ${path.relative(ROOT_DIR, bashHook)}`,
+          },
+        ],
+      });
+    }
+
+    if (fs.existsSync(writeHook)) {
+      settings.hooks.PreToolUse.push({
+        matcher: "Write|Edit",
+        hooks: [
+          {
+            type: "command",
+            command: `python ${path.relative(ROOT_DIR, writeHook)}`,
+          },
+        ],
+      });
+    }
+  }
+
+  fs.writeFileSync(settingsFile, JSON.stringify(settings, null, 2));
+  console.log(`  Generated .claude/settings.json with hooks`);
+}
+
+/**
+ * Convert markdown command to TOML format for Gemini CLI
+ * Preserves full content for better AI context
+ */
+function convertCommandToToml(mdContent, commandName) {
+  const { metadata, body } = parseMarkdownWithFrontMatter(mdContent);
+
+  // Extract description from metadata or first line
+  let description = metadata.description || "";
+  if (!description) {
+    const firstLine = body.split("\n").find(line => line.startsWith("#"));
+    if (firstLine) {
+      description = firstLine.replace(/^#+\s*/, "").replace(/[🚀📋🎨💻🔍📚🐛📝🔧]/g, "").trim();
+    }
+  }
+
+  // Clean up the markdown body for TOML
+  let prompt = body.trim();
+
+  // Remove tool-specific usage section (already handled by the command itself)
+  prompt = prompt.replace(/## Tool-Specific Usage[\s\S]*?(?=\n## |$)/g, "");
+
+  // Remove trailing separator lines
+  prompt = prompt.replace(/\n---\s*\n*>.*$/g, "");
+
+  // Escape triple quotes for TOML
+  prompt = prompt.replace(/"""/g, '\\"\\"\\"');
+
+  return `# /${commandName} - Gemini CLI command
+# Generated from .ai/commands/
+
+description = "${description.replace(/"/g, '\\"').substring(0, 100)}"
+
+prompt = """
+${prompt}
+
+---
+**User Request:** {{args}}
+
+**Context:** Check Memory Bank (./memory-bank/) for project state.
+- tasks.md: Current task list
+- activeContext.md: Current focus
+- progress.md: Implementation status
+"""
+`;
+}
+
+/**
+ * Sync commands to .gemini/commands/ as .toml files
+ */
+function syncGeminiCommands() {
+  const commandsDir = path.join(AI_DIR, "commands");
+  const geminiCommandsDir = path.join(TOOL_DIRS.gemini, "commands");
+
+  ensureDir(geminiCommandsDir);
+
+  let count = 0;
+  const categories = ["workflow", "utility", "system"];
+
+  for (const category of categories) {
+    const categoryDir = path.join(commandsDir, category);
+    if (!fs.existsSync(categoryDir)) continue;
+
+    const files = fs.readdirSync(categoryDir).filter((f) => f.endsWith(".md"));
+    for (const file of files) {
+      const commandName = path.basename(file, ".md");
+      const content = fs.readFileSync(path.join(categoryDir, file), "utf-8");
+      const tomlContent = convertCommandToToml(content, commandName);
+
+      fs.writeFileSync(
+        path.join(geminiCommandsDir, `${commandName}.toml`),
+        tomlContent
+      );
+      count++;
+    }
+  }
+
+  console.log(`  Synced ${count} commands to .gemini/commands/`);
+}
+
+/**
+ * Main sync function
+ */
+function sync(tool = "all") {
+  console.log("Syncing AI configuration...\n");
+
+  if (tool === "all" || tool === "cursor") {
+    console.log("Cursor:");
+    fs.writeFileSync(CONFIG_FILES.cursor, generateCursorrules());
+    console.log(`  Generated .cursorrules`);
+    syncCursorCommands();
+  }
+
+  if (tool === "all" || tool === "claude") {
+    console.log("\nClaude Code:");
+    fs.writeFileSync(CONFIG_FILES.claude, generateClaudeMd());
+    console.log(`  Generated CLAUDE.md`);
+    syncClaudeCommands();
+    syncClaudeSkills();
+    syncClaudeAgents();
+    syncClaudeOutputStyles();
+    syncClaudeSettings();
+  }
+
+  if (tool === "all" || tool === "gemini") {
+    console.log("\nGemini CLI:");
+    fs.writeFileSync(CONFIG_FILES.gemini, generateGeminiMd());
+    console.log(`  Generated GEMINI.md`);
+
+    // Create .gemini/ directory and settings
+    ensureDir(TOOL_DIRS.gemini);
+    const geminiSettings = {
+      output: { format: "text" },
+      context: { fileName: ["GEMINI.md"] },
+      privacy: { usageStatisticsEnabled: false }
+    };
+    fs.writeFileSync(
+      path.join(TOOL_DIRS.gemini, "settings.json"),
+      JSON.stringify(geminiSettings, null, 2)
+    );
+    console.log(`  Generated .gemini/settings.json`);
+
+    // Sync commands as .toml files
+    syncGeminiCommands();
+  }
+
+  console.log("\nSync complete!");
+}
+
+// Parse command line arguments
+const args = process.argv.slice(2);
+let tool = "all";
+
+for (let i = 0; i < args.length; i++) {
+  if (args[i] === "--tool" && args[i + 1]) {
+    tool = args[i + 1];
+  }
+}
+
+// Run sync
+sync(tool);

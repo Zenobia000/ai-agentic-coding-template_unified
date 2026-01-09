@@ -1,0 +1,37 @@
+{
+  "name": "universal-ai-copilot-template",
+  "version": "1.0.0",
+  "description": "Universal AI copilot workflow template supporting Cursor, Claude Code, and Gemini CLI",
+  "main": "scripts/ai-init.js",
+  "scripts": {
+    "setup": "node scripts/setup.js",
+    "publish": "node scripts/publish.js",
+    "ai-init": "node scripts/ai-init.js",
+    "ai-sync": "node scripts/sync-ai-config.js",
+    "ai-sync:cursor": "node scripts/sync-ai-config.js --tool cursor",
+    "ai-sync:claude": "node scripts/sync-ai-config.js --tool claude",
+    "ai-sync:gemini": "node scripts/sync-ai-config.js --tool gemini",
+    "ai-verify": "node scripts/verify-setup.js"
+  },
+  "keywords": [
+    "ai",
+    "copilot",
+    "cursor",
+    "claude",
+    "gemini",
+    "workflow",
+    "automation"
+  ],
+  "author": "Universal AI Copilot Template",
+  "license": "MIT",
+  "dependencies": {
+    "js-yaml": "^4.1.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/universal-ai-copilot-template.git"
+  }
+}

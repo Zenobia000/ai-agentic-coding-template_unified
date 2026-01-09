@@ -12,19 +12,16 @@
 # 安裝依賴
 npm install
 
-# 初始化 AI 工作流程
-npm run ai-init
+# 生成 AI 工具配置
+npm run ai-sync
 ```
 
-### 2. 選擇你的 AI 工具
+### 2. 生成配置
 
-```
-? Which AI tool do you primarily use?
-  ◉ Cursor
-  ◯ Claude Code
-  ◯ Gemini CLI
-  ◯ Generate all (multi-tool setup)
-```
+所有工具配置將從 `.ai/template/` 自動生成：
+- Cursor: `.cursorrules` + `.cursor/`
+- Claude Code: `CLAUDE.md` + `.claude/`
+- Gemini CLI: `GEMINI.md` + `.gemini/`
 
 ### 3. 開始工作流程
 
@@ -190,9 +187,9 @@ memory-bank/
 
 | AI 工具 | 配置檔案 | 生成方式 |
 |---------|----------|----------|
-| **Cursor** | `.cursorrules`, `.cursor/` | `npm run ai-cursor` |
-| **Claude Code** | `CLAUDE.md` | `npm run ai-claude` |
-| **Gemini CLI** | `.geminirc` | `npm run ai-gemini` |
+| **Cursor** | `.cursorrules`, `.cursor/` | `npm run ai-sync:cursor` |
+| **Claude Code** | `CLAUDE.md`, `.claude/` | `npm run ai-sync:claude` |
+| **Gemini CLI** | `GEMINI.md`, `.gemini/` | `npm run ai-sync:gemini` |
 
 ### 統一配置系統
 ```
@@ -203,13 +200,16 @@ memory-bank/
 │   ├── frontend.md    # 🎨 前端規則
 │   └── backend.md     # ⚙️ 後端規則
 ├── commands/           # ⚔️ 通用命令
-│   ├── van.md         # 初始化
-│   ├── plan.md        # 規劃
-│   └── ...            # 其他階段
-└── adapters/           # 🔌 AI 工具適配器
-    ├── cursor/        # Cursor 適配器
-    ├── claude-code/   # Claude Code 適配器
-    └── gemini-cli/    # Gemini CLI 適配器
+│   ├── workflow/      # 六階段流程
+│   ├── utility/       # 輔助工具
+│   └── system/        # 系統功能
+├── agents/            # 🤝 AI 代理定義
+│   ├── code-reviewer.md
+│   └── test-runner.md
+└── template/          # 📝 配置模板
+    ├── .cursorrules   # Cursor 模板
+    ├── CLAUDE.md      # Claude 模板
+    └── GEMINI.md      # Gemini 模板
 ```
 
 ---
@@ -251,7 +251,7 @@ memory-bank/
 [current-tool] reflect
 
 # 2. 生成新工具配置
-npm run ai-[new-tool]
+npm run ai-sync:[new-tool]
 
 # 3. 使用新工具初始化
 [new-tool] van
@@ -287,13 +287,17 @@ git commit -m "Update Memory Bank state"
 #### Q: Memory Bank 檔案遺失
 ```bash
 # 重新初始化
-npm run ai-init --force
+/van  # 在 AI 工具中執行
 ```
 
 #### Q: AI 工具無法讀取配置
 ```bash
 # 重新生成工具配置
-npm run ai-[tool-name]
+npm run ai-sync
+# 或針對特定工具
+npm run ai-sync:cursor
+npm run ai-sync:claude
+npm run ai-sync:gemini
 ```
 
 #### Q: 工作流程狀態不同步
@@ -328,7 +332,7 @@ git checkout memory-bank/
 # 建立新的專案模板
 cp -r .ai/ ../new-project/.ai/
 cd ../new-project
-npm run ai-init
+npm install && npm run ai-sync
 ```
 
 ### 自動化腳本
@@ -367,5 +371,5 @@ git push
 **🎯 現在開始你的 AI 協作之旅吧！**
 
 ```bash
-npm run ai-init
+npm install && npm run ai-sync
 ```

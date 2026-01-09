@@ -105,7 +105,7 @@ function verifyWorkflowCommands() {
 
 function verifyUtilityCommands() {
   log('\n4. Utility Commands', 'blue');
-  const commands = ['task-init', 'task-next', 'debug', 'review-code', 'write-tests'];
+  const commands = ['task-next', 'debug', 'review-code', 'write-tests'];
 
   let allPassed = true;
   for (const cmd of commands) {

@@ -30,7 +30,6 @@ commands:
     - reflect     # 回顧
     - archive     # 歸檔
   utility:
-    - task-init   # 創建 Epic
     - task-next   # PM 建議
     - debug       # 除錯
     - review-code # 代碼審查

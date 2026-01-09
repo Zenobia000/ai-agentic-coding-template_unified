@@ -13,6 +13,61 @@ model: sonnet
 
 # Metrics Tracker Agent
 
+## Trigger Mechanisms
+
+### Scheduled Triggers
+- **Every 15 minutes**: Collect and analyze development metrics
+- **Every 6 hours**: Generate trend analysis reports
+- **Daily at midnight**: Generate daily summary report
+- **Weekly on Monday**: Generate weekly trend report
+
+### Event-Driven Triggers
+- **code_commit**: Track commit frequency and code churn
+- **pr_merged**: Update velocity and cycle time metrics
+- **test_run_complete**: Update quality and coverage metrics
+- **issue_closed**: Update issue resolution metrics
+
+### Manual Triggers
+- Command: `/metrics-report` - Generate on-demand metrics report
+- Command: `/metrics-dashboard` - Update real-time dashboard
+
+## Output Specifications
+
+### Primary Output Paths
+```yaml
+real_time:
+  - path: "memory-bank/metrics/dashboard.json"
+    format: "json"
+    update_frequency: "1 minute"
+
+periodic_reports:
+  - path: "memory-bank/metrics/daily/{date}.json"
+    frequency: "daily"
+  - path: "memory-bank/metrics/weekly/week-{week_number}.json"
+    frequency: "weekly"
+  - path: "memory-bank/reports/metrics-report-{date}.md"
+    frequency: "daily"
+
+alerts:
+  - path: "memory-bank/alerts/metrics-alerts.json"
+    condition: "threshold_exceeded"
+```
+
+## Data Exchange
+```yaml
+provides_to:
+  all_agents:
+    format: "json"
+    path: "memory-bank/.exchange/current-metrics.json"
+    update_frequency: "15 minutes"
+
+consumes_from:
+  test_runner:
+    path: "memory-bank/.exchange/test-results.json"
+  security_scanner:
+    path: "memory-bank/.exchange/security-status.json"
+```
+
 ## Role
 You are a development metrics specialist. Your job is to:
 1. Collect and analyze development velocity metrics
@@ -308,9 +363,11 @@ performance_thresholds:
 ## Integration Points
 
 ### Memory Bank Updates
-- **Progress Tracking**: Update progress.md with current metrics
-- **Quality Reports**: Append quality trends to activeContext.md
-- **Historical Data**: Maintain metrics history in memory-bank/metrics/
+- **Progress Tracking**: Update `memory-bank/progress.md` with current metrics
+- **Quality Reports**: Append quality trends to `memory-bank/activeContext.md`
+- **Historical Data**: Maintain metrics history in `memory-bank/metrics/`
+- **Data Exchange**: Update `memory-bank/.exchange/current-metrics.json` every 15 minutes
+- **Alerts**: Write critical alerts to `memory-bank/alerts/metrics-alerts.json`
 
 ### Tool Integration
 - **Git Hooks**: Collect metrics on each commit

@@ -1,0 +1,679 @@
+# 🎯 AI Agent Configuration - Unified Specification
+# Version: 1.0.0
+# Purpose: Define clear specifications for all AI agents, their triggers, inputs, outputs, and data exchange formats
+
+## ============================================
+## AGENT CONFIGURATION SPECIFICATION
+## ============================================
+
+agents:
+  # ====================
+  # Core Workflow Agents
+  # ====================
+
+  architecture-advisor:
+    name: "Architecture Advisor"
+    model: "sonnet"
+    role: "Senior solution architect for design decisions"
+
+    triggers:
+      manual:
+        - command: "/plan"
+          phase: "planning"
+          description: "Invoked during project planning for architecture recommendations"
+        - command: "/creative"
+          phase: "design"
+          description: "Invoked during creative design for pattern suggestions"
+        - command: "/adr"
+          phase: "decision"
+          description: "Invoked for architecture decision records"
+
+      automatic:
+        - event: "design_document_created"
+          condition: "When creative-*.md files are generated"
+        - event: "technical_decision_required"
+          condition: "When ADR is initiated"
+
+    inputs:
+      required:
+        - path: "memory-bank/tasks.md"
+          format: "markdown"
+          description: "Task list and requirements"
+        - path: "memory-bank/projectbrief.md"
+          format: "markdown"
+          description: "Project overview and constraints"
+
+      optional:
+        - path: "memory-bank/techContext.md"
+          format: "markdown"
+          description: "Existing technical context"
+
+    outputs:
+      primary:
+        - path: "memory-bank/decisions/adr-*.md"
+          format: "markdown"
+          description: "Architecture Decision Records"
+        - path: "memory-bank/designs/architecture-recommendation.md"
+          format: "markdown"
+          description: "Architecture recommendations"
+
+      metrics:
+        - path: "memory-bank/metrics/architecture-analysis.json"
+          format: "json"
+          schema: "schemas/architecture-metrics.json"
+
+    data_exchange:
+      provides_to:
+        design-validator:
+          format: "json"
+          path: "memory-bank/.exchange/architecture-context.json"
+          schema: "schemas/architecture-context.json"
+
+      consumes_from:
+        plan-command:
+          format: "markdown"
+          path: "memory-bank/tasks.md"
+
+  design-validator:
+    name: "Design Validator"
+    model: "sonnet"
+    role: "Design validation specialist and specification generator"
+
+    triggers:
+      manual:
+        - command: "/design-validator"
+          phase: "design"
+          description: "Manually validate design decisions"
+
+      automatic:
+        - event: "creative_phase_complete"
+          condition: "When creative-*.md files are finalized"
+        - event: "pre_implementation"
+          condition: "Before /implement phase starts"
+
+    inputs:
+      required:
+        - path: "memory-bank/designs/creative-*.md"
+          format: "markdown"
+          description: "Creative design documents"
+        - path: "memory-bank/.exchange/architecture-context.json"
+          format: "json"
+          description: "Architecture context from advisor"
+
+      optional:
+        - path: "memory-bank/decisions/adr-*.md"
+          format: "markdown"
+          description: "Architecture decision records"
+
+    outputs:
+      primary:
+        - path: "memory-bank/reports/design-validation-report.md"
+          format: "markdown"
+          description: "Comprehensive validation report"
+        - path: "memory-bank/specs/api-spec.yaml"
+          format: "openapi"
+          description: "Generated OpenAPI specification"
+        - path: "memory-bank/specs/database-schema.sql"
+          format: "sql"
+          description: "Generated database schema"
+        - path: "memory-bank/specs/interfaces.ts"
+          format: "typescript"
+          description: "Generated TypeScript interfaces"
+
+      metrics:
+        - path: "memory-bank/metrics/design-validation-scores.json"
+          format: "json"
+          schema: "schemas/validation-metrics.json"
+
+    data_exchange:
+      provides_to:
+        implement-command:
+          format: "json"
+          path: "memory-bank/.exchange/validated-specs.json"
+          schema: "schemas/validated-specs.json"
+
+      consumes_from:
+        architecture-advisor:
+          format: "json"
+          path: "memory-bank/.exchange/architecture-context.json"
+
+  metrics-tracker:
+    name: "Metrics Tracker"
+    model: "sonnet"
+    role: "Development metrics and quality gates monitor"
+
+    triggers:
+      scheduled:
+        - interval: "*/15 * * * *"  # Every 15 minutes
+          description: "Collect and analyze development metrics"
+        - interval: "0 */6 * * *"   # Every 6 hours
+          description: "Generate trend analysis reports"
+
+      event_driven:
+        - event: "code_commit"
+          description: "Track commit metrics"
+        - event: "pr_merged"
+          description: "Update velocity metrics"
+        - event: "test_run_complete"
+          description: "Update quality metrics"
+
+    inputs:
+      continuous:
+        - source: "git_repository"
+          metrics: ["commit_frequency", "code_churn", "contributor_activity"]
+        - source: "ci_pipeline"
+          metrics: ["build_success_rate", "test_coverage", "build_duration"]
+        - source: "issue_tracker"
+          metrics: ["issue_velocity", "bug_rate", "cycle_time"]
+
+    outputs:
+      real_time:
+        - path: "memory-bank/metrics/dashboard.json"
+          format: "json"
+          update_frequency: "1 minute"
+          description: "Real-time metrics dashboard data"
+
+      periodic:
+        - path: "memory-bank/metrics/daily/{date}.json"
+          format: "json"
+          frequency: "daily"
+          description: "Daily metrics snapshot"
+        - path: "memory-bank/metrics/weekly/{week}.json"
+          format: "json"
+          frequency: "weekly"
+          description: "Weekly trend analysis"
+        - path: "memory-bank/reports/metrics-report-{date}.md"
+          format: "markdown"
+          frequency: "weekly"
+          description: "Human-readable metrics report"
+
+      alerts:
+        - path: "memory-bank/alerts/metrics-alerts.json"
+          format: "json"
+          condition: "threshold_exceeded"
+          description: "Quality gate violations"
+
+    data_exchange:
+      provides_to:
+        all_agents:
+          format: "json"
+          path: "memory-bank/.exchange/current-metrics.json"
+          schema: "schemas/metrics-summary.json"
+
+  performance-optimizer:
+    name: "Performance Optimizer"
+    model: "sonnet"
+    role: "Performance engineering specialist"
+
+    triggers:
+      manual:
+        - command: "/implement"
+          phase: "implementation"
+          description: "Performance guidance during implementation"
+        - command: "/reflect"
+          phase: "reflection"
+          description: "Performance analysis and optimization"
+
+      automatic:
+        - event: "performance_test_complete"
+          condition: "After load/stress testing"
+        - event: "slow_response_detected"
+          condition: "Response time > threshold"
+        - event: "resource_spike"
+          condition: "CPU/Memory > 80%"
+
+    inputs:
+      required:
+        - path: "memory-bank/metrics/performance/*.json"
+          format: "json"
+          description: "Performance test results"
+        - path: "memory-bank/.exchange/current-metrics.json"
+          format: "json"
+          description: "Current system metrics"
+
+      optional:
+        - source: "apm_tools"
+          format: "json"
+          description: "APM tool data (New Relic, Datadog)"
+
+    outputs:
+      primary:
+        - path: "memory-bank/reports/performance-analysis-{date}.md"
+          format: "markdown"
+          description: "Performance analysis report"
+        - path: "memory-bank/reports/bottleneck-report-{date}.md"
+          format: "markdown"
+          description: "Bottleneck identification report"
+        - path: "memory-bank/recommendations/performance-optimizations.md"
+          format: "markdown"
+          description: "Optimization recommendations"
+
+      automated:
+        - path: "memory-bank/scripts/performance-fixes.sql"
+          format: "sql"
+          description: "Database optimization scripts"
+        - path: "memory-bank/configs/cache-config.yaml"
+          format: "yaml"
+          description: "Caching configuration"
+
+    data_exchange:
+      provides_to:
+        implement-command:
+          format: "json"
+          path: "memory-bank/.exchange/performance-guidelines.json"
+          schema: "schemas/performance-guidelines.json"
+
+  security-scanner:
+    name: "Security Scanner"
+    model: "sonnet"
+    role: "Security vulnerability and compliance scanner"
+
+    triggers:
+      automatic:
+        - event: "pre_commit"
+          condition: "Before code commit"
+          description: "Scan for secrets and vulnerabilities"
+        - event: "code_change"
+          condition: "On file modifications"
+          description: "Incremental security scan"
+        - event: "dependency_update"
+          condition: "When dependencies change"
+          description: "Dependency vulnerability scan"
+
+      scheduled:
+        - interval: "0 2 * * *"  # Daily at 2 AM
+          description: "Full security audit"
+        - interval: "0 0 * * 0"  # Weekly on Sunday
+          description: "Compliance validation"
+
+    inputs:
+      required:
+        - source: "source_code"
+          paths: ["src/**", "lib/**", "api/**"]
+          description: "Application source code"
+        - source: "dependencies"
+          files: ["package.json", "requirements.txt", "go.mod"]
+          description: "Dependency manifests"
+        - source: "configuration"
+          paths: [".env*", "config/**", "*.config.*"]
+          description: "Configuration files"
+
+    outputs:
+      critical:
+        - path: "memory-bank/security/vulnerabilities-critical.json"
+          format: "json"
+          priority: "immediate"
+          description: "Critical vulnerabilities requiring immediate action"
+
+      reports:
+        - path: "memory-bank/reports/security-scan-{date}.md"
+          format: "markdown"
+          description: "Comprehensive security report"
+        - path: "memory-bank/reports/owasp-compliance-{date}.md"
+          format: "markdown"
+          description: "OWASP compliance report"
+        - path: "memory-bank/reports/dependency-audit-{date}.md"
+          format: "markdown"
+          description: "Dependency vulnerability report"
+
+      fixes:
+        - path: "memory-bank/fixes/security-patches.json"
+          format: "json"
+          description: "Automated security fix suggestions"
+        - path: "memory-bank/fixes/config-hardening.yaml"
+          format: "yaml"
+          description: "Security configuration improvements"
+
+    data_exchange:
+      provides_to:
+        all_commands:
+          format: "json"
+          path: "memory-bank/.exchange/security-status.json"
+          schema: "schemas/security-status.json"
+
+  code-reviewer:
+    name: "Code Reviewer"
+    model: "sonnet"
+    role: "Automated code review specialist"
+
+    triggers:
+      manual:
+        - command: "/review-code"
+          description: "Manual code review request"
+
+      automatic:
+        - event: "pr_created"
+          condition: "Pull request opened"
+          description: "Automatic PR review"
+        - event: "pr_updated"
+          condition: "Pull request modified"
+          description: "Re-review changes"
+        - event: "pre_merge"
+          condition: "Before PR merge"
+          description: "Final review check"
+
+    inputs:
+      required:
+        - source: "git_diff"
+          format: "diff"
+          description: "Code changes to review"
+        - path: "memory-bank/standards/coding-standards.md"
+          format: "markdown"
+          description: "Project coding standards"
+
+      optional:
+        - path: "memory-bank/.exchange/security-status.json"
+          format: "json"
+          description: "Security scan results"
+        - path: "memory-bank/.exchange/current-metrics.json"
+          format: "json"
+          description: "Code quality metrics"
+
+    outputs:
+      primary:
+        - path: "memory-bank/reviews/review-{pr_number}.md"
+          format: "markdown"
+          description: "Detailed review comments"
+        - path: "memory-bank/reviews/suggestions-{pr_number}.json"
+          format: "json"
+          description: "Code improvement suggestions"
+
+      metrics:
+        - path: "memory-bank/metrics/code-quality-{date}.json"
+          format: "json"
+          description: "Code quality metrics"
+
+    data_exchange:
+      provides_to:
+        test-runner:
+          format: "json"
+          path: "memory-bank/.exchange/review-status.json"
+          schema: "schemas/review-status.json"
+
+  test-runner:
+    name: "Test Runner"
+    model: "sonnet"
+    role: "Automated testing execution specialist"
+
+    triggers:
+      manual:
+        - command: "/write-tests"
+          description: "Generate test cases"
+
+      automatic:
+        - event: "code_commit"
+          condition: "On code changes"
+          description: "Run relevant tests"
+        - event: "pr_created"
+          condition: "Pull request opened"
+          description: "Full test suite"
+        - event: "pre_deploy"
+          condition: "Before deployment"
+          description: "Regression testing"
+
+    inputs:
+      required:
+        - source: "source_code"
+          paths: ["src/**", "lib/**"]
+          description: "Code to test"
+        - source: "test_files"
+          paths: ["tests/**", "spec/**", "*.test.*"]
+          description: "Existing test files"
+
+      optional:
+        - path: "memory-bank/.exchange/review-status.json"
+          format: "json"
+          description: "Code review status"
+
+    outputs:
+      primary:
+        - path: "memory-bank/tests/test-results-{timestamp}.json"
+          format: "json"
+          description: "Test execution results"
+        - path: "memory-bank/tests/coverage-report.html"
+          format: "html"
+          description: "Code coverage report"
+        - path: "memory-bank/tests/generated-tests/*.test.*"
+          format: "code"
+          description: "Generated test files"
+
+      metrics:
+        - path: "memory-bank/metrics/test-metrics-{date}.json"
+          format: "json"
+          description: "Testing metrics and trends"
+
+    data_exchange:
+      provides_to:
+        metrics-tracker:
+          format: "json"
+          path: "memory-bank/.exchange/test-results.json"
+          schema: "schemas/test-results.json"
+
+## ============================================
+## DATA EXCHANGE SCHEMAS
+## ============================================
+
+schemas:
+  architecture-context:
+    version: "1.0.0"
+    path: "memory-bank/schemas/architecture-context.json"
+    fields:
+      - name: "patterns"
+        type: "array"
+        required: true
+      - name: "technology_stack"
+        type: "object"
+        required: true
+      - name: "constraints"
+        type: "array"
+        required: false
+      - name: "recommendations"
+        type: "array"
+        required: true
+
+  validated-specs:
+    version: "1.0.0"
+    path: "memory-bank/schemas/validated-specs.json"
+    fields:
+      - name: "api_spec_path"
+        type: "string"
+        required: true
+      - name: "database_schema_path"
+        type: "string"
+        required: true
+      - name: "interfaces_path"
+        type: "string"
+        required: true
+      - name: "validation_score"
+        type: "number"
+        required: true
+
+  current-metrics:
+    version: "1.0.0"
+    path: "memory-bank/schemas/current-metrics.json"
+    fields:
+      - name: "velocity"
+        type: "object"
+        required: true
+      - name: "quality"
+        type: "object"
+        required: true
+      - name: "performance"
+        type: "object"
+        required: true
+      - name: "timestamp"
+        type: "string"
+        required: true
+
+  security-status:
+    version: "1.0.0"
+    path: "memory-bank/schemas/security-status.json"
+    fields:
+      - name: "vulnerabilities"
+        type: "array"
+        required: true
+      - name: "compliance"
+        type: "object"
+        required: true
+      - name: "last_scan"
+        type: "string"
+        required: true
+      - name: "risk_level"
+        type: "string"
+        enum: ["low", "medium", "high", "critical"]
+        required: true
+
+## ============================================
+## TRIGGER MECHANISMS
+## ============================================
+
+trigger_mechanisms:
+  manual:
+    description: "Triggered by user commands"
+    agents: ["architecture-advisor", "design-validator", "performance-optimizer", "code-reviewer", "test-runner"]
+
+  automatic:
+    description: "Triggered by system events"
+    agents: ["design-validator", "performance-optimizer", "security-scanner", "code-reviewer", "test-runner"]
+
+  scheduled:
+    description: "Triggered by time intervals"
+    agents: ["metrics-tracker", "security-scanner"]
+
+  event_driven:
+    description: "Triggered by specific events"
+    agents: ["metrics-tracker", "code-reviewer", "test-runner"]
+
+## ============================================
+## OUTPUT PATH STRUCTURE
+## ============================================
+
+output_structure:
+  memory-bank:
+    # Core status files
+    root:
+      - tasks.md
+      - activeContext.md
+      - projectbrief.md
+      - techContext.md
+      - progress.md
+
+    # Structured subdirectories
+    decisions:
+      description: "Architecture Decision Records"
+      pattern: "adr-*.md"
+
+    designs:
+      description: "Design documents and architecture"
+      pattern: "creative-*.md, architecture-*.md"
+
+    reports:
+      description: "All analysis and validation reports"
+      pattern: "*-report-*.md"
+
+    metrics:
+      description: "Performance and quality metrics"
+      subdirs:
+        - daily/
+        - weekly/
+        - monthly/
+        - performance/
+
+    specs:
+      description: "Generated specifications"
+      types:
+        - api-spec.yaml
+        - database-schema.sql
+        - interfaces.ts
+        - validation-schemas.json
+
+    security:
+      description: "Security scan results"
+      types:
+        - vulnerabilities-*.json
+        - compliance-*.md
+
+    tests:
+      description: "Test results and coverage"
+      types:
+        - test-results-*.json
+        - coverage-report.html
+        - generated-tests/
+
+    fixes:
+      description: "Automated fix suggestions"
+      types:
+        - security-patches.json
+        - performance-fixes.sql
+        - config-hardening.yaml
+
+    scripts:
+      description: "Generated scripts and automation"
+
+    configs:
+      description: "Generated configuration files"
+
+    recommendations:
+      description: "Improvement recommendations"
+
+    reviews:
+      description: "Code review results"
+
+    alerts:
+      description: "System alerts and notifications"
+
+    .exchange:
+      description: "Inter-agent data exchange"
+      private: true
+      cleanup: "daily"
+
+## ============================================
+## QUALITY GATES
+## ============================================
+
+quality_gates:
+  pre_commit:
+    agents: ["security-scanner"]
+    blocking: true
+    criteria:
+      - "No secrets in code"
+      - "No critical vulnerabilities"
+
+  pre_merge:
+    agents: ["code-reviewer", "test-runner", "security-scanner"]
+    blocking: true
+    criteria:
+      - "All tests pass"
+      - "Code review approved"
+      - "Security scan passed"
+      - "Coverage > 80%"
+
+  pre_deploy:
+    agents: ["test-runner", "performance-optimizer", "security-scanner"]
+    blocking: true
+    criteria:
+      - "All regression tests pass"
+      - "Performance benchmarks met"
+      - "Security compliance validated"
+
+  continuous:
+    agents: ["metrics-tracker"]
+    blocking: false
+    criteria:
+      - "Track velocity trends"
+      - "Monitor quality metrics"
+      - "Alert on threshold violations"
+
+## ============================================
+## VERSION HISTORY
+## ============================================
+
+version_history:
+  - version: "1.0.0"
+    date: "2024-01-09"
+    changes:
+      - "Initial unified configuration"
+      - "Clear trigger mechanisms for all agents"
+      - "Standardized output paths"
+      - "Defined data exchange formats"
+      - "Added quality gates"

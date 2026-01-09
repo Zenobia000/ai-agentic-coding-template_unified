@@ -1,0 +1,706 @@
+# 🔄 Agent Data Exchange Format Specification
+# Version: 1.0.0
+# Purpose: Define standardized data formats for inter-agent communication
+
+## ============================================
+## CORE EXCHANGE SCHEMAS
+## ============================================
+
+schemas:
+  # ====================
+  # Architecture Context
+  # ====================
+  architecture-context:
+    version: "1.0.0"
+    description: "Architecture recommendations and decisions from Architecture Advisor"
+    location: "memory-bank/.exchange/architecture-context.json"
+
+    structure:
+      metadata:
+        type: object
+        required: true
+        properties:
+          timestamp:
+            type: string
+            format: datetime
+            example: "2024-01-09T10:30:00Z"
+          version:
+            type: string
+            example: "1.0.0"
+          source_agent:
+            type: string
+            const: "architecture-advisor"
+
+      patterns:
+        type: array
+        required: true
+        description: "Recommended architectural patterns"
+        items:
+          type: object
+          properties:
+            name:
+              type: string
+              example: "microservices"
+            rationale:
+              type: string
+              example: "Scalability and team independence"
+            pros:
+              type: array
+              items:
+                type: string
+            cons:
+              type: array
+              items:
+                type: string
+            priority:
+              type: string
+              enum: ["required", "recommended", "optional"]
+
+      technology_stack:
+        type: object
+        required: true
+        properties:
+          backend:
+            type: object
+            properties:
+              language:
+                type: string
+                example: "TypeScript"
+              framework:
+                type: string
+                example: "NestJS"
+              justification:
+                type: string
+          frontend:
+            type: object
+            properties:
+              framework:
+                type: string
+                example: "React"
+              state_management:
+                type: string
+                example: "Redux"
+              justification:
+                type: string
+          database:
+            type: object
+            properties:
+              primary:
+                type: string
+                example: "PostgreSQL"
+              cache:
+                type: string
+                example: "Redis"
+              justification:
+                type: string
+
+      constraints:
+        type: array
+        required: false
+        items:
+          type: object
+          properties:
+            type:
+              type: string
+              enum: ["technical", "business", "regulatory"]
+            description:
+              type: string
+            impact:
+              type: string
+              enum: ["high", "medium", "low"]
+
+      recommendations:
+        type: array
+        required: true
+        items:
+          type: object
+          properties:
+            category:
+              type: string
+              enum: ["must_have", "should_have", "nice_to_have"]
+            recommendation:
+              type: string
+            implementation_effort:
+              type: string
+              enum: ["low", "medium", "high"]
+
+  # ====================
+  # Validated Specifications
+  # ====================
+  validated-specs:
+    version: "1.0.0"
+    description: "Validated design specifications from Design Validator"
+    location: "memory-bank/.exchange/validated-specs.json"
+
+    structure:
+      metadata:
+        type: object
+        required: true
+        properties:
+          timestamp:
+            type: string
+            format: datetime
+          validation_score:
+            type: number
+            minimum: 0
+            maximum: 100
+          source_agent:
+            type: string
+            const: "design-validator"
+
+      specifications:
+        type: object
+        required: true
+        properties:
+          api_spec_path:
+            type: string
+            example: "memory-bank/specs/api-spec.yaml"
+          database_schema_path:
+            type: string
+            example: "memory-bank/specs/database-schema.sql"
+          interfaces_path:
+            type: string
+            example: "memory-bank/specs/interfaces.ts"
+          validation_schemas_path:
+            type: string
+            example: "memory-bank/specs/validation-schemas.json"
+
+      validation_results:
+        type: object
+        required: true
+        properties:
+          passed:
+            type: array
+            items:
+              type: object
+              properties:
+                rule:
+                  type: string
+                category:
+                  type: string
+                  enum: ["architecture", "security", "performance", "maintainability"]
+          warnings:
+            type: array
+            items:
+              type: object
+              properties:
+                rule:
+                  type: string
+                severity:
+                  type: string
+                  enum: ["low", "medium", "high"]
+                message:
+                  type: string
+                fix_available:
+                  type: boolean
+          failures:
+            type: array
+            items:
+              type: object
+              properties:
+                rule:
+                  type: string
+                severity:
+                  type: string
+                  enum: ["critical", "high"]
+                message:
+                  type: string
+                required_action:
+                  type: string
+
+  # ====================
+  # Current Metrics
+  # ====================
+  current-metrics:
+    version: "1.0.0"
+    description: "Real-time development metrics from Metrics Tracker"
+    location: "memory-bank/.exchange/current-metrics.json"
+
+    structure:
+      metadata:
+        type: object
+        required: true
+        properties:
+          timestamp:
+            type: string
+            format: datetime
+          collection_interval:
+            type: string
+            example: "15 minutes"
+          source_agent:
+            type: string
+            const: "metrics-tracker"
+
+      velocity:
+        type: object
+        required: true
+        properties:
+          story_points_completed:
+            type: number
+            example: 21
+          sprint_progress:
+            type: number
+            minimum: 0
+            maximum: 100
+          cycle_time_days:
+            type: number
+            example: 2.5
+          throughput:
+            type: object
+            properties:
+              features_per_week:
+                type: number
+              bugs_fixed_per_week:
+                type: number
+
+      quality:
+        type: object
+        required: true
+        properties:
+          test_coverage:
+            type: number
+            minimum: 0
+            maximum: 100
+            example: 85
+          bug_density:
+            type: number
+            description: "Bugs per KLOC"
+            example: 1.5
+          code_complexity:
+            type: object
+            properties:
+              average:
+                type: number
+              high_complexity_files:
+                type: number
+          technical_debt_hours:
+            type: number
+            example: 40
+
+      performance:
+        type: object
+        required: true
+        properties:
+          build_time_seconds:
+            type: number
+            example: 180
+          test_execution_time:
+            type: number
+            example: 300
+          deployment_frequency:
+            type: string
+            example: "3 per day"
+          mean_time_to_recovery:
+            type: number
+            description: "MTTR in hours"
+            example: 2.5
+
+  # ====================
+  # Security Status
+  # ====================
+  security-status:
+    version: "1.0.0"
+    description: "Security scan results from Security Scanner"
+    location: "memory-bank/.exchange/security-status.json"
+
+    structure:
+      metadata:
+        type: object
+        required: true
+        properties:
+          timestamp:
+            type: string
+            format: datetime
+          last_scan:
+            type: string
+            format: datetime
+          scan_type:
+            type: string
+            enum: ["full", "incremental", "dependency", "compliance"]
+          source_agent:
+            type: string
+            const: "security-scanner"
+
+      risk_summary:
+        type: object
+        required: true
+        properties:
+          overall_risk:
+            type: string
+            enum: ["low", "medium", "high", "critical"]
+          security_score:
+            type: number
+            minimum: 0
+            maximum: 100
+
+      vulnerabilities:
+        type: array
+        required: true
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+              example: "CVE-2024-1234"
+            severity:
+              type: string
+              enum: ["low", "medium", "high", "critical"]
+            type:
+              type: string
+              enum: ["dependency", "code", "configuration", "secret"]
+            location:
+              type: string
+              example: "package.json:lodash@4.17.20"
+            description:
+              type: string
+            remediation:
+              type: string
+            auto_fixable:
+              type: boolean
+
+      compliance:
+        type: object
+        required: true
+        properties:
+          owasp_top_10:
+            type: object
+            properties:
+              compliant:
+                type: boolean
+              score:
+                type: number
+                minimum: 0
+                maximum: 10
+              failures:
+                type: array
+                items:
+                  type: string
+          gdpr:
+            type: object
+            properties:
+              compliant:
+                type: boolean
+              issues:
+                type: array
+                items:
+                  type: string
+          pci_dss:
+            type: object
+            properties:
+              compliant:
+                type: boolean
+              requirements_met:
+                type: number
+              total_requirements:
+                type: number
+
+  # ====================
+  # Performance Guidelines
+  # ====================
+  performance-guidelines:
+    version: "1.0.0"
+    description: "Performance optimization guidelines from Performance Optimizer"
+    location: "memory-bank/.exchange/performance-guidelines.json"
+
+    structure:
+      metadata:
+        type: object
+        required: true
+        properties:
+          timestamp:
+            type: string
+            format: datetime
+          analysis_type:
+            type: string
+            enum: ["bottleneck", "optimization", "monitoring"]
+          source_agent:
+            type: string
+            const: "performance-optimizer"
+
+      bottlenecks:
+        type: array
+        required: true
+        items:
+          type: object
+          properties:
+            type:
+              type: string
+              enum: ["database", "api", "frontend", "infrastructure"]
+            location:
+              type: string
+            impact:
+              type: object
+              properties:
+                response_time_ms:
+                  type: number
+                affected_endpoints:
+                  type: array
+                  items:
+                    type: string
+            priority:
+              type: string
+              enum: ["critical", "high", "medium", "low"]
+
+      optimizations:
+        type: array
+        required: true
+        items:
+          type: object
+          properties:
+            category:
+              type: string
+              enum: ["caching", "query", "algorithm", "infrastructure"]
+            description:
+              type: string
+            expected_improvement:
+              type: string
+              example: "-200ms response time"
+            implementation_effort:
+              type: string
+              enum: ["low", "medium", "high"]
+            code_example:
+              type: string
+
+  # ====================
+  # Test Results
+  # ====================
+  test-results:
+    version: "1.0.0"
+    description: "Test execution results from Test Runner"
+    location: "memory-bank/.exchange/test-results.json"
+
+    structure:
+      metadata:
+        type: object
+        required: true
+        properties:
+          timestamp:
+            type: string
+            format: datetime
+          test_run_id:
+            type: string
+          trigger:
+            type: string
+            enum: ["commit", "pr", "scheduled", "manual"]
+          source_agent:
+            type: string
+            const: "test-runner"
+
+      summary:
+        type: object
+        required: true
+        properties:
+          total_tests:
+            type: number
+          passed:
+            type: number
+          failed:
+            type: number
+          skipped:
+            type: number
+          duration_seconds:
+            type: number
+          success_rate:
+            type: number
+            minimum: 0
+            maximum: 100
+
+      coverage:
+        type: object
+        required: true
+        properties:
+          line_coverage:
+            type: number
+            minimum: 0
+            maximum: 100
+          branch_coverage:
+            type: number
+            minimum: 0
+            maximum: 100
+          function_coverage:
+            type: number
+            minimum: 0
+            maximum: 100
+          uncovered_files:
+            type: array
+            items:
+              type: string
+
+      failures:
+        type: array
+        required: false
+        items:
+          type: object
+          properties:
+            test_name:
+              type: string
+            test_file:
+              type: string
+            error_message:
+              type: string
+            stack_trace:
+              type: string
+            category:
+              type: string
+              enum: ["unit", "integration", "e2e"]
+
+  # ====================
+  # Review Status
+  # ====================
+  review-status:
+    version: "1.0.0"
+    description: "Code review results from Code Reviewer"
+    location: "memory-bank/.exchange/review-status.json"
+
+    structure:
+      metadata:
+        type: object
+        required: true
+        properties:
+          timestamp:
+            type: string
+            format: datetime
+          pr_number:
+            type: string
+          review_type:
+            type: string
+            enum: ["pr", "commit", "manual"]
+          source_agent:
+            type: string
+            const: "code-reviewer"
+
+      review_result:
+        type: object
+        required: true
+        properties:
+          status:
+            type: string
+            enum: ["approved", "changes_requested", "commented"]
+          quality_score:
+            type: number
+            minimum: 0
+            maximum: 100
+
+      findings:
+        type: object
+        required: true
+        properties:
+          issues:
+            type: array
+            items:
+              type: object
+              properties:
+                severity:
+                  type: string
+                  enum: ["error", "warning", "info"]
+                category:
+                  type: string
+                  enum: ["style", "logic", "security", "performance", "maintainability"]
+                file:
+                  type: string
+                line:
+                  type: number
+                message:
+                  type: string
+                suggestion:
+                  type: string
+
+          suggestions:
+            type: array
+            items:
+              type: object
+              properties:
+                type:
+                  type: string
+                  enum: ["refactor", "optimize", "simplify", "document"]
+                description:
+                  type: string
+                code_example:
+                  type: string
+
+## ============================================
+## EXCHANGE PROTOCOL
+## ============================================
+
+exchange_protocol:
+  version: "1.0.0"
+
+  rules:
+    - name: "atomic_updates"
+      description: "All updates must be atomic - complete file replacement"
+
+    - name: "version_compatibility"
+      description: "Agents must check version compatibility before consuming"
+
+    - name: "timestamp_validation"
+      description: "Reject data older than 24 hours for real-time metrics"
+
+    - name: "schema_validation"
+      description: "Validate against schema before writing/reading"
+
+    - name: "error_handling"
+      description: "Gracefully handle missing or invalid exchange data"
+
+  lifecycle:
+    creation:
+      - "Agent generates data according to schema"
+      - "Validate against schema definition"
+      - "Write atomically to exchange path"
+      - "Update metadata timestamp"
+
+    consumption:
+      - "Check file exists and is readable"
+      - "Validate schema version compatibility"
+      - "Parse and validate data structure"
+      - "Handle missing optional fields gracefully"
+
+    cleanup:
+      - "Exchange files older than 7 days are archived"
+      - "Critical data is moved to permanent storage"
+      - "Metrics are aggregated before deletion"
+
+## ============================================
+## VALIDATION RULES
+## ============================================
+
+validation:
+  required_fields:
+    - "All schemas must have metadata.timestamp"
+    - "All schemas must have metadata.source_agent"
+    - "All schemas must have version field"
+
+  data_types:
+    - "Timestamps must be ISO 8601 format"
+    - "Percentages must be 0-100"
+    - "Scores must be within defined ranges"
+    - "Enums must match defined values"
+
+  file_operations:
+    - "Use file locking for concurrent access"
+    - "Implement retry logic for failed reads"
+    - "Validate JSON syntax before parsing"
+    - "Handle partial writes gracefully"
+
+## ============================================
+## MONITORING
+## ============================================
+
+monitoring:
+  health_checks:
+    - name: "exchange_directory_accessible"
+      check: "Directory exists and is writable"
+      frequency: "1 minute"
+
+    - name: "schema_files_valid"
+      check: "All exchange files are valid JSON"
+      frequency: "5 minutes"
+
+    - name: "data_freshness"
+      check: "Critical exchanges updated within threshold"
+      frequency: "15 minutes"
+
+  metrics:
+    - "exchange_write_count": "Number of successful writes"
+    - "exchange_read_count": "Number of successful reads"
+    - "validation_failures": "Number of schema validation failures"
+    - "stale_data_warnings": "Files not updated within expected time"

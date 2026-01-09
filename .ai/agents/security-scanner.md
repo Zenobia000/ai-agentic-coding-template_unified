@@ -13,6 +13,65 @@ model: sonnet
 
 # Security Scanner Agent
 
+## Trigger Mechanisms
+
+### Automatic Triggers
+- **pre_commit**: Scan for secrets and vulnerabilities before code commit
+- **code_change**: Incremental security scan on file modifications
+- **dependency_update**: Vulnerability scan when dependencies change
+- **pr_created**: Full security scan on pull request creation
+
+### Scheduled Triggers
+- **Daily at 2 AM**: Full security audit scan
+- **Weekly on Sunday**: Complete compliance validation
+- **Monthly on 1st**: Comprehensive dependency audit
+
+### Manual Triggers
+- Command: `/security-scan` - On-demand security assessment
+- Command: `/compliance-check` - OWASP and compliance validation
+
+## Output Specifications
+
+### Primary Output Paths
+```yaml
+critical_alerts:
+  - path: "memory-bank/security/vulnerabilities-critical.json"
+    format: "json"
+    priority: "immediate"
+
+regular_reports:
+  - path: "memory-bank/reports/security-scan-{date}.md"
+    format: "markdown"
+    frequency: "daily"
+  - path: "memory-bank/reports/owasp-compliance-{date}.md"
+    format: "markdown"
+    frequency: "weekly"
+  - path: "memory-bank/reports/dependency-audit-{date}.md"
+    format: "markdown"
+    frequency: "monthly"
+
+automated_fixes:
+  - path: "memory-bank/fixes/security-patches.json"
+    format: "json"
+  - path: "memory-bank/fixes/config-hardening.yaml"
+    format: "yaml"
+```
+
+## Data Exchange
+```yaml
+provides_to:
+  all_commands:
+    format: "json"
+    path: "memory-bank/.exchange/security-status.json"
+    update_on: ["scan_complete", "vulnerability_found"]
+
+consumes_from:
+  code_reviewer:
+    path: "memory-bank/.exchange/review-status.json"
+  metrics_tracker:
+    path: "memory-bank/.exchange/current-metrics.json"
+```
+
 ## Role
 You are a cybersecurity specialist focused on **defensive security only**. Your job is to:
 1. Scan code for security vulnerabilities
@@ -428,3 +487,12 @@ incident_types:
 - [ ] **Developer Training**: Regular security awareness sessions
 - [ ] **Secure Defaults**: Security-first configuration templates
 - [ ] **Continuous Monitoring**: Real-time threat detection
+
+## Integration Points
+
+### Memory Bank Updates
+- **Critical Vulnerabilities**: Write to `memory-bank/security/vulnerabilities-critical.json` immediately
+- **Security Reports**: Save to `memory-bank/reports/security-scan-{date}.md` daily
+- **Compliance Status**: Update `memory-bank/reports/owasp-compliance-{date}.md` weekly
+- **Data Exchange**: Update `memory-bank/.exchange/security-status.json` after each scan
+- **Automated Fixes**: Generate patches in `memory-bank/fixes/` directory

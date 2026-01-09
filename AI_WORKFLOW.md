@@ -27,9 +27,9 @@ npm run ai-sync
 
 | AI 工具 | 初始化命令 | 說明 |
 |---------|------------|------|
-| **Cursor** | `/van` | 使用 slash command |
-| **Claude Code** | `Initialize project` | 自然語言描述 |
-| **Gemini CLI** | `/van` | CLI 命令 |
+| **Cursor** | `/van` | Slash command |
+| **Claude Code** | `/van` | Slash command |
+| **Gemini CLI** | `/van` | Slash command |
 
 ---
 
@@ -53,13 +53,7 @@ npm run ai-sync
 
 **觸發方式**:
 ```bash
-# Cursor
-/van
-
-# Claude Code
-"Initialize the project memory structure"
-
-# Gemini CLI
+# 所有工具使用相同命令
 /van
 ```
 
@@ -71,14 +65,11 @@ npm run ai-sync
 
 **觸發方式**:
 ```bash
-# Cursor
+# Cursor / Claude Code
 /plan
 
-# Claude Code
-"Help me plan the development of [feature]"
-
 # Gemini CLI
-gemini plan
+/plan  # 或 gemini plan
 ```
 
 #### 🎨 CREATIVE - 創意設計階段
@@ -89,14 +80,11 @@ gemini plan
 
 **觸發方式**:
 ```bash
-# Cursor
+# Cursor / Claude Code
 /creative
 
-# Claude Code
-"Let's design the architecture for [feature]"
-
 # Gemini CLI
-gemini creative
+/creative  # 或 gemini creative
 ```
 
 #### 🔨 IMPLEMENT - 實作階段
@@ -107,14 +95,11 @@ gemini creative
 
 **觸發方式**:
 ```bash
-# Cursor
+# Cursor / Claude Code
 /implement
 
-# Claude Code
-"Implement [specific feature] according to the design"
-
 # Gemini CLI
-gemini implement
+/implement  # 或 gemini implement
 ```
 
 #### 🪞 REFLECT - 回顧階段
@@ -125,14 +110,11 @@ gemini implement
 
 **觸發方式**:
 ```bash
-# Cursor
+# Cursor / Claude Code
 /reflect
 
-# Claude Code
-"Let's review what we've accomplished and learn from it"
-
 # Gemini CLI
-gemini reflect
+/reflect  # 或 gemini reflect
 ```
 
 #### 📦 ARCHIVE - 歸檔階段
@@ -143,14 +125,11 @@ gemini reflect
 
 **觸發方式**:
 ```bash
-# Cursor
+# Cursor / Claude Code
 /archive
 
-# Claude Code
-"Archive this project's documentation and lessons learned"
-
 # Gemini CLI
-gemini archive
+/archive  # 或 gemini archive
 ```
 
 ---
@@ -272,7 +251,7 @@ git commit -m "Update Memory Bank state"
 /van
 
 # Bob 使用 Claude Code
-"Resume project from Memory Bank"
+/van
 
 # Charlie 使用 Gemini CLI
 /van

@@ -17,6 +17,7 @@ const yaml = require("js-yaml");
 
 const ROOT_DIR = path.resolve(__dirname, "..");
 const AI_DIR = path.join(ROOT_DIR, ".ai");
+const TEMPLATE_DIR = path.join(AI_DIR, "template");
 
 // Tool-specific directories
 const TOOL_DIRS = {
@@ -30,6 +31,13 @@ const CONFIG_FILES = {
   cursor: path.join(ROOT_DIR, ".cursorrules"),
   claude: path.join(ROOT_DIR, "CLAUDE.md"),
   gemini: path.join(ROOT_DIR, "GEMINI.md"),
+};
+
+// Template files
+const TEMPLATE_FILES = {
+  cursor: path.join(TEMPLATE_DIR, ".cursorrules"),
+  claude: path.join(TEMPLATE_DIR, "CLAUDE.md"),
+  gemini: path.join(TEMPLATE_DIR, "GEMINI.md"),
 };
 
 /**
@@ -78,186 +86,17 @@ function getMarkdownFiles(dir) {
 }
 
 /**
- * Generate .cursorrules content from .ai/ sources
+ * Read template content from .ai/template/
  */
-function generateCursorrules() {
-  const sections = [];
-
-  // Header
-  sections.push(`# Universal AI Copilot Template
-
-## System Overview
-
-This project uses the **Universal AI Workflow System** with Memory Bank for phased development workflow.
-
-**Core Principle**: Memory Bank MUST be created and verified before any operations.
-`);
-
-  // Project Info
-  const configPath = path.join(AI_DIR, "config.yaml");
-  if (fs.existsSync(configPath)) {
-    const config = yaml.load(fs.readFileSync(configPath, "utf8"));
-    sections.push(`## Project Information
-- Type: ${config.project?.type || "development-workflow"}
-- Tech Stack: ${(config.project?.tech_stack || []).join(", ")}
-- Description: ${config.project?.description || "Universal AI copilot workflow template"}
-`);
+function readTemplate(templateKey) {
+  const templatePath = TEMPLATE_FILES[templateKey];
+  if (fs.existsSync(templatePath)) {
+    return fs.readFileSync(templatePath, "utf8");
   }
-
-  // Commands section
-  sections.push(`## Universal AI Commands
-支援簡潔指令，與所有 AI 工具一致：
-
-### Workflow Commands (Phase Sequence)
-
-\`\`\`
-/van → /plan → /creative → /implement → /reflect → /archive
-\`\`\`
-
-| Command | Description | Function |
-|---------|-------------|----------|
-| \`/van\` | 初始化專案 | Initialize project with Memory Bank creation |
-| \`/plan\` | 規劃任務 | Task planning and WBS breakdown |
-| \`/creative\` | 設計架構 | Design decisions and architecture planning |
-| \`/implement\` | 程式實作 | Code implementation with progress tracking |
-| \`/reflect\` | 回顧總結 | Task review and retrospective |
-| \`/archive\` | 文件歸檔 | Documentation and knowledge preservation |
-
-### System Commands
-- \`/commit\`: Generate a high-quality commit message.
-- \`/resume\`: Resume context from active state.
-`);
-
-  // Memory Bank section
-  sections.push(`## Memory Bank Structure
-
-\`\`\`
-./memory-bank/
-├── tasks.md           # Source of truth for all tasks
-├── activeContext.md   # Current focus and active work
-├── progress.md        # Implementation status
-├── projectbrief.md    # Project overview and goals
-├── techContext.md     # Technology stack and constraints
-└── README.md          # Memory Bank documentation
-\`\`\`
-
-**If Memory Bank doesn't exist:**
-- STOP all operations immediately
-- Run \`/van\` command to initialize
-- Wait for verification before proceeding
-`);
-
-  // AI Behavior Guidelines
-  sections.push(`## AI Behavior Guidelines
-
-### When User Runs Slash Commands
-
-1. **Verify Memory Bank first**
-   - Check if \`./memory-bank/\` directory exists
-   - Verify required files are present
-   - If missing, guide user to run \`/van\`
-
-2. **Read relevant context**
-   - Load tasks.md for current task list
-   - Load activeContext.md for current focus
-   - Load relevant files for design context
-
-3. **Execute phase-specific responsibilities**
-   - Follow command definition in \`.ai/commands/[command].md\`
-   - Create/update required Memory Bank files
-   - Provide clear next steps
-
-4. **Document actions**
-   - Update Memory Bank files with changes
-   - Suggest next command in workflow
-`);
-
-  // Rules sections
-  const rulesDir = path.join(AI_DIR, "rules");
-  const ruleFiles = getMarkdownFiles(rulesDir);
-
-  for (const ruleFile of ruleFiles) {
-    const content = fs.readFileSync(ruleFile, "utf8");
-    const { metadata, body } = parseMarkdownWithFrontMatter(content);
-
-    if (metadata.name) {
-      sections.push(`---
-
-## ${metadata.name}
-
-> ${metadata.description || ""}
-
-${body.trim()}
-`);
-    }
-  }
-
-  return sections.join("\n");
+  console.warn(`Template file not found: ${templatePath}`);
+  return "";
 }
 
-/**
- * Generate CLAUDE.md content
- */
-function generateClaudeMd() {
-  // Start with the same base as .cursorrules
-  let content = generateCursorrules();
-
-  // Add Claude-specific sections
-  content += `
-
----
-
-## Claude Code Specific
-
-### Slash Commands
-Claude Code supports slash commands via \`.claude/commands/\` directory.
-
-### Skills
-Auto-triggered capabilities in \`.claude/skills/\` directory.
-
-### Hooks
-Pre/post tool execution hooks in \`.claude/settings.json\`.
-
-### Usage
-- Use natural language with clear intent
-- Reference Memory Bank files for context
-- Follow workflow phases for structured development
-`;
-
-  return content;
-}
-
-/**
- * Generate GEMINI.md content
- */
-function generateGeminiMd() {
-  // Start with the same base as .cursorrules
-  let content = generateCursorrules();
-
-  // Add Gemini-specific sections
-  content += `
-
----
-
-## Gemini CLI Specific
-
-### Command Usage
-- \`/van\`, \`/plan\`, \`/creative\`, \`/implement\`, \`/reflect\`, \`/archive\`
-- Same slash commands as Cursor and Claude Code
-- Workflow: \`gemini workflow standard\`
-
-### Context
-Gemini CLI reads context from GEMINI.md and .gemini/ directory.
-
-### Important Instructions
-- Do what has been asked; nothing more, nothing less.
-- NEVER create files unless absolutely necessary.
-- ALWAYS prefer editing existing files over creating new ones.
-- NEVER proactively create documentation files unless explicitly requested.
-`;
-
-  return content;
-}
 
 /**
  * Sync commands to Cursor format
@@ -495,6 +334,25 @@ ${prompt}
 }
 
 /**
+ * Sync agents to Gemini CLI
+ */
+function syncGeminiAgents() {
+  const srcDir = path.join(AI_DIR, "agents");
+  const destDir = path.join(TOOL_DIRS.gemini, "agents");
+
+  if (!fs.existsSync(srcDir)) return;
+
+  ensureDir(destDir);
+
+  const files = fs.readdirSync(srcDir).filter((f) => f.endsWith(".md"));
+  for (const file of files) {
+    fs.copyFileSync(path.join(srcDir, file), path.join(destDir, file));
+  }
+
+  console.log(`  Synced ${files.length} agents to .gemini/agents/`);
+}
+
+/**
  * Sync commands to .gemini/commands/ as .toml files
  */
 function syncGeminiCommands() {
@@ -535,15 +393,21 @@ function sync(tool = "all") {
 
   if (tool === "all" || tool === "cursor") {
     console.log("Cursor:");
-    fs.writeFileSync(CONFIG_FILES.cursor, generateCursorrules());
-    console.log(`  Generated .cursorrules`);
+    const cursorrules = readTemplate("cursor");
+    if (cursorrules) {
+      fs.writeFileSync(CONFIG_FILES.cursor, cursorrules);
+      console.log(`  Generated .cursorrules from template`);
+    }
     syncCursorCommands();
   }
 
   if (tool === "all" || tool === "claude") {
     console.log("\nClaude Code:");
-    fs.writeFileSync(CONFIG_FILES.claude, generateClaudeMd());
-    console.log(`  Generated CLAUDE.md`);
+    const claudeMd = readTemplate("claude");
+    if (claudeMd) {
+      fs.writeFileSync(CONFIG_FILES.claude, claudeMd);
+      console.log(`  Generated CLAUDE.md from template`);
+    }
     syncClaudeCommands();
     syncClaudeSkills();
     syncClaudeAgents();
@@ -553,8 +417,11 @@ function sync(tool = "all") {
 
   if (tool === "all" || tool === "gemini") {
     console.log("\nGemini CLI:");
-    fs.writeFileSync(CONFIG_FILES.gemini, generateGeminiMd());
-    console.log(`  Generated GEMINI.md`);
+    const geminiMd = readTemplate("gemini");
+    if (geminiMd) {
+      fs.writeFileSync(CONFIG_FILES.gemini, geminiMd);
+      console.log(`  Generated GEMINI.md from template`);
+    }
 
     // Create .gemini/ directory and settings
     ensureDir(TOOL_DIRS.gemini);
@@ -571,6 +438,9 @@ function sync(tool = "all") {
 
     // Sync commands as .toml files
     syncGeminiCommands();
+
+    // Sync agents to .gemini/agents/
+    syncGeminiAgents();
   }
 
   console.log("\nSync complete!");

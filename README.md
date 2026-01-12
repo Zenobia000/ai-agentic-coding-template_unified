@@ -37,18 +37,19 @@ npm run ai-sync
 └── GEMINI.md          # Gemini CLI 配置
 ```
 
-## 🔄 統一工作流程
+## 🔄 七步架構設計工作流程
 
-所有 AI 工具使用相同的六階段流程：
+基於架構師核心思維的專業開發流程：
 
-| 階段 | 指令 | 用途 |
-|------|------|------|
-| 🚀 初始化 | `/van` | 建立 Memory Bank 結構 |
-| 📋 規劃 | `/plan` | 任務分解與優先級 |
-| 🎨 設計 | `/creative` | 架構設計與技術選型 |
-| 🔨 實作 | `/implement` | 程式碼開發 |
-| 🪞 回顧 | `/reflect` | 進度總結 |
-| 📦 歸檔 | `/archive` | 知識保存 |
+| 步驟 | 指令 | 階段 | AI 增強 | 自動化程度 |
+|------|------|------|---------|-----------|
+| 1️⃣ | `/van` | 理解需求 | Architecture Advisor | 90% |
+| 2️⃣ | `/plan` | 概念設計 | 自動領域建模 | 85% |
+| 3️⃣ | `/adr` | 技術選型 | 決策記錄自動化 | 95% |
+| 4️⃣ | `/design-validator` | 詳細設計 | 規格自動生成 | 90% |
+| 5️⃣ | `/creative` | 驗證評審 | 合規自動檢查 | 95% |
+| 6️⃣ | `/implement` | 實施指導 | Performance Guidance | 85% |
+| 7️⃣ | `/reflect` | 演進優化 | 數據驅動改進 | 90% |
 
 ## 📁 專案結構
 
@@ -93,15 +94,16 @@ project/
 | `npm run ai-sync:gemini` | 僅同步 Gemini CLI |
 | `npm run ai-verify` | 驗證配置完整性 |
 
-### AI 工作流程指令
-| 指令 | 階段 | 功能 | AI 增強 |
-|------|------|------|---------|
-| `/van` | 初始化 | 建立 Memory Bank 結構 | ✅ |
-| `/plan` | 規劃 | Epic 創建與任務分解 | Architecture Advisor |
-| `/creative` | 設計 | 架構設計與技術決策 | Design Validator |
-| `/implement` | 實作 | 程式碼開發 | Performance Optimizer |
-| `/reflect` | 回顧 | 進度總結與改進 | Metrics Tracker |
-| `/archive` | 歸檔 | 知識保存 | ✅ |
+### 架構設計核心指令
+| 指令 | 步驟 | 階段 | AI 增強 | 自動化程度 |
+|------|------|------|---------|-----------|
+| `/van` | 1️⃣ | 理解需求 | Architecture Advisor | 90% |
+| `/plan` | 2️⃣ | 概念設計 | 自動領域建模 | 85% |
+| `/adr` | 3️⃣ | 技術選型 | 決策記錄自動化 | 95% |
+| `/design-validator` | 4️⃣ | 詳細設計 | 規格自動生成 | 90% |
+| `/creative` | 5️⃣ | 驗證評審 | 合規自動檢查 | 95% |
+| `/implement` | 6️⃣ | 實施指導 | Performance Guidance | 85% |
+| `/reflect` | 7️⃣ | 演進優化 | 數據驅動改進 | 90% |
 
 ### 智能輔助指令
 | 指令 | 功能 | AI 代理 |
@@ -133,16 +135,18 @@ intelligent_agents:
   - test-runner          # 🧪 自動化測試執行
 ```
 
-### 3. **📋 七步架構設計流程 100% 對齊**
-| 步驟 | 工具 | AI 增強 | 自動化程度 |
-|------|------|---------|-----------|
-| 理解需求 | `/van` + `/plan` | Architecture Advisor | 90% |
-| 概念設計 | `/creative` | 自動領域建模 | 85% |
-| 技術選型 | `/adr` | 決策記錄自動化 | 95% |
-| 詳細設計 | `/design-validator` | 規格自動生成 | 90% |
-| 驗證評審 | Design Validator | 合規自動檢查 | 95% |
-| 實施指導 | `/implement` | Performance Guidance | 85% |
-| 演進優化 | `/reflect` + Metrics | 數據驅動改進 | 90% |
+### 3. **📋 架構師級七步設計流程**
+> 基於軟體架構師核心思維，每個步驟都有對應的 AI 智能增強
+
+| 步驟 | 主要指令 | 輔助工具 | AI 增強 | 自動化程度 |
+|------|---------|---------|---------|-----------|
+| 1️⃣ 理解需求 | `/van` | `/plan` | Architecture Advisor | 90% |
+| 2️⃣ 概念設計 | `/plan` | `/creative` | 自動領域建模 | 85% |
+| 3️⃣ 技術選型 | `/adr` | - | 決策記錄自動化 | 95% |
+| 4️⃣ 詳細設計 | `/design-validator` | - | 規格自動生成 | 90% |
+| 5️⃣ 驗證評審 | `/creative` | Design Validator | 合規自動檢查 | 95% |
+| 6️⃣ 實施指導 | `/implement` | Performance Optimizer | Performance Guidance | 85% |
+| 7️⃣ 演進優化 | `/reflect` | Metrics Tracker | 數據驅動改進 | 90% |
 
 ### 4. **🔄 Memory Bank 共享記憶**
 - 所有 AI 工具共享專案狀態
@@ -200,12 +204,13 @@ phase: custom
 
 ## 🚀 最佳實踐
 
-### 基礎流程
-1. **每次開始前執行** `/van` 確保 Memory Bank 存在
-2. **遵循六階段流程**，不要跳過階段
-3. **定期執行** `npm run ai-sync` 保持配置同步
-4. **使用** `/commit` 生成規範的提交訊息
-5. **團隊協作時**共享 `memory-bank/` 目錄
+### 架構師級基礎流程
+1. **每次開始前執行** `/van` 確保 Memory Bank 存在並理解需求
+2. **遵循七步架構設計流程**，按序進行不跳步
+3. **重要技術決策使用** `/adr` 建立決策記錄
+4. **設計階段執行** `/design-validator` 確保規格完整性
+5. **定期執行** `npm run ai-sync` 保持配置同步
+6. **團隊協作時**共享 `memory-bank/` 目錄
 
 ### Level 4 進階實踐
 6. **設計階段使用** `/adr` 記錄重要技術決策

@@ -75,7 +75,7 @@ function verifyAIConfig() {
     ['.ai/skills/', 'Skills directory'],
     ['.ai/agents/', 'Agents directory'],
     ['.ai/output-styles/', 'Output styles directory'],
-    ['.ai/hooks/', 'Hooks directory'],
+    ['.ai/adapters/claude-code/hooks/', 'Hooks directory'],
     ['.ai/adapters/', 'Adapters directory']
   ];
 
@@ -179,8 +179,8 @@ function verifyClaudeCodeFeatures() {
     ['.ai/agents/code-reviewer.md', 'code-reviewer agent'],
     ['.ai/output-styles/spec-writer.md', 'spec-writer style'],
     ['.ai/output-styles/concise.md', 'concise style'],
-    ['.ai/hooks/deny-dangerous-bash.py', 'deny-dangerous-bash hook'],
-    ['.ai/hooks/forbid-write-main.py', 'forbid-write-main hook']
+    ['.ai/adapters/claude-code/hooks/deny-dangerous-bash.py', 'deny-dangerous-bash hook'],
+    ['.ai/adapters/claude-code/hooks/forbid-write-main.py', 'forbid-write-main hook']
   ];
 
   let allPassed = true;

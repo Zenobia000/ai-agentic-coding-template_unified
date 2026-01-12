@@ -11,7 +11,7 @@ const { execSync } = require("child_process");
 
 const ROOT_DIR = path.resolve(__dirname, "..");
 const AI_DIR = path.join(ROOT_DIR, ".ai");
-const HOOKS_DIR = path.join(AI_DIR, "hooks");
+const HOOKS_DIR = path.join(AI_DIR, "adapters", "claude-code", "hooks");
 const ENFORCEMENT_CONFIG = path.join(AI_DIR, "enforcement.yaml");
 
 /**

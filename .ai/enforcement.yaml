@@ -145,12 +145,12 @@ reporting:
 # Hooks integration
 hooks:
   pre_command:
-    - script: ".ai/hooks/command-enforcer.py"
+    - script: ".ai/adapters/claude-code/hooks/command-enforcer.py"
       args: ["--check", "${command}"]
       fail_on_error: true
 
   post_command:
-    - script: ".ai/hooks/command-enforcer.py"
+    - script: ".ai/adapters/claude-code/hooks/command-enforcer.py"
       args: ["--validate", "${command}", "--files", "${output_files}"]
       fail_on_error: true
 

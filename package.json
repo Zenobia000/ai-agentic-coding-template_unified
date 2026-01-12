@@ -13,7 +13,10 @@
     "ai-sync:gemini": "node scripts/sync-ai-config.js --tool gemini",
     "ai-verify": "node scripts/verify-setup.js",
     "template:init": "node scripts/template-generator.js --init",
-    "template:generate": "node scripts/template-generator.js"
+    "template:generate": "node scripts/template-generator.js",
+    "sync-ai": "bash scripts/sync-ai-unified.sh",
+    "migrate-ai-structure": "bash scripts/migrate-ai-structure.sh",
+    "backup-ai": "tar -czf ai-backup-$(date +%Y%m%d-%H%M%S).tar.gz .ai .claude .cursor .gemini"
   },
   "keywords": [
     "ai",

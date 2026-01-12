@@ -1,136 +1,34 @@
-# Universal AI Copilot Configuration
-# This is the source of truth for all AI tool configurations
+# AI Directory Configuration
 version: "2.0"
-name: "Universal AI Workflow"
+structure_mode: "hierarchical"  # Options: "hierarchical" or "flat"
 
-# 支援的 AI 工具
-supported_tools:
-  - cursor
-  - claude-code
-  - gemini-cli
-
-# 目錄結構
-paths:
-  memory_bank: "./memory-bank"
-  commands: "./.ai/commands"
-  rules: "./.ai/rules"
-  skills: "./.ai/skills"
-  agents: "./.ai/agents"
-  output_styles: "./.ai/output-styles"
-  hooks: "./.ai/hooks"
-  adapters: "./.ai/adapters"
-
-# 命令分類
-commands:
-  workflow:
-    - van         # 初始化
-    - plan        # 規劃
-    - creative    # 設計
-    - implement   # 實作
-    - reflect     # 回顧
-    - archive     # 歸檔
-  utility:
-    - task-next   # PM 建議
-    - debug       # 除錯
-    - review-code # 代碼審查
-    - write-tests # 測試撰寫
-    - adr         # Architecture Decision Records
-    - design-validator # 設計驗證和自動生成
-  system:
-    - commit      # Git 提交
-    - resume      # 恢復上下文
-
-# 工具特定設定
-tools:
-  cursor:
-    config_files:
-      - ".cursorrules"
-      - ".cursor/"
-    command_prefix: "/"
-    rules_format: "markdown"
-    features:
-      - slash_commands
-      - rules
-      - memory_bank
-
+# Editor configurations
+editors:
   claude-code:
-    config_files:
-      - "CLAUDE.md"
-      - ".claude/"
-    command_prefix: ""
-    rules_format: "markdown"
+    enabled: true
     features:
-      - slash_commands
-      - skills
-      - agents
-      - output_styles
-      - hooks
-      - memory_bank
+      - agents       # Sub-agents for complex tasks
+      - hooks        # Event-triggered scripts
+      - output-styles # Response formatting
+      - skills       # Auto-triggered protections
+
+  cursor:
+    enabled: true
+    features:
+      - rules        # Cursor rules and guidelines
+      - composer     # Composer-specific configs
 
   gemini-cli:
-    config_files:
-      - "GEMINI.md"
-      - ".gemini/"
-    command_prefix: "gemini "
-    rules_format: "json"
+    enabled: true
+    format: "toml"   # Output format for Gemini
     features:
-      - memory_bank
+      - converters   # MD to TOML conversion
 
-# 專案資訊（可在專案中覆蓋）
-project:
-  name: "Universal AI Copilot Template"
-  type: "development-workflow"
-  tech_stack:
-    - markdown
-    - yaml
-    - javascript
-    - python
-  description: "Universal AI copilot workflow template supporting multiple AI tools"
-
-# 工作流程設定
-workflow:
-  phases:
-    - van
-    - plan
-    - creative
-    - implement
-    - reflect
-    - archive
-  memory_bank_required: true
-  auto_sync: true
-
-# 同步設定
+# Sync settings
 sync:
-  # 執行 npm run ai-sync 時的行為
-  on_sync:
-    - generate_cursorrules
-    - generate_claude_md
-    - generate_gemini_md
-    - sync_commands
-    - sync_rules
-    - sync_skills
-    - sync_agents
-    - sync_output_styles
-    - sync_hooks
-
-# 安全設定
-security:
-  # 受保護的分支
-  protected_branches:
-    - main
-    - master
-    - production
-  # 危險命令模式
-  dangerous_patterns:
-    - "rm -rf /"
-    - "rm -rf *"
-    - "mkfs."
-    - "dd if="
-  # 秘密檔案模式
-  secret_patterns:
-    - ".env"
-    - "*.pem"
-    - "*.key"
-    - "*_SECRET"
-    - "*_KEY"
-    - "*_TOKEN"
+  auto_sync: true
+  sync_on_change: false
+  exclude_patterns:
+    - "*.tmp"
+    - "*.log"
+    - ".DS_Store"

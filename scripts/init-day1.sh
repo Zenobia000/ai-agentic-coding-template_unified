@@ -42,16 +42,16 @@ fi
 # Step 4: Setup Git hooks (if available)
 echo ""
 echo "🔗 Step 4: Setting up Git hooks..."
-if [ -d ".ai/hooks" ]; then
+if [ -d ".ai/adapters/claude-code/hooks" ]; then
     # Link hooks if not already linked
-    for hook in .ai/hooks/*.py; do
+    for hook in .ai/adapters/claude-code/hooks/*.py; do
         if [ -f "$hook" ]; then
             hook_name=$(basename "$hook" .py)
             echo "   • Installing hook: $hook_name"
         fi
     done
 else
-    echo "   • No hooks found in .ai/hooks"
+    echo "   • No hooks found in .ai/adapters/claude-code/hooks"
 fi
 
 # Step 5: Initialize memory bank

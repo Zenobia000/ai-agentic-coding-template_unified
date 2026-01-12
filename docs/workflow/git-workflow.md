@@ -112,3 +112,11 @@ A: You don't need one. We follow **GitHub Flow** for simplicity. If you really w
 
 **Q: What if `/ship` encounters a merge conflict?**
 A: The AI will stop and ask you to resolve conflicts manually, then you can run `/ship` again or finish manually.
+
+**Q: How do I merge a PR using GitHub CLI?**
+A: After creating a PR with `/pr`, you can merge it using:
+```bash
+gh pr merge --merge     # Create a merge commit
+gh pr merge --squash    # Squash and merge (recommended)
+gh pr merge --rebase    # Rebase and merge
+```

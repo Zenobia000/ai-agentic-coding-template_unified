@@ -68,28 +68,36 @@ Our workflow follows enterprise architecture best practices:
 
 ```mermaid
 graph TD
-    A[Start] --> B[VAN - Requirements]
+    A[Start Project] --> B[VAN - Requirements Analysis]
     B --> C[PLAN - Conceptual Design]
     C --> D[ADR - Tech Selection]
-    D --> E[CREATIVE - Architecture]
-    E --> F[DESIGN-VALIDATOR - Detailed Design]
-    F --> G[IMPLEMENT - Development]
-    G --> H[REFLECT - Optimization]
+    D --> E[CREATIVE - Architecture Design]
+    E --> F[DESIGN-VALIDATOR - Detail Design & Validation]
+    F --> G[IMPLEMENT - Implementation]
+    G --> H[REFLECT - Evolution & Optimization]
 
-    %% AI Enhancements
-    B -.->|Architecture Advisor| B1[Analysis]
-    C -.->|Domain Modeling| C1[Models]
-    D -.->|Decision Records| D1[ADRs]
-    E -.->|Pattern Suggestions| E1[Patterns]
-    F -.->|Auto Generation| F1[Specs]
-    G -.->|Performance| G1[Optimize]
-    H -.->|Metrics| H1[Track]
+    %% AI Agent Enhancements
+    B -.->|Architecture Advisor| B1[Requirements Analysis]
+    C -.->|Domain Modeling| C1[Domain Models]
+    D -.->|Decision Records| D1[Decision Documentation]
+    E -.->|Pattern Suggestions| E1[Architecture Patterns]
+    F -.->|Spec Generation + Validation| F1[Specs & Compliance]
+    G -.->|Performance Optimizer| G1[Performance Tuning]
+    H -.->|Metrics Tracker| H1[Metrics Tracking]
 
+    %% Supporting Tools
+    I[Code Review] -.-> G
+    J[Write Tests] -.-> G
+    K[Security Scanner] -.-> G
+
+    %% Style Definitions
     classDef workflow fill:#0f5298,stroke:#003d71,stroke-width:2px,color:#ffffff
     classDef aiAgent fill:#8b5cf6,stroke:#6d28d9,stroke-width:2px,color:#ffffff
+    classDef utility fill:#00a651,stroke:#007a3d,stroke-width:2px,color:#ffffff
 
     class A,B,C,D,E,F,G,H workflow
     class B1,C1,D1,E1,F1,G1,H1 aiAgent
+    class I,J,K utility
 ```
 
 ## 📁 Project Structure

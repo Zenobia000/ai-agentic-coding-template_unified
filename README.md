@@ -1,230 +1,279 @@
 
-## 桑尼王炸核彈火神銃 一波流
+# AI Agentic Coding Template
 
-# Universal AI Copilot Template
-
-> **統一 Cursor、Claude Code 和 Gemini CLI 的專業開發工作流程**
+> **Enterprise-grade architecture workflow for AI-assisted development**
+>
+> Unified framework for Cursor, Claude Code, and Gemini CLI with Level 4 Architecture Maturity
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen.svg)](https://nodejs.org/)
 [![AI Tools](https://img.shields.io/badge/AI-Cursor%20%7C%20Claude%20%7C%20Gemini-blue.svg)](#supported-ai-tools)
+[![Architecture Level](https://img.shields.io/badge/Architecture-Level%204-purple.svg)](./MATURITY_ASSESSMENT.md)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./CONTRIBUTING.md)
 
-## ⚡ 快速開始
+## 🚀 Quick Start
 
 ```bash
-# 1. 複製專案
-git clone [this-repo]
-cd ai-agentic-coding-template_unified
+# Clone the repository
+git clone https://github.com/yourusername/ai-agentic-coding-template.git
+cd ai-agentic-coding-template
 
-# 2. 安裝依賴
+# Install dependencies
 npm install
 
-# 3. 生成配置（從 .ai/template/ 讀取模板）
+# Generate AI tool configurations
 npm run ai-sync
 
-# 4. 開始使用任何 AI 工具
-# Cursor / Claude Code / Gemini CLI 都使用相同指令
+# Start with any AI tool using unified commands
+/van  # Initialize project with Memory Bank
 ```
 
-## 🎯 核心概念
+## 📋 Table of Contents
+
+- [Features](#-features)
+- [Architecture](#-architecture)
+- [Installation](#-installation)
+- [Usage](#-usage)
+- [Commands](#-commands)
+- [Contributing](#-contributing)
+- [License](#-license)
+
+## ✨ Features
+
+- **🤖 Multi-AI Support**: Seamlessly work with Cursor, Claude Code, and Gemini CLI
+- **🏗️ Architecture-First**: Seven-step architect-level design workflow
+- **🧠 7 AI Agents**: Complete coverage from design to deployment
+- **📊 95% Automation**: Spec generation, validation, and compliance checks
+- **🔄 Memory Bank**: Persistent context across AI tools and team members
+- **🛡️ Enterprise Security**: Built-in security scanning and compliance validation
+
+## 🏗️ Architecture
+
+### Seven-Step Architecture Workflow
+
+Our workflow follows enterprise architecture best practices:
 
 ```
-.ai/template/          # 📝 配置模板（源頭）
-     ↓ npm run ai-sync
-生成三個配置檔案：
-├── .cursorrules       # Cursor 配置
-├── CLAUDE.md          # Claude Code 配置
-└── GEMINI.md          # Gemini CLI 配置
+/van → /plan → /adr → /creative → /design-validator → /implement → /reflect
 ```
 
-## 🔄 統一工作流程
+### Workflow Diagram
 
-從需求到實作的架構師思維流程：`/van` → `/plan` → `/adr` → `/creative` → `/design-validator` → `/implement` → `/reflect`
+```mermaid
+graph TD
+    A[Start] --> B[VAN - Requirements]
+    B --> C[PLAN - Conceptual Design]
+    C --> D[ADR - Tech Selection]
+    D --> E[CREATIVE - Architecture]
+    E --> F[DESIGN-VALIDATOR - Detailed Design]
+    F --> G[IMPLEMENT - Development]
+    G --> H[REFLECT - Optimization]
 
-## 📁 專案結構
+    %% AI Enhancements
+    B -.->|Architecture Advisor| B1[Analysis]
+    C -.->|Domain Modeling| C1[Models]
+    D -.->|Decision Records| D1[ADRs]
+    E -.->|Pattern Suggestions| E1[Patterns]
+    F -.->|Auto Generation| F1[Specs]
+    G -.->|Performance| G1[Optimize]
+    H -.->|Metrics| H1[Track]
+
+    classDef workflow fill:#0f5298,stroke:#003d71,stroke-width:2px,color:#ffffff
+    classDef aiAgent fill:#8b5cf6,stroke:#6d28d9,stroke-width:2px,color:#ffffff
+
+    class A,B,C,D,E,F,G,H workflow
+    class B1,C1,D1,E1,F1,G1,H1 aiAgent
+```
+
+## 📁 Project Structure
 
 ```
 project/
-├── .ai/                    # 統一配置中心
-│   ├── template/          # 配置模板
-│   │   ├── CLAUDE.md     # Claude 模板
-│   │   ├── GEMINI.md     # Gemini 模板
-│   │   └── .cursorrules  # Cursor 模板
-│   ├── config.yaml       # 主配置
-│   ├── commands/         # 指令定義
-│   ├── rules/           # 開發規則
-│   └── agents/          # AI 代理配置
+├── .ai/                    # Configuration Center
+│   ├── template/          # Templates
+│   ├── commands/          # Command definitions
+│   ├── agents/           # AI agent configs
+│   └── config.yaml       # Main configuration
 │
-├── memory-bank/           # 共享記憶（專案狀態）
-│   ├── tasks.md          # 任務清單
-│   ├── activeContext.md  # 當前焦點
-│   └── progress.md       # 進度追蹤
+├── memory-bank/           # Shared Memory Bank
+│   ├── tasks.md          # Task tracking
+│   ├── activeContext.md  # Current context
+│   └── progress.md       # Progress tracking
 │
-├── scripts/              # 同步腳本
-│   └── sync-ai-config.js # 配置同步器
+├── scripts/              # Build scripts
+│   └── sync-ai-config.js # Config synchronization
 │
-└── [生成的檔案]          # 由 npm run ai-sync 產生
-    ├── .cursorrules      # Cursor 使用
-    ├── CLAUDE.md         # Claude Code 使用
-    ├── GEMINI.md         # Gemini CLI 使用
-    ├── .cursor/          # Cursor 工具目錄
-    ├── .claude/          # Claude 工具目錄
-    └── .gemini/          # Gemini 工具目錄
+└── [Generated]           # Auto-generated by npm run ai-sync
+    ├── .cursorrules      # Cursor configuration
+    ├── CLAUDE.md         # Claude Code configuration
+    └── GEMINI.md         # Gemini CLI configuration
 ```
 
-## 🛠️ 可用指令
+## 🎮 Commands
 
-### NPM 管理指令
-| NPM 指令 | 說明 |
-|----------|------|
-| `npm run setup` | 互動式初始設置 |
-| `npm run ai-sync` | 同步所有 AI 工具配置 |
-| `npm run ai-sync:cursor` | 僅同步 Cursor |
-| `npm run ai-sync:claude` | 僅同步 Claude Code |
-| `npm run ai-sync:gemini` | 僅同步 Gemini CLI |
-| `npm run ai-verify` | 驗證配置完整性 |
+### Core Workflow Commands
 
-### 核心指令
-| 指令 | 功能 | AI 增強 |
-|------|------|---------|
-| `/van` | 需求理解與初始化 | Architecture Advisor |
-| `/plan` | 概念設計與任務分解 | 領域建模 |
-| `/adr` | 架構決策記錄 | 自動化文檔 |
-| `/creative` | 系統架構設計 | 模式建議 |
-| `/design-validator` | 規格生成+驗證 | 95% 自動化 |
-| `/implement` | 編碼實作 | Performance Optimizer |
-| `/reflect` | 回顧優化 | Metrics Tracker |
+| Command | Purpose | AI Enhancement |
+|---------|---------|----------------|
+| `/van` | Initialize requirements analysis | Architecture Advisor |
+| `/plan` | Conceptual design & task breakdown | Domain Modeling |
+| `/adr` | Document architecture decisions | Automated ADR |
+| `/creative` | System architecture design | Pattern Suggestions |
+| `/design-validator` | Generate specs & validate | 95% Automation |
+| `/implement` | Code implementation | Performance Optimizer |
+| `/reflect` | Review & optimize | Metrics Tracker |
 
-### 智能輔助指令
-| 指令 | 功能 | AI 代理 |
-|------|------|---------|
-| `/adr` | Architecture Decision Records | ADR 自動化 |
-| `/design-validator` | 設計驗證與規格生成 | Design Validator |
-| `/task-next` | PM 建議下一步 | Task Advisor |
-| `/debug` | 智能除錯 | Debug Assistant |
-| `/review-code` | 代碼審查 | Code Reviewer |
-| `/write-tests` | 測試撰寫 | Test Runner |
+### Utility Commands
 
-## 🔑 關鍵特性
+| Command | Purpose | Description |
+|---------|---------|-------------|
+| `/task-next` | Get PM suggestions | AI-powered task prioritization |
+| `/debug` | Smart debugging | Systematic error analysis |
+| `/review-code` | Code review | Architecture & quality checks |
+| `/write-tests` | Test generation | Automated test creation |
+| `/commit` | Git commits | Conventional commit messages |
 
-### 1. **🎯 Level 4 創新期架構成熟度**
-- **AI 賦能**: 7大智能代理系統完整覆蓋開發流程
-- **自動化設計**: API、Schema、Interface 自動生成
-- **智能決策**: Architecture Advisor 提供技術選型建議
-- **預測優化**: Performance Optimizer 主動識別瓶頸
-
-### 2. **🧠 智能代理生態系統**
-```yaml
-intelligent_agents:
-  - architecture-advisor    # 🏗️ 架構建議和技術選型
-  - design-validator       # ✅ 設計驗證和規格自動生成
-  - metrics-tracker        # 📊 開發指標和質量閘門
-  - performance-optimizer  # ⚡ 效能監控和優化建議
-  - security-scanner      # 🛡️ 安全掃描和合規檢查
-  - code-reviewer         # 👁️ 代碼審查和品質控制
-  - test-runner          # 🧪 自動化測試執行
-```
-
-### 3. **📋 Level 4 架構成熟度**
-> AI 賦能的架構師工作流，7大智能代理覆蓋全流程
-
-### 4. **🔄 Memory Bank 共享記憶**
-- 所有 AI 工具共享專案狀態
-- 支援團隊協作（Alice 用 Cursor，Bob 用 Claude）
-- 自動追蹤進度與上下文
-- ADR 決策歷史完整保存
-
-### 5. **🛡️ 企業級安全防護**
-```yaml
-# .ai/config.yaml 內建安全規則
-security:
-  protected_branches: ["main"]
-  dangerous_patterns: ["rm -rf /"]
-  secret_patterns: [".env", "*.key"]
-  owasp_compliance: true
-  automated_security_scans: true
-```
-
-## 👥 團隊協作範例
+### NPM Scripts
 
 ```bash
-# Alice 使用 Cursor
-打開 Cursor → 執行 /van → /plan
-
-# Bob 使用 Claude Code
-打開專案 → AI 讀取 Memory Bank → 繼續 /implement
-
-# Charlie 使用 Gemini CLI
-gemini chat → /reflect → 總結進度
+npm run setup          # Interactive setup wizard
+npm run ai-sync        # Sync all AI tool configs
+npm run ai-verify      # Verify configuration integrity
+npm test              # Run test suite
+npm run lint          # Code quality checks
 ```
 
-## 📚 進階配置
+## 🤖 AI Agents
 
-### 修改工作流程
-編輯 `.ai/template/` 中的模板檔案：
-- `CLAUDE.md` - Claude Code 行為規範
-- `GEMINI.md` - Gemini CLI 行為規範
-- `.cursorrules` - Cursor 規則
+Our intelligent agent ecosystem provides comprehensive development support:
 
-### 新增自定義指令
-在 `.ai/commands/` 新增指令定義：
+| Agent | Role | Automation |
+|-------|------|------------|
+| **Architecture Advisor** | Technical decisions & patterns | 85% |
+| **Design Validator** | Spec generation & validation | 95% |
+| **Performance Optimizer** | Performance monitoring & optimization | 85% |
+| **Security Scanner** | Security & compliance checks | 95% |
+| **Code Reviewer** | Code quality & best practices | 80% |
+| **Test Runner** | Automated testing & coverage | 90% |
+| **Metrics Tracker** | Development metrics & insights | 90% |
+
+## 💡 Usage Examples
+
+### Team Collaboration
+
+```bash
+# Alice starts with Cursor
+/van      # Initialize project
+/plan     # Create task breakdown
+
+# Bob continues with Claude Code
+# (Memory Bank automatically syncs context)
+/creative # Design architecture
+/implement # Start coding
+
+# Charlie reviews with Gemini CLI
+/reflect  # Generate progress report
+```
+
+### Solo Development
+
+```bash
+# Complete workflow example
+/van                    # Understand requirements
+/plan                   # Design domain model
+/adr database-choice    # Document DB decision
+/creative               # Design system architecture
+/design-validator       # Generate API specs
+/implement              # Code with AI assistance
+/reflect               # Review and optimize
+```
+
+## 🔧 Configuration
+
+### Customizing Workflows
+
+Edit templates in `.ai/template/`:
+- `CLAUDE.md` - Claude Code behavior
+- `GEMINI.md` - Gemini CLI behavior
+- `.cursorrules` - Cursor rules
+
+### Adding Custom Commands
+
+Create new command definitions in `.ai/commands/`:
 ```yaml
 # .ai/commands/workflow/custom.md
 ---
 name: custom
-description: 自定義指令
-phase: custom
+description: Your custom command
+phase: workflow
 ---
 ```
 
-### 擴展 AI 代理
-在 `.ai/agents/` 新增代理配置：
-- `code-reviewer.md` - 代碼審查專家
-- `test-runner.md` - 測試執行專家
+## 🤝 Contributing
 
-## 🚀 最佳實踐
+We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md) for details.
 
-### 快速開始
-1. **初始化**: `npm install` → `npm run ai-sync` → `/van`
-2. **開發流程**: 依序執行 `/plan` → `/creative` → `/implement`
-3. **架構決策**: 使用 `/adr` 記錄重要決定
-4. **設計驗證**: `/design-validator` 自動生成規格並檢查
-5. **團隊協作**: 共享 `memory-bank/` 目錄
+### How to Contribute
 
-### 企業級應用
-- **建立質量閘門**: 設定自動化測試和代碼審查標準
-- **實施 ADR 流程**: 所有架構決策都要有文檔記錄
-- **啟用安全掃描**: 集成到 CI/CD pipeline 中
-- **監控開發指標**: 建立數據驅動的改進機制
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## 📖 相關資源
+### Development Setup
 
-### 核心文檔
-- [architecture-diagram.md](./architecture-diagram.md) - 完整架構關聯圖譜
-- [.ai/config.yaml](./.ai/config.yaml) - 主配置檔案
-- [AI_WORKFLOW.md](./AI_WORKFLOW.md) - 詳細工作流程說明
+```bash
+# Clone your fork
+git clone https://github.com/yourusername/ai-agentic-coding-template.git
+cd ai-agentic-coding-template
 
-### 智能代理文檔
-- [architecture-advisor.md](./.ai/agents/architecture-advisor.md) - 🏗️ 架構建議專家
-- [design-validator.md](./.ai/agents/design-validator.md) - ✅ 設計驗證和規格生成
-- [metrics-tracker.md](./.ai/agents/metrics-tracker.md) - 📊 開發指標追蹤
-- [performance-optimizer.md](./.ai/agents/performance-optimizer.md) - ⚡ 效能優化專家
-- [security-scanner.md](./.ai/agents/security-scanner.md) - 🛡️ 安全掃描專家
-- [code-reviewer.md](./.ai/agents/code-reviewer.md) - 👁️ 代碼審查專家
-- [test-runner.md](./.ai/agents/test-runner.md) - 🧪 測試執行專家
+# Install dependencies
+npm install
 
-### 進階功能
-- [ADR 指令文檔](./.ai/commands/utility/adr.md) - Architecture Decision Records
-- [Design Validator](./.ai/commands/utility/design-validator.md) - 設計驗證器
+# Run tests
+npm test
 
-### 社群
-- [GitHub Issues](https://github.com/your-repo/issues) - 問題回報
-- [架構成熟度評估](./MATURITY_ASSESSMENT.md) - Level 4 成熟度指南
+# Run linter
+npm run lint
+```
+
+### Code of Conduct
+
+Please read our [Code of Conduct](./CODE_OF_CONDUCT.md) before contributing.
+
+## 📚 Documentation
+
+### Core Documentation
+- [Architecture Overview](./architecture-diagram.md) - System architecture diagrams
+- [AI Workflow Guide](./AI_WORKFLOW.md) - Detailed workflow documentation
+- [Configuration Reference](./.ai/config.yaml) - Main configuration file
+
+### AI Agent Documentation
+- [Architecture Advisor](./.ai/agents/architecture-advisor.md) - Technical decisions & patterns
+- [Design Validator](./.ai/agents/design-validator.md) - Spec generation & validation
+- [Performance Optimizer](./.ai/agents/performance-optimizer.md) - Performance optimization
+- [Security Scanner](./.ai/agents/security-scanner.md) - Security & compliance
+- [Code Reviewer](./.ai/agents/code-reviewer.md) - Code quality checks
+- [Test Runner](./.ai/agents/test-runner.md) - Automated testing
+- [Metrics Tracker](./.ai/agents/metrics-tracker.md) - Development metrics
+
+## 🌟 Support
+
+- **Issues**: [GitHub Issues](https://github.com/yourusername/ai-agentic-coding-template/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/yourusername/ai-agentic-coding-template/discussions)
+- **Wiki**: [Project Wiki](https://github.com/yourusername/ai-agentic-coding-template/wiki)
 
 ## 📄 License
 
-MIT © 2026 AI Agentic Coding Template
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Thanks to all contributors who have helped shape this project
+- Inspired by enterprise architecture best practices
+- Built with ❤️ for the developer community
 
 ---
 
-**Quick Start**: `npm install` → `npm run ai-sync` → 開始使用！
+**Made with 🤖 by the AI-Assisted Development Community**

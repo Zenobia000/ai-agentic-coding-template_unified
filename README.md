@@ -21,10 +21,14 @@ cd ai-agentic-coding-template
 # Install dependencies
 npm install
 
-# Generate AI tool configurations
-npm run ai-sync
+# Generate AI tool configurations (choose one or all)
+npm run ai-sync           # Generate all: Cursor, Claude Code, Gemini CLI
+npm run ai-sync:cursor    # Generate only Cursor configuration
+npm run ai-sync:claude    # Generate only Claude Code configuration
+npm run ai-sync:gemini    # Generate only Gemini CLI configuration
 
-# Start with any AI tool using unified commands
+# Start with your preferred AI tool
+# All tools use the same unified commands
 /van  # Initialize project with Memory Bank
 ```
 
@@ -40,11 +44,14 @@ npm run ai-sync
 
 ## ✨ Features
 
-- **🤖 Multi-AI Support**: Seamlessly work with Cursor, Claude Code, and Gemini CLI
+- **🤖 Multi-AI Support**: Unified commands for three major AI coding assistants
+  - **Cursor**: AI-powered IDE with intelligent code completion
+  - **Claude Code**: Anthropic's coding assistant with deep reasoning
+  - **Gemini CLI**: Google's command-line AI development tool
 - **🏗️ Architecture-First**: Seven-step architect-level design workflow
 - **🧠 7 AI Agents**: Complete coverage from design to deployment
 - **📊 95% Automation**: Spec generation, validation, and compliance checks
-- **🔄 Memory Bank**: Persistent context across AI tools and team members
+- **🔄 Memory Bank**: Persistent context shared across all AI tools and team members
 - **🛡️ Enterprise Security**: Built-in security scanning and compliance validation
 
 ## 🏗️ Architecture
@@ -136,11 +143,17 @@ project/
 ### NPM Scripts
 
 ```bash
-npm run setup          # Interactive setup wizard
-npm run ai-sync        # Sync all AI tool configs
-npm run ai-verify      # Verify configuration integrity
-npm test              # Run test suite
-npm run lint          # Code quality checks
+# Configuration Management
+npm run setup              # Interactive setup wizard
+npm run ai-sync            # Generate all AI tool configs
+npm run ai-sync:cursor     # Generate Cursor config only
+npm run ai-sync:claude     # Generate Claude Code config only
+npm run ai-sync:gemini     # Generate Gemini CLI config only
+npm run ai-verify          # Verify configuration integrity
+
+# Development
+npm test                   # Run test suite
+npm run lint              # Code quality checks
 ```
 
 ## 🤖 AI Agents

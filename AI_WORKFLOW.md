@@ -51,16 +51,17 @@ npm run ai-sync
 
 ## 📚 完整指令索引
 
-### 🔄 工作流程指令 (Workflow)
+### 🔄 架構設計核心指令
 
-| 指令 | 階段 | 用途 | AI 增強 | 主要交付物 |
+| 指令 | 步驟 | 階段 | AI 增強 | 主要交付物 |
 |------|------|------|---------|------------|
-| `/van` | 初始化 | 專案初始化 | ✅ | Memory Bank 結構 |
-| `/plan` | 規劃 | Epic 和任務規劃 | Architecture Advisor | tasks.md, WBS, 技術選型 |
-| `/creative` | 設計 | 架構設計 | Design Validator | creative-*.md, API 規格, Schema |
-| `/implement` | 實作 | 程式實作 | Performance + Security | 程式碼, 測試, progress.md |
-| `/reflect` | 回顧 | 回顧總結 | Metrics Tracker | 學習筆記, 改進建議, 指標報告 |
-| `/archive` | 歸檔 | 知識歸檔 | ✅ | runbook.md, 最佳實踐, ADR |
+| `/van` | 1️⃣ | 理解需求 | Architecture Advisor | Memory Bank, 需求規格 |
+| `/plan` | 2️⃣ | 概念設計 | 領域建模 | tasks.md, WBS |
+| `/adr` | 3️⃣ | 技術選型 | 決策記錄自動化 | ADR 文檔 |
+| `/creative` | 4️⃣ | 架構設計 | 架構模式 | 系統架構, API 設計 |
+| `/design-validator` | 5️⃣ | 詳細設計與驗證 | 規格生成+驗證 | OpenAPI, Schema, 驗證報告 |
+| `/implement` | 6️⃣ | 實施指導 | Performance Optimizer | 程式碼, 測試 |
+| `/reflect` | 7️⃣ | 演進優化 | Metrics Tracker | 進度報告, 改進建議 |
 
 ### 🛠️ 智能輔助指令 (Utility)
 
@@ -83,88 +84,114 @@ npm run ai-sync
 
 ---
 
-## 🔄 七步架構設計流程 (100% 對齊)
+## 🔄 七步架構設計流程
 
 ### 完整工作流程圖
 
 ```mermaid
 graph TD
-    A[開始專案] --> B[VAN - 初始化]
-    B --> C[PLAN - 規劃階段]
-    C --> D[CREATIVE - 設計階段]
-    D --> E[IMPLEMENT - 實作階段]
-    E --> F[REFLECT - 回顧階段]
-    F --> G[ARCHIVE - 歸檔階段]
+    A[開始專案] --> B[VAN - 理解需求]
+    B --> C[PLAN - 概念設計]
+    C --> D[ADR - 技術選型]
+    D --> E[CREATIVE - 架構設計]
+    E --> F[DESIGN-VALIDATOR - 詳細設計與驗證]
+    F --> G[IMPLEMENT - 實施指導]
+    G --> H[REFLECT - 演進優化]
 
     %% AI 代理增強
-    C -.->|Architecture Advisor| C1[架構建議]
-    D -.->|Design Validator| D1[設計驗證]
-    E -.->|Performance + Security| E1[品質保證]
-    F -.->|Metrics Tracker| F1[指標分析]
+    B -.->|Architecture Advisor| B1[需求分析]
+    C -.->|Domain Modeling| C1[領域建模]
+    D -.->|Decision Records| D1[決策記錄]
+    E -.->|Pattern Suggestions| E1[架構模式]
+    F -.->|Spec Generation + Validation| F1[規格生成與驗證]
+    G -.->|Performance Optimizer| G1[效能優化]
+    H -.->|Metrics Tracker| H1[指標追蹤]
 
     %% 輔助工具
-    H[ADR 命令] -.-> D
-    I[Design Validator 命令] -.-> D
-    J[Code Review] -.-> E
-    K[Write Tests] -.-> E
+    I[Code Review] -.-> G
+    J[Write Tests] -.-> G
+    K[Security Scanner] -.-> G
 
     %% 樣式定義
     classDef workflow fill:#0f5298,stroke:#003d71,stroke-width:2px,color:#ffffff
     classDef aiAgent fill:#8b5cf6,stroke:#6d28d9,stroke-width:2px,color:#ffffff
     classDef utility fill:#00a651,stroke:#007a3d,stroke-width:2px,color:#ffffff
 
-    class A,B,C,D,E,F,G workflow
-    class C1,D1,E1,F1 aiAgent
-    class H,I,J,K utility
+    class A,B,C,D,E,F,G,H workflow
+    class B1,C1,D1,E1,F1,G1,H1 aiAgent
+    class I,J,K utility
 ```
 
 ### 詳細階段說明
 
-#### 1️⃣ **理解需求** (`/van` + `/plan`)
-- **工具**: VAN 初始化 + PLAN 規劃
+#### 1️⃣ **理解需求** (`/van`)
+- **指令**: `/van`
 - **AI 增強**: Architecture Advisor 需求分析
 - **自動化程度**: 90%
-- **輸出**: 需求規格書, 約束清單, tasks.md
+- **輸出**: Memory Bank 初始化, 需求規格書
 
 ```yaml
 步驟:
   1. 執行 /van 建立 Memory Bank
-  2. 執行 /plan 創建 Epic 和任務分解
-  3. Architecture Advisor 分析需求和約束
-  4. 生成結構化任務清單和技術選型建議
+  2. Architecture Advisor 分析需求和約束
+  3. 初始化專案結構和配置
 ```
 
-#### 2️⃣ **概念設計** (`/creative` Phase 1)
-- **工具**: CREATIVE 概念設計
+#### 2️⃣ **概念設計** (`/plan`)
+- **指令**: `/plan`
 - **AI 增強**: 自動化領域建模
 - **自動化程度**: 85%
-- **輸出**: 領域模型圖, 系統上下文圖
+- **輸出**: 領域模型, tasks.md, WBS
 
 ```yaml
 步驟:
   1. 分析業務領域和核心概念
-  2. Architecture Advisor 建議設計模式
+  2. 創建 Epic 和任務分解
   3. 自動生成領域模型和系統邊界
-  4. 創建概念架構文檔
 ```
 
-#### 3️⃣ **技術選型** (`/adr` + `/creative` Phase 2)
-- **工具**: ADR 決策記錄 + 技術選型
-- **AI 增強**: ADR 自動決策記錄
+#### 3️⃣ **技術選型** (`/adr`)
+- **指令**: `/adr`
+- **AI 增強**: 決策記錄自動化
 - **自動化程度**: 95%
-- **輸出**: 技術選型報告, ADR, POC 驗證結果
+- **輸出**: Architecture Decision Records
 
 ```yaml
 步驟:
-  1. Architecture Advisor 評估技術選項
-  2. 自動執行 /adr 記錄決策過程
+  1. 評估技術選項
+  2. 記錄決策過程和理由
   3. 計算 TCO 和適配度評分
-  4. 生成技術選型建議和風險評估
+  4. 生成風險評估
 ```
 
-#### 4️⃣ **詳細設計** (`/design-validator`)
-- **工具**: Design Validator 自動生成
-- **AI 增強**: 規格自動生成
+#### 4️⃣ **架構設計** (`/creative`)
+- **指令**: `/creative`
+- **AI 增強**: 架構模式建議
+- **自動化程度**: 85%
+- **輸出**: 系統架構圖, 組件設計, API 設計
+
+```yaml
+步驟:
+  1. 設計系統架構和組件
+  2. 定義組件間關係和介面
+  3. 建立技術決策文檔
+  4. 創建架構文檔
+```
+
+#### 5️⃣ **詳細設計與驗證** (`/design-validator`)
+- **指令**: `/design-validator`
+- **AI 增強**: 規格生成 + 合規檢查
+- **自動化程度**: 95%
+- **輸出**: OpenAPI 規格, Schema, 驗證報告
+
+```yaml
+步驟:
+  1. 自動生成 API 規格
+  2. 生成 Database Schema
+  3. 執行合規性檢查
+  4. 產出驗證報告和改進建議
+```
+
 - **自動化程度**: 90%
 - **輸出**: API 定義, 資料庫 Schema, C4 模型圖
 
@@ -192,29 +219,29 @@ graph TD
 ```
 
 #### 6️⃣ **實施指導** (`/implement`)
-- **工具**: IMPLEMENT 實作指導
-- **AI 增強**: Performance Optimizer 指導
+- **指令**: `/implement`
+- **AI 增強**: Performance Optimizer
 - **自動化程度**: 85%
-- **輸出**: 開發指南, 範例代碼
+- **輸出**: 程式碼實作, 測試案例
 
 ```yaml
 步驟:
   1. Performance Optimizer 預分析瓶頸
   2. Security Scanner 設置安全檢查
-  3. 生成開發範例和 Boilerplate
-  4. 設置持續監控和質量閘門
+  3. 執行程式碼開發
+  4. 自動化測試執行
 ```
 
-#### 7️⃣ **演進優化** (`/reflect` + Metrics)
-- **工具**: REFLECT 回顧 + 指標追蹤
-- **AI 增強**: 數據驅動持續改進
+#### 7️⃣ **演進優化** (`/reflect`)
+- **指令**: `/reflect`
+- **AI 增強**: Metrics Tracker
 - **自動化程度**: 90%
-- **輸出**: 優化建議, 演進路線圖
+- **輸出**: 進度報告, 改進建議
 
 ```yaml
 步驟:
   1. Metrics Tracker 收集開發指標
-  2. 自動分析效能和品質趨勢
+  2. 分析效能和品質趨勢
   3. 生成改進建議和最佳實踐
   4. 更新 Memory Bank 和知識庫
 ```

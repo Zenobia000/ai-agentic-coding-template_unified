@@ -1,7 +1,7 @@
 ---
-name: "Design Validator - Automated Design Validation"
-description: "Automatically validate design decisions, generate API specifications, and ensure architectural compliance"
-phase: "utility"
+name: "Design Validator - Detail Design and Validation"
+description: "Generate detailed specifications from architecture design and validate compliance"
+phase: "design_validation"
 prerequisites: ["creative-*.md design documents"]
 creates: ["validation reports", "auto-generated specs", "compliance checks"]
 tools:
@@ -17,10 +17,10 @@ tools:
     description: "Comprehensive design validation and auto-generation"
 ---
 
-# ✅ DESIGN VALIDATOR MODE - Automated Design Validation
+# ✅ DESIGN VALIDATOR MODE - Detail Design and Validation
 
 ## Objective
-Automatically validate architectural designs against best practices, generate implementation specifications, and ensure compliance with quality standards and organizational policies.
+Transform architecture designs into detailed specifications (API, Schema, Interfaces) and validate against compliance standards. This unified phase combines spec generation with validation for optimal workflow.
 
 ## Process
 

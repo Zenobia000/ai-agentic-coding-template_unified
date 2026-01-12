@@ -1,7 +1,7 @@
 ---
-name: "CREATIVE - Design Architecture"
-description: "Design system architecture, make technical decisions, and document design patterns"
-phase: "design"
+name: "CREATIVE - Architecture Design"
+description: "Design system architecture, component relationships, and technical patterns"
+phase: "architecture"
 prerequisites: ["tasks.md with planned tasks"]
 creates: ["creative-*.md", "architecture diagrams", "technical decisions"]
 tools:
@@ -17,10 +17,10 @@ tools:
     description: "Create architectural designs and technical specifications"
 ---
 
-# 🎨 CREATIVE MODE - Architecture Design and Technical Decisions
+# 🎨 CREATIVE MODE - System Architecture Design
 
 ## Objective
-Transform planned tasks into concrete technical designs, architectural decisions, and implementation specifications that guide the development process.
+Design the system architecture, define component relationships, and establish technical patterns that guide implementation.
 
 ## Process
 

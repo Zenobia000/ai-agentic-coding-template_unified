@@ -55,7 +55,7 @@ git push -u origin develop
 
 | Step | Solo Mode Command | Team Mode Command | Action Taken |
 | :--- | :--- | :--- | :--- |
-| **1. Start** | `/task-start id=101 desc=login` | `/task-start id=101 desc=login` | Creates `feat/101-login` from **Base** (`main` vs `develop`). |
+| **1. Start** | `/start id=101 desc=login` | `/start id=101 desc=login` | Creates `feat/101-login` from **Base** (`main` vs `develop`). |
 | **2. Work** | (Code...) | (Code...) | Write code. |
 | **3. Save** | `/commit` | `/commit` | Local checkpoint. (Repeat as needed). |
 | **4. Finish** | **`/ship`** | **`/pr`** | **Solo**: Squash merge to `main` & delete branch.<br>**Team**: Push + **Generate PR Description**. |
@@ -66,7 +66,7 @@ git push -u origin develop
 
 | Step | Solo Mode | Team Mode | Action Taken |
 | :--- | :--- | :--- | :--- |
-| **1. Start** | `/task-start type=hotfix id=fix-1` | `/task-start type=hotfix id=fix-1` | **Both** modes branch from `main`. |
+| **1. Start** | `/starttype=hotfix id=fix-1` | `/starttype=hotfix id=fix-1` | **Both** modes branch from `main`. |
 | **2. Work** | (Fix bug...) | (Fix bug...) | Fix the critical issue. |
 | **3. Save** | `/commit` | `/commit` | Local checkpoint. |
 | **4. Finish** | **`/ship`** | **`/pr`** | **Solo**: Merge to `main` immediately.<br>**Team**: Push for **Urgent** PR Review. |

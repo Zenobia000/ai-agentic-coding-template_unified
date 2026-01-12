@@ -14,13 +14,33 @@
 
 ## 🚀 Quick Start
 
+### Day 1 - First Time Setup
+
 ```bash
 # Clone the repository
 git clone https://github.com/yourusername/ai-agentic-coding-template.git
 cd ai-agentic-coding-template
 
+# Run Day 1 initialization (one command does everything!)
+npm run init
+
+# This will:
+# ✅ Install all dependencies
+# ✅ Initialize AI structure
+# ✅ Sync commands to all editor directories
+# ✅ Setup Git hooks
+# ✅ Create memory bank structure
+# ✅ Verify CLAUDE.md configuration
+```
+
+### Manual Setup (if needed)
+
+```bash
 # Install dependencies
 npm install
+
+# Sync commands to all editors
+npm run sync-commands
 
 # Generate AI tool configurations (choose one or all)
 npm run ai-sync           # Generate all: Cursor, Claude Code, Gemini CLI
@@ -30,7 +50,8 @@ npm run ai-sync:gemini    # Generate only Gemini CLI configuration
 
 # Start with your preferred AI tool
 # All tools use the same unified commands
-/van  # Initialize project with Memory Bank
+/resume  # Load project context
+/van     # Initialize project with Memory Bank
 ```
 
 ## 📋 Table of Contents

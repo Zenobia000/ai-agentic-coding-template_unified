@@ -20,6 +20,7 @@ ENFORCEMENT_LOG = MEMORY_BANK / ".enforcement.log"
 
 # Command template mappings (enforced)
 COMMAND_TEMPLATES = {
+    # Core workflow commands
     "/van": {
         "templates": ["van/requirements-spec.md"],
         "outputs": ["requirements/requirements-*.md", "activeContext.md"],
@@ -54,6 +55,31 @@ COMMAND_TEMPLATES = {
         "templates": ["reflect/progress-report.md"],
         "outputs": ["progress.md", "metrics/dashboard.json"],
         "required": True
+    },
+    # Utility commands with templates
+    "/task-next": {
+        "templates": ["task-next/pm-recommendation.md"],
+        "outputs": ["recommendations/pm-recommendation-*.md"],
+        "required": True,
+        "links_to": ["/plan"]
+    },
+    "/debug": {
+        "templates": ["debug/root-cause-analysis.md"],
+        "outputs": ["debug/debug-*-*.md"],
+        "required": True,
+        "links_to": ["/implement"]
+    },
+    "/review-code": {
+        "templates": ["review-code/code-review-report.md"],
+        "outputs": ["reviews/review-*-*.md"],
+        "required": True,
+        "links_to": ["/implement", "/write-tests"]
+    },
+    "/write-tests": {
+        "templates": ["write-tests/test-strategy.md"],
+        "outputs": ["tests/test-strategy-*-*.md"],
+        "required": True,
+        "links_to": ["/implement", "/review-code"]
     }
 }
 
@@ -199,6 +225,63 @@ class TemplateEnforcer:
 
         return True, "Template structure detected"
 
+    def validate_linkages(self, command, content=None):
+        """Validate that utility commands properly link to parent commands"""
+        if command not in COMMAND_TEMPLATES:
+            return True, "Not a workflow command"
+
+        config = COMMAND_TEMPLATES[command]
+        links_to = config.get("links_to", [])
+
+        if not links_to:
+            return True, "No linkage requirements"
+
+        # Check that parent command outputs exist
+        missing_parents = []
+        for parent_cmd in links_to:
+            if parent_cmd in COMMAND_TEMPLATES:
+                parent_config = COMMAND_TEMPLATES[parent_cmd]
+                # Check if any parent outputs exist
+                parent_found = False
+                for pattern in parent_config["outputs"]:
+                    pattern_path = MEMORY_BANK / pattern.replace("*", "")
+                    if pattern_path.parent.exists():
+                        matches = list(pattern_path.parent.glob(pattern_path.name.replace("*", "*")))
+                        if matches:
+                            parent_found = True
+                            break
+
+                if not parent_found:
+                    missing_parents.append(parent_cmd)
+
+        if missing_parents:
+            self.violations.append({
+                "type": "MISSING_PARENT_OUTPUT",
+                "command": command,
+                "missing_parents": missing_parents,
+                "severity": "HIGH"
+            })
+            return False, f"Parent command outputs missing: {', '.join(missing_parents)}"
+
+        # If content provided, check for references to parent outputs
+        if content and links_to:
+            has_reference = False
+            for parent_cmd in links_to:
+                # Check if content references parent command outputs
+                if f"memory-bank/" in content or f"{parent_cmd[1:]}" in content:
+                    has_reference = True
+                    break
+
+            if not has_reference:
+                self.violations.append({
+                    "type": "NO_PARENT_REFERENCE",
+                    "command": command,
+                    "severity": "MEDIUM"
+                })
+                return False, "Content doesn't reference parent command outputs"
+
+        return True, "Linkage validation passed"
+
     def enforce_pre_command(self, command):
         """Pre-command enforcement hook"""
         valid, message = self.validate_command(command)
@@ -229,6 +312,10 @@ class TemplateEnforcer:
         if content:
             valid_template, template_message = self.check_template_usage(command, content)
             results.append(("Template usage", valid_template, template_message))
+
+        # Validate linkages for utility commands
+        valid_linkage, linkage_message = self.validate_linkages(command, content)
+        results.append(("Linkage validation", valid_linkage, linkage_message))
 
         # Log results
         all_valid = all(r[1] for r in results)

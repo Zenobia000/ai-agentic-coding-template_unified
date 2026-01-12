@@ -154,14 +154,62 @@ hooks:
       args: ["--validate", "${command}", "--files", "${output_files}"]
       fail_on_error: true
 
+# Utility commands with templates
+utility_commands:
+  /task-next:
+    enforce: true
+    require_template: true
+    template_mandatory_fields:
+      - sprint_number
+      - critical_tasks
+      - team_members
+    output_validation:
+      - must_exist: "memory-bank/recommendations/"
+      - must_contain: "PM Task Recommendation"
+    links_to: [/plan]
+
+  /debug:
+    enforce: true
+    require_template: true
+    template_mandatory_fields:
+      - issue_id
+      - root_cause
+      - solution
+    output_validation:
+      - must_exist: "memory-bank/debug/"
+      - must_contain: "Root Cause Analysis"
+    links_to: [/implement]
+
+  /review-code:
+    enforce: true
+    require_template: true
+    template_mandatory_fields:
+      - overall_score
+      - critical_issues
+      - decision
+    output_validation:
+      - must_exist: "memory-bank/reviews/"
+      - must_contain: "Code Review Report"
+    links_to: [/implement, /write-tests]
+
+  /write-tests:
+    enforce: true
+    require_template: true
+    template_mandatory_fields:
+      - test_scope
+      - test_cases
+      - coverage_goals
+    output_validation:
+      - must_exist: "memory-bank/tests/"
+      - must_contain: "Test Strategy"
+    links_to: [/implement, /review-code]
+
 # Exemptions (commands that don't require templates)
 exemptions:
   - /commit
   - /resume
   - /github
-  - /debug
   - /task-init
-  - /task-next
 
 # AI tool specific configurations
 ai_tools:

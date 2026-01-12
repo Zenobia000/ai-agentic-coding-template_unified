@@ -147,6 +147,47 @@ commands:
         location: "memory-bank/improvements/"
         filename: "plan-{{sprint}}.md"
 
+  # Utility commands with templates
+  task-next:
+    name: "PM Task Recommendations"
+    phase: "planning"
+    outputs:
+      - type: "pm-recommendation"
+        template: "task-next/pm-recommendation.md"
+        location: "memory-bank/recommendations/"
+        filename: "pm-recommendation-{{timestamp}}.md"
+    links_to: ["plan"]
+
+  debug:
+    name: "Debug Analysis"
+    phase: "troubleshooting"
+    outputs:
+      - type: "root-cause-analysis"
+        template: "debug/root-cause-analysis.md"
+        location: "memory-bank/debug/"
+        filename: "debug-{{issue_id}}-{{timestamp}}.md"
+    links_to: ["implement"]
+
+  review-code:
+    name: "Code Review"
+    phase: "quality-assurance"
+    outputs:
+      - type: "review-report"
+        template: "review-code/code-review-report.md"
+        location: "memory-bank/reviews/"
+        filename: "review-{{review_id}}-{{timestamp}}.md"
+    links_to: ["implement", "write-tests"]
+
+  write-tests:
+    name: "Test Strategy"
+    phase: "quality-assurance"
+    outputs:
+      - type: "test-strategy"
+        template: "write-tests/test-strategy.md"
+        location: "memory-bank/tests/"
+        filename: "test-strategy-{{component}}-{{timestamp}}.md"
+    links_to: ["implement", "review-code"]
+
 # Metadata fields available to all templates
 global_metadata:
   - ai_tool        # Current AI tool (cursor/claude/gemini)

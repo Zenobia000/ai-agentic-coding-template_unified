@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "description": "Universal AI copilot workflow template supporting Cursor, Claude Code, and Gemini CLI",
   "scripts": {
+    "init": "./scripts/init-day1.sh",
     "setup": "node scripts/setup.js",
     "publish": "node scripts/publish.js",
+    "sync-commands": "./scripts/sync-commands.sh",
     "ai-sync": "node scripts/sync-ai-config.js && npm run template:init",
     "ai-sync:cursor": "node scripts/sync-ai-config.js --tool cursor",
     "ai-sync:claude": "node scripts/sync-ai-config.js --tool claude",

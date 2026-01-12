@@ -112,3 +112,19 @@ A: You don't need one. We follow **GitHub Flow** for simplicity. If you really w
 
 **Q: What if `/ship` encounters a merge conflict?**
 A: The AI will stop and ask you to resolve conflicts manually, then you can run `/ship` again or finish manually.
+
+**Q: What's the correct PR workflow?**
+A: The standard workflow is:
+1. Create feature branch from `main`
+2. Develop and commit changes on feature branch
+3. Push feature branch to remote
+4. Create PR from feature branch to `main`
+5. Review and merge PR into `main`
+
+**Q: How do I merge a PR using GitHub CLI?**
+A: After creating a PR, you can merge it using:
+```bash
+gh pr merge <pr-number> --squash    # Recommended: squash commits
+gh pr merge <pr-number> --merge     # Keep all commits
+gh pr merge <pr-number> --rebase    # Rebase commits
+```

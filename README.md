@@ -1,4 +1,5 @@
 
+## 桑尼核彈火神銃一波流
 # AI Agentic Coding Template
 
 > **Enterprise-grade architecture workflow for AI-assisted development**
@@ -34,12 +35,17 @@ npm run ai-sync:gemini    # Generate only Gemini CLI configuration
 
 ## 📋 Table of Contents
 
+- [Quick Start](#-quick-start)
 - [Features](#-features)
 - [Architecture](#-architecture)
-- [Installation](#-installation)
-- [Usage](#-usage)
+- [Project Structure](#-project-structure)
 - [Commands](#-commands)
+- [AI Agents](#-ai-agents)
+- [Usage Examples](#-usage-examples)
+- [Configuration](#-configuration)
 - [Contributing](#-contributing)
+- [Documentation](#-documentation)
+- [Support](#-support)
 - [License](#-license)
 
 ## ✨ Features

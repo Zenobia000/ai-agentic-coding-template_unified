@@ -1,0 +1,178 @@
+# Template Enforcement Configuration
+# This file defines mandatory rules for workflow command execution
+
+version: "1.0.0"
+updated: "2024-01-12"
+
+# Enforcement settings
+enforcement:
+  enabled: true
+  strict_mode: true  # Fail command if template not used
+  log_violations: true
+  block_on_violation: true
+
+# Command enforcement rules
+commands:
+  /van:
+    enforce: true
+    require_template: true
+    template_mandatory_fields:
+      - problem_statement
+      - business_goals
+      - success_criteria
+    output_validation:
+      - must_exist: "memory-bank/requirements/"
+      - must_contain: "Requirements Specification"
+      - must_have_frontmatter: true
+
+  /plan:
+    enforce: true
+    require_template: true
+    template_mandatory_fields:
+      - epic_id
+      - epic_name
+      - tasks
+    output_validation:
+      - must_exist: "memory-bank/tasks.md"
+      - must_contain: "Work Breakdown Structure"
+
+  /adr:
+    enforce: true
+    require_template: true
+    template_mandatory_fields:
+      - number
+      - title
+      - status
+      - context_description
+      - chosen_solution
+    output_validation:
+      - must_exist: "memory-bank/decisions/"
+      - file_pattern: "adr-\\d{3}-.*\\.md"
+      - must_contain: "Architecture Decision"
+
+  /creative:
+    enforce: true
+    require_template: true
+    template_mandatory_fields:
+      - architecture_pattern
+      - components
+      - data_flows
+    output_validation:
+      - must_exist: "memory-bank/designs/architecture/"
+      - must_update: "memory-bank/techContext.md"
+      - must_contain: "System Architecture"
+
+  /design-validator:
+    enforce: true
+    require_template: true
+    template_mandatory_fields:
+      - overall_score
+      - validations
+      - recommendations
+    output_validation:
+      - must_exist: "memory-bank/validation/"
+      - must_contain: "Validation Report"
+
+  /implement:
+    enforce: true
+    require_template: true
+    template_mandatory_fields:
+      - implementation_phases
+      - code_structure
+    output_validation:
+      - must_exist: "memory-bank/implementation/"
+      - must_contain: "Implementation Guide"
+
+  /reflect:
+    enforce: true
+    require_template: true
+    template_mandatory_fields:
+      - completed_tasks
+      - pending_tasks
+      - metrics
+    output_validation:
+      - must_update: "memory-bank/progress.md"
+      - must_update: "memory-bank/metrics/dashboard.json"
+
+# Validation rules
+validation_rules:
+  frontmatter:
+    required: true
+    mandatory_fields:
+      - command
+      - phase
+      - version
+      - timestamp
+
+  file_naming:
+    timestamp_format: "ISO8601"
+    version_format: "semver"
+    slug_format: "lowercase-hyphenated"
+
+  content_structure:
+    min_sections: 3
+    max_depth: 4
+    require_headings: true
+
+# Enforcement actions
+actions:
+  on_missing_template:
+    severity: "CRITICAL"
+    action: "BLOCK"
+    message: "Template file not found. Cannot proceed without template."
+
+  on_template_not_used:
+    severity: "HIGH"
+    action: "BLOCK"
+    message: "Output does not match template structure. Please use the provided template."
+
+  on_wrong_location:
+    severity: "HIGH"
+    action: "BLOCK"
+    message: "Output not saved to memory-bank. All outputs must be in memory-bank directory."
+
+  on_missing_fields:
+    severity: "MEDIUM"
+    action: "WARN"
+    message: "Required template fields are missing. Please fill all mandatory fields."
+
+# Reporting
+reporting:
+  enforcement_log: "memory-bank/.enforcement.log"
+  violation_report: "memory-bank/.violations.json"
+  success_rate_threshold: 95  # Alert if compliance drops below this
+
+# Hooks integration
+hooks:
+  pre_command:
+    - script: ".ai/hooks/command-enforcer.py"
+      args: ["--check", "${command}"]
+      fail_on_error: true
+
+  post_command:
+    - script: ".ai/hooks/command-enforcer.py"
+      args: ["--validate", "${command}", "--files", "${output_files}"]
+      fail_on_error: true
+
+# Exemptions (commands that don't require templates)
+exemptions:
+  - /commit
+  - /resume
+  - /github
+  - /debug
+  - /task-init
+  - /task-next
+
+# AI tool specific configurations
+ai_tools:
+  cursor:
+    enforce: true
+    alert_on_violation: true
+
+  claude:
+    enforce: true
+    alert_on_violation: true
+
+  gemini:
+    enforce: true
+    alert_on_violation: true

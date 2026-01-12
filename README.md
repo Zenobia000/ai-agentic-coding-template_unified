@@ -46,8 +46,8 @@ npm run ai-sync
 | 1️⃣ | `/van` | 理解需求 | Architecture Advisor | 90% |
 | 2️⃣ | `/plan` | 概念設計 | 自動領域建模 | 85% |
 | 3️⃣ | `/adr` | 技術選型 | 決策記錄自動化 | 95% |
-| 4️⃣ | `/design-validator` | 詳細設計 | 規格自動生成 | 90% |
-| 5️⃣ | `/creative` | 驗證評審 | 合規自動檢查 | 95% |
+| 4️⃣ | `/creative` | 架構設計 | 系統架構與技術決策 | 85% |
+| 5️⃣ | `/design-validator` | 詳細設計與驗證 | 規格生成 + 合規檢查 | 95% |
 | 6️⃣ | `/implement` | 實施指導 | Performance Guidance | 85% |
 | 7️⃣ | `/reflect` | 演進優化 | 數據驅動改進 | 90% |
 
@@ -100,8 +100,8 @@ project/
 | `/van` | 1️⃣ | 理解需求 | Architecture Advisor | 90% |
 | `/plan` | 2️⃣ | 概念設計 | 自動領域建模 | 85% |
 | `/adr` | 3️⃣ | 技術選型 | 決策記錄自動化 | 95% |
-| `/design-validator` | 4️⃣ | 詳細設計 | 規格自動生成 | 90% |
-| `/creative` | 5️⃣ | 驗證評審 | 合規自動檢查 | 95% |
+| `/creative` | 4️⃣ | 架構設計 | 系統架構與技術決策 | 85% |
+| `/design-validator` | 5️⃣ | 詳細設計與驗證 | 規格生成 + 合規檢查 | 95% |
 | `/implement` | 6️⃣ | 實施指導 | Performance Guidance | 85% |
 | `/reflect` | 7️⃣ | 演進優化 | 數據驅動改進 | 90% |
 
@@ -138,15 +138,15 @@ intelligent_agents:
 ### 3. **📋 架構師級七步設計流程**
 > 基於軟體架構師核心思維，每個步驟都有對應的 AI 智能增強
 
-| 步驟 | 主要指令 | 輔助工具 | AI 增強 | 自動化程度 |
-|------|---------|---------|---------|-----------|
-| 1️⃣ 理解需求 | `/van` | `/plan` | Architecture Advisor | 90% |
-| 2️⃣ 概念設計 | `/plan` | `/creative` | 自動領域建模 | 85% |
-| 3️⃣ 技術選型 | `/adr` | - | 決策記錄自動化 | 95% |
-| 4️⃣ 詳細設計 | `/design-validator` | - | 規格自動生成 | 90% |
-| 5️⃣ 驗證評審 | `/creative` | Design Validator | 合規自動檢查 | 95% |
-| 6️⃣ 實施指導 | `/implement` | Performance Optimizer | Performance Guidance | 85% |
-| 7️⃣ 演進優化 | `/reflect` | Metrics Tracker | 數據驅動改進 | 90% |
+| 步驟 | 主要指令 | 職責 | AI 增強 | 自動化程度 |
+|------|---------|------|---------|-----------|
+| 1️⃣ 理解需求 | `/van` | 需求分析與 Memory Bank 初始化 | Architecture Advisor | 90% |
+| 2️⃣ 概念設計 | `/plan` | 領域建模與任務分解 | 自動領域建模 | 85% |
+| 3️⃣ 技術選型 | `/adr` | 架構決策記錄 | 決策記錄自動化 | 95% |
+| 4️⃣ 架構設計 | `/creative` | 系統架構與組件設計 | 架構模式建議 | 85% |
+| 5️⃣ 詳細設計與驗證 | `/design-validator` | 規格生成 + 合規檢查 | 自動生成與驗證 | 95% |
+| 6️⃣ 實施指導 | `/implement` | 編碼實作與性能優化 | Performance Optimizer | 85% |
+| 7️⃣ 演進優化 | `/reflect` | 回顧總結與持續改進 | Metrics Tracker | 90% |
 
 ### 4. **🔄 Memory Bank 共享記憶**
 - 所有 AI 工具共享專案狀態

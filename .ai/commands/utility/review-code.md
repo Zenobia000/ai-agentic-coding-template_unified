@@ -71,29 +71,89 @@ Perform thorough code review covering correctness, security, performance, mainta
 
 ## Review Output Format
 
+### Core Review Report Structure
+
 ```markdown
-## Code Review: [File/Feature Name]
+# Code Review Report - [Repository/Module Name]
 
-### Summary
-- **Overall**: [APPROVE/REQUEST_CHANGES/COMMENT]
-- **Risk Level**: [Low/Medium/High]
-- **Test Coverage**: [Adequate/Needs More]
+**Review Date:** `YYYY-MM-DD`
+**Target Code:** `[Branch / Commit Hash / File Path]`
+**Status:** `[Approved / Request Changes / Rejected]`
 
-### Critical Issues (Must Fix)
-1. [Issue]: [Location] - [Why it's critical]
+## 1. Review Summary
 
-### Suggestions (Should Consider)
-1. [Suggestion]: [Location] - [Benefit]
+### Overall Assessment
+| Metric | Score (0-100) | Grade | Summary |
+| :--- | :--- | :--- | :--- |
+| **Code Quality** | `[Score]` | `[S/A/B/C/F]` | `[Brief evaluation]` |
+| **Architecture** | `[Score]` | `[S/A/B/C/F]` | `[Brief evaluation]` |
+| **Security** | `[Score]` | `[S/A/B/C/F]` | `[Brief evaluation]` |
+| **Maintainability** | `[Score]` | `[S/A/B/C/F]` | `[Brief evaluation]` |
+| **Overall** | **`[Total]`** | **`[Grade]`** | **`[Summary]`** |
 
-### Nitpicks (Optional)
-1. [Nitpick]: [Location]
+### Risk Level
+- **Critical Issues**: `[Count]`
+- **Major Issues**: `[Count]`
+- **Minor Issues**: `[Count]`
 
-### Positive Highlights
-1. [Good practice observed]
+## 2. Linus Torvalds Taste Assessment
 
-### Action Items
-- [ ] [Required action 1]
-- [ ] [Required action 2]
+> "Good taste" is about seeing the big patterns and avoiding special cases.
+
+### Taste Score: `[🟢 Good Taste / 🟡 Acceptable / 🔴 Poor Taste]`
+
+### Core Insights
+- **Data Structures:**
+  - `[Comment on whether correct data structures were chosen. Bad programmers worry about the code. Good programmers worry about data structures.]`
+- **Special Cases:**
+  - `[Identify if code is littered with if (edge_case). Good code eliminates special cases through better abstractions.]`
+- **Simplicity:**
+  - `[Is the code over-engineered? Are functions too long? Does indentation exceed 3 levels?]`
+
+## 3. Issue Details
+
+### 🚨 Critical Issues (Must Fix)
+*Must be fixed immediately before merge.*
+
+#### 1. `[Issue Title]`
+- **Location**: `[File:Line]`
+- **Description**: `[Why this is critical - crashes, security holes, logic errors]`
+- **Suggested Fix**:
+```[language]
+[Fixed code example]
+```
+
+### ⚠️ Major Issues
+*Strongly recommended fixes for quality/maintainability.*
+
+#### 1. `[Issue Title]`
+- **Location**: `[File:Line]`
+- **Description**: `[Pattern violations, performance bottlenecks, duplication]`
+- **Suggested Fix**: `[Recommendation]`
+
+### 💡 Improvements
+*Nice to have optimizations.*
+
+- `[File]`: `[Suggestion for naming, comments, etc.]`
+
+## 4. Security & Performance
+
+### 🔒 Security Checklist
+- [ ] **Injection**: SQL/Command injection risks checked?
+- [ ] **Secrets**: No hardcoded passwords or keys?
+- [ ] **Authorization**: User permissions validated?
+- **Result**: `[Pass / Vulnerabilities Found]`
+
+### ⚡ Performance Analysis
+- **Time Complexity**: `[Analysis of critical paths, e.g., O(n)]`
+- **Resource Leaks**: `[Unclosed connections or file handles]`
+- **N+1 Problems**: `[Database query issues]`
+
+## 5. Action Items
+
+- [ ] **Must Fix**: `[List required items]`
+- [ ] **Should Optimize**: `[List recommended items]`
+- [ ] **Technical Debt**: `[Document trade-offs for future]`
 ```
 
 ## Review Workflow

@@ -1,50 +1,45 @@
 ---
 name: "Commit"
-description: "Generate high-quality commit message following Conventional Commits"
+description: "Generate high-quality commit message and save to LOCAL only"
 phase: "any"
 prerequisites: ["staged changes exist"]
 creates: ["git commit"]
+constraints: ["Do NOT push to remote", "Local operation only"]
 tools:
   cursor:
     trigger: "/commit"
-    description: "Generate and execute commit"
+    description: "Local commit only"
   claude-code:
     trigger: "/commit"
     description: "Generate commit message"
-    allowed-tools: ["Bash(git status:*)", "Bash(git diff:*)", "Bash(git log:*)", "Bash(git commit:*)"]
+    allowed-tools: ["Bash(git status:*)", "Bash(git diff:*)", "Bash(git commit:*)"]
   gemini-cli:
     trigger: "/commit"
-    description: "Generate commit message"
+    description: "Local commit"
 ---
 
-# Commit - Smart Commit Message Generator
+# 💾 Commit - Local Checkpoint
 
 ## Objective
-Generate a high-quality commit message following Conventional Commits format, then execute the commit.
+Generate a high-quality commit message and save changes to the **local repository only**.
+**STRICTLY FORBIDDEN: Do NOT push to remote.**
 
 ## Process
 
-### 1. Gather Context
+### 1. Pre-Commit Check
 ```bash
-# Check staged changes
-git status
-
-# View diff of staged changes
-git diff --staged
-
-# View recent commits for style reference
-git log --oneline -5
+# Verify strictly local operation
+# If user asks to push, REJECT and refer to /pr command
 ```
 
-### 2. Analyze Changes
-- Identify type of change (feat, fix, docs, etc.)
-- Determine scope (affected area)
-- Understand the "why" behind changes
-- Note any breaking changes
+### 2. Gather Context
+```bash
+git status
+git diff --staged
+```
 
-### 3. Generate Commit Message
-
-#### Format
+### 3. Generate Message (Conventional Commits)
+Format:
 ```
 <type>(<scope>): <subject>
 
@@ -53,101 +48,21 @@ git log --oneline -5
 <footer>
 ```
 
-#### Types
-| Type | Description |
-|------|-------------|
-| `feat` | New feature |
-| `fix` | Bug fix |
-| `docs` | Documentation only |
-| `style` | Formatting, no code change |
-| `refactor` | Code restructure, no feature change |
-| `perf` | Performance improvement |
-| `test` | Adding tests |
-| `build` | Build system or dependencies |
-| `ci` | CI configuration |
-| `chore` | Maintenance tasks |
-| `revert` | Revert previous commit |
-
-#### Rules
-- Subject line: imperative mood, <50 chars, no period
-- Body: explain "why", wrap at 72 chars
-- Footer: reference issues, note breaking changes
-
-### 4. Commit Message Template
-
-```markdown
-<type>(<scope>): <concise description>
-
-<detailed explanation of why this change was made>
-<what problem it solves>
-<any important implementation details>
-
-<footer with issue references or breaking changes>
-
-Co-Authored-By: [AI Assistant] <noreply@anthropic.com>
-```
-
-### 5. Execute Commit
+### 4. Execute Commit
 ```bash
-git commit -m "$(cat <<'EOF'
-<commit message here>
-EOF
-)"
+git commit -m "..."
 ```
 
-## Quality Checklist
-- [ ] Type accurately describes change
-- [ ] Scope is specific and relevant
-- [ ] Subject is clear and concise
-- [ ] Body explains "why" not "what"
-- [ ] Breaking changes noted in footer
-- [ ] Related issues referenced
+## Constraints
+- **NO PUSH**: This command must NEVER execute `git push`.
+- **Local Only**: Its sole purpose is to create a safe checkpoint in the local history.
 
 ## Examples
-
-### Feature Commit
-```
-feat(auth): add OAuth2 authentication support
-
-Implement OAuth2 authorization code flow for third-party login.
-This enables users to sign in with Google, GitHub, or Microsoft
-accounts, reducing friction in the onboarding process.
-
-Closes #123
-```
-
-### Bug Fix Commit
-```
-fix(api): resolve null pointer in user endpoint
-
-The /api/users/:id endpoint was throwing when user didn't exist.
-Added proper null check and 404 response.
-
-Fixes #456
-```
-
-### Refactor Commit
-```
-refactor(database): simplify query builder
-
-Extract common query patterns into reusable functions.
-No functional changes, purely structural improvements
-to reduce code duplication.
-```
-
-## Tool-Specific Usage
-
-### Cursor
 ```
 /commit
 ```
-
-### Claude Code
-```
-Generate a commit message for my staged changes
-```
-
-### Gemini CLI
-```
-/commit
-```
+AI Action:
+1. Check staged files.
+2. Generate message: `feat(auth): implement login logic`.
+3. Run `git commit`.
+4. Stop. (Do not push)

@@ -1,27 +1,28 @@
 # Active Context
 
 ## Current Phase
-**VAN** - Project Initialization
+**SYSTEM-REFACTOR** - Refactoring Git Workflow Commands
 
 ## Current Focus
-<!-- What you're working on right now -->
+- Redefining the Git workflow commands to suit a startup environment (Git Flow Lite).
+- Implementing a 3-step workflow: Start -> Commit -> PR.
+- Creating/updating command definitions: `start`, `commit`, `pr`.
 
 ## Recent Changes
-<!-- Recent modifications and decisions -->
+- Decided to split `github` command into more specific actions.
+- Decided to enforce strict "Local Only" for `commit` command.
+- Decided to add a `start` command for branch management.
 
 ## Active Decisions
-<!-- Decisions that need to be made or were recently made -->
-
-## Open Questions
-<!-- Questions that need answers -->
-- What is the main goal of this project?
-- What technology stack will be used?
-- Who are the stakeholders?
+- Use "Git Flow Lite": `main` (prod), `develop` (dev), `feat/*`, `hotfix/*`.
+- `commit` command MUST NOT push to remote.
+- `pr` command handles sync and push.
 
 ## Session Notes
-<!-- Notes from current work session -->
+- User requested a clearer distinction between local commits and remote pushes to avoid accidental pushes by LLMs.
+- Implementing a safer, more structured workflow.
 
 ---
 
-**Next Action:** Run `/van` to initialize the project
-**Last updated:** [Date]
+**Next Action:** Create and update command definition files.
+**Last updated:** 2026-01-12

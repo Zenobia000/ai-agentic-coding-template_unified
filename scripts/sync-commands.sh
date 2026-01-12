@@ -33,34 +33,59 @@ from pathlib import Path
 
 def md_to_toml(md_content, filename):
     """Convert markdown command to TOML format"""
+    import yaml
     toml_lines = []
 
     # Extract command name from filename
     command_name = filename.replace('.md', '')
 
-    # Extract title from first heading
-    title_match = re.search(r'^#\s+(.+)$', md_content, re.MULTILINE)
-    title = title_match.group(1) if title_match else command_name
+    # Split frontmatter and content
+    if md_content.startswith('---'):
+        parts = md_content.split('---', 2)
+        if len(parts) >= 3:
+            frontmatter = parts[1].strip()
+            content = parts[2].strip()
 
-    # Extract description (first paragraph after title)
-    desc_match = re.search(r'^#[^\n]+\n\n([^\n]+)', md_content, re.MULTILINE)
-    description = desc_match.group(1) if desc_match else ""
+            # Parse YAML frontmatter
+            try:
+                metadata = yaml.safe_load(frontmatter)
+            except:
+                metadata = {}
+        else:
+            content = md_content
+            metadata = {}
+    else:
+        content = md_content
+        metadata = {}
 
+    # Extract title from first heading if not in metadata
+    title = metadata.get('name', command_name)
+    if not title and '#' in content:
+        title_match = re.search(r'^#\s+(.+)$', content, re.MULTILINE)
+        title = title_match.group(1) if title_match else command_name
+
+    # Extract description from metadata or content
+    description = metadata.get('description', '')
+    if not description:
+        # Try to get first paragraph after heading
+        desc_match = re.search(r'^#[^\n]+\n\n([^\n]+)', content, re.MULTILINE)
+        description = desc_match.group(1) if desc_match else ""
+
+    # Build TOML
     toml_lines.append(f'name = "{command_name}"')
     toml_lines.append(f'title = "{title}"')
     toml_lines.append(f'description = """{description}"""')
     toml_lines.append('')
     toml_lines.append('[prompts]')
     toml_lines.append(f'content = """')
-    toml_lines.append(md_content)
+    toml_lines.append(content)  # Use content without frontmatter
     toml_lines.append('"""')
 
     return '\n'.join(toml_lines)
 
 # Clear existing TOML files
 for toml_file in Path('.gemini/commands').glob('*.toml'):
-    if toml_file.stem not in ['github']:  # Preserve non-.ai commands
-        toml_file.unlink()
+    toml_file.unlink()
 
 # Convert all .ai/commands files
 for md_file in Path('.ai/commands').rglob('*.md'):

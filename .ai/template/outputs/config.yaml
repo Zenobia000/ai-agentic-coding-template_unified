@@ -1,0 +1,182 @@
+# Output Template Configuration
+# Defines standardized output formats for each workflow command
+
+version: "1.0.0"
+updated: "2024-01-12"
+
+# Template engine configuration
+template_engine:
+  type: "mustache"  # or handlebars
+  delimiter_start: "{{"
+  delimiter_end: "}}"
+
+# Command output mappings
+commands:
+  van:
+    name: "Requirements Analysis"
+    phase: "requirements"
+    outputs:
+      - type: "requirements-spec"
+        template: "van/requirements-spec.md"
+        location: "memory-bank/requirements/"
+        filename: "requirements-{{timestamp}}.md"
+      - type: "constraints-checklist"
+        template: "van/constraints-checklist.md"
+        location: "memory-bank/constraints/"
+        filename: "constraints-{{timestamp}}.md"
+      - type: "memory-bank-init"
+        template: "van/memory-bank-init.yaml"
+        location: "memory-bank/"
+        filename: "activeContext.md"
+
+  plan:
+    name: "Conceptual Design"
+    phase: "design"
+    outputs:
+      - type: "tasks"
+        template: "plan/tasks.md"
+        location: "memory-bank/"
+        filename: "tasks.md"
+        overwrite: true
+      - type: "wbs"
+        template: "plan/wbs-template.md"
+        location: "memory-bank/planning/"
+        filename: "wbs-{{epic_id}}.md"
+      - type: "domain-model"
+        template: "plan/domain-model.yaml"
+        location: "memory-bank/designs/"
+        filename: "domain-model.yaml"
+
+  adr:
+    name: "Architecture Decision"
+    phase: "decision"
+    outputs:
+      - type: "adr"
+        template: "adr/adr-template.md"
+        location: "memory-bank/decisions/"
+        filename: "adr-{{number}}-{{slug}}.md"
+      - type: "decision-matrix"
+        template: "adr/decision-matrix.md"
+        location: "memory-bank/decisions/analysis/"
+        filename: "matrix-{{number}}.md"
+      - type: "risk-assessment"
+        template: "adr/risk-assessment.md"
+        location: "memory-bank/decisions/risks/"
+        filename: "risk-{{number}}.md"
+
+  creative:
+    name: "Architecture Design"
+    phase: "architecture"
+    outputs:
+      - type: "architecture"
+        template: "creative/architecture-design.md"
+        location: "memory-bank/designs/architecture/"
+        filename: "architecture-{{version}}.md"
+      - type: "api-design"
+        template: "creative/api-design.yaml"
+        location: "memory-bank/designs/api/"
+        filename: "api-spec-{{version}}.yaml"
+      - type: "component-diagram"
+        template: "creative/component-diagram.md"
+        location: "memory-bank/designs/architecture/"
+        filename: "components-{{version}}.md"
+      - type: "tech-context"
+        template: "creative/techContext.md"
+        location: "memory-bank/"
+        filename: "techContext.md"
+        overwrite: true
+
+  design-validator:
+    name: "Detail Design & Validation"
+    phase: "validation"
+    outputs:
+      - type: "openapi"
+        template: "design-validator/openapi-spec.yaml"
+        location: "memory-bank/designs/api/"
+        filename: "openapi-{{version}}.yaml"
+      - type: "schema"
+        template: "design-validator/database-schema.sql"
+        location: "memory-bank/designs/database/"
+        filename: "schema-{{version}}.sql"
+      - type: "validation-report"
+        template: "design-validator/validation-report.md"
+        location: "memory-bank/validation/"
+        filename: "report-{{timestamp}}.md"
+      - type: "compliance"
+        template: "design-validator/compliance-checklist.md"
+        location: "memory-bank/validation/"
+        filename: "compliance-{{timestamp}}.md"
+
+  implement:
+    name: "Implementation"
+    phase: "development"
+    outputs:
+      - type: "code-structure"
+        template: "implement/code-structure.md"
+        location: "memory-bank/implementation/"
+        filename: "structure-{{version}}.md"
+      - type: "test-plan"
+        template: "implement/test-plan.md"
+        location: "memory-bank/testing/"
+        filename: "test-plan-{{version}}.md"
+      - type: "guide"
+        template: "implement/implementation-guide.md"
+        location: "memory-bank/implementation/"
+        filename: "guide-{{version}}.md"
+
+  reflect:
+    name: "Reflection & Optimization"
+    phase: "optimization"
+    outputs:
+      - type: "progress"
+        template: "reflect/progress-report.md"
+        location: "memory-bank/"
+        filename: "progress.md"
+        overwrite: true
+      - type: "metrics"
+        template: "reflect/metrics-dashboard.json"
+        location: "memory-bank/metrics/"
+        filename: "dashboard.json"
+        overwrite: true
+      - type: "lessons"
+        template: "reflect/lessons-learned.md"
+        location: "memory-bank/learning/"
+        filename: "lessons-{{sprint}}.md"
+      - type: "improvements"
+        template: "reflect/improvement-plan.md"
+        location: "memory-bank/improvements/"
+        filename: "plan-{{sprint}}.md"
+
+# Metadata fields available to all templates
+global_metadata:
+  - ai_tool        # Current AI tool (cursor/claude/gemini)
+  - timestamp      # ISO 8601 timestamp
+  - version        # Project version
+  - user           # Current user
+  - project_name   # Project name from package.json
+  - git_branch     # Current git branch
+  - git_commit     # Current git commit hash
+
+# Validation schemas
+validation:
+  enabled: true
+  schema_path: "schemas/"
+  fail_on_error: false
+
+# Template rendering options
+rendering:
+  strict_mode: false  # Don't fail on missing variables
+  escape_html: false  # Don't escape HTML in markdown
+  preserve_whitespace: true
+
+# Output formatting
+formatting:
+  markdown:
+    line_width: 80
+    code_fence: "```"
+  yaml:
+    indent: 2
+    quotes: false
+  json:
+    indent: 2
+    sort_keys: true

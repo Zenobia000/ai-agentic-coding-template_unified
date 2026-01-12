@@ -8,25 +8,52 @@ echo "🔄 Syncing commands from .ai/commands to editor directories..."
 # Source directory
 SOURCE_DIR=".ai/commands"
 
-# Sync to Cursor (maintains directory structure)
-echo "📝 Syncing to .cursor/commands..."
-mkdir -p .cursor/commands
-rsync -av --delete "$SOURCE_DIR/" .cursor/commands/
+# Option 1: Maintain directory structure for all (DEFAULT)
+# Option 2: Flatten structure for all
+# You can change STRUCTURE_MODE to "flat" if you prefer flat structure
+STRUCTURE_MODE="hierarchical"  # Options: "hierarchical" or "flat"
 
-# Sync to Claude (flattens structure to single directory)
-echo "📝 Syncing to .claude/commands..."
-mkdir -p .claude/commands
-# Clear existing commands (except non-.ai ones like github.md if exists)
-find .claude/commands -name "*.md" -type f -delete 2>/dev/null || true
-# Copy all commands from subdirectories
-find "$SOURCE_DIR" -name "*.md" -type f -exec cp {} .claude/commands/ \;
+if [ "$STRUCTURE_MODE" = "hierarchical" ]; then
+    # Sync to Cursor (maintains directory structure)
+    echo "📝 Syncing to .cursor/commands (hierarchical)..."
+    mkdir -p .cursor/commands
+    rsync -av --delete "$SOURCE_DIR/" .cursor/commands/
 
-# Sync to Gemini (convert to TOML format)
-echo "📝 Converting and syncing to .gemini/commands..."
-mkdir -p .gemini/commands
+    # Sync to Claude (maintains directory structure)
+    echo "📝 Syncing to .claude/commands (hierarchical)..."
+    mkdir -p .claude/commands/{system,utility,workflow}
+    # Clear and copy maintaining structure
+    rm -rf .claude/commands/*.md 2>/dev/null || true
+    rsync -av --delete "$SOURCE_DIR/" .claude/commands/
+
+    # Sync to Gemini (maintains directory structure, convert to TOML)
+    echo "📝 Converting and syncing to .gemini/commands (hierarchical)..."
+    mkdir -p .gemini/commands/{system,utility,workflow}
+    # Clear old flat TOML files
+    rm -f .gemini/commands/*.toml 2>/dev/null || true
+else
+    # Flat structure mode (original behavior)
+    echo "📝 Syncing to .cursor/commands (flat)..."
+    mkdir -p .cursor/commands
+    # Clear and flatten
+    rm -rf .cursor/commands/{system,utility,workflow} 2>/dev/null || true
+    find "$SOURCE_DIR" -name "*.md" -type f -exec cp {} .cursor/commands/ \;
+
+    # Sync to Claude (flattens structure to single directory)
+    echo "📝 Syncing to .claude/commands (flat)..."
+    mkdir -p .claude/commands
+    rm -rf .claude/commands/{system,utility,workflow} 2>/dev/null || true
+    find .claude/commands -name "*.md" -type f -delete 2>/dev/null || true
+    find "$SOURCE_DIR" -name "*.md" -type f -exec cp {} .claude/commands/ \;
+
+    # Sync to Gemini (flat structure, convert to TOML)
+    echo "📝 Converting and syncing to .gemini/commands (flat)..."
+    mkdir -p .gemini/commands
+    rm -rf .gemini/commands/{system,utility,workflow} 2>/dev/null || true
+fi
 
 # Python script to convert MD to TOML
-cat << 'EOF' | python3
+STRUCTURE_MODE=$STRUCTURE_MODE cat << 'EOF' | python3
 import os
 import re
 from pathlib import Path
@@ -83,25 +110,67 @@ def md_to_toml(md_content, filename):
 
     return '\n'.join(toml_lines)
 
-# Clear existing TOML files
-for toml_file in Path('.gemini/commands').glob('*.toml'):
-    toml_file.unlink()
+import sys
 
-# Convert all .ai/commands files
-for md_file in Path('.ai/commands').rglob('*.md'):
-    toml_filename = md_file.stem + '.toml'
-    toml_path = Path('.gemini/commands') / toml_filename
+# Check structure mode from environment
+structure_mode = os.environ.get('STRUCTURE_MODE', 'hierarchical')
 
-    md_content = md_file.read_text()
-    toml_content = md_to_toml(md_content, md_file.stem)
+if structure_mode == 'hierarchical':
+    # Clear old flat TOML files first
+    for toml_file in Path('.gemini/commands').glob('*.toml'):
+        toml_file.unlink()
 
-    toml_path.write_text(toml_content)
-    print(f"  ✓ {md_file.stem}.md → {toml_filename}")
+    # Convert maintaining directory structure
+    for md_file in Path('.ai/commands').rglob('*.md'):
+        # Get relative path to maintain structure
+        rel_path = md_file.relative_to(Path('.ai/commands'))
+        toml_filename = rel_path.with_suffix('.toml')
+        toml_path = Path('.gemini/commands') / toml_filename
+
+        # Ensure subdirectory exists
+        toml_path.parent.mkdir(parents=True, exist_ok=True)
+
+        md_content = md_file.read_text()
+        toml_content = md_to_toml(md_content, md_file.stem)
+
+        toml_path.write_text(toml_content)
+        print(f"  ✓ {rel_path} → {toml_filename}")
+else:
+    # Flat structure mode
+    # Clear any hierarchical structure first
+    for subdir in ['system', 'utility', 'workflow']:
+        subdir_path = Path('.gemini/commands') / subdir
+        if subdir_path.exists():
+            import shutil
+            shutil.rmtree(subdir_path)
+
+    # Clear existing TOML files
+    for toml_file in Path('.gemini/commands').glob('*.toml'):
+        toml_file.unlink()
+
+    # Convert all to flat structure
+    for md_file in Path('.ai/commands').rglob('*.md'):
+        toml_filename = md_file.stem + '.toml'
+        toml_path = Path('.gemini/commands') / toml_filename
+
+        md_content = md_file.read_text()
+        toml_content = md_to_toml(md_content, md_file.stem)
+
+        toml_path.write_text(toml_content)
+        print(f"  ✓ {md_file.stem}.md → {toml_filename}")
 EOF
 
 echo "✅ Command sync completed!"
 echo ""
 echo "Summary:"
-echo "  • .cursor/commands: Full directory structure maintained"
-echo "  • .claude/commands: Flattened to single directory"
-echo "  • .gemini/commands: Converted to TOML format"
+if [ "$STRUCTURE_MODE" = "hierarchical" ]; then
+    echo "  • Structure mode: HIERARCHICAL (system/, utility/, workflow/)"
+    echo "  • .cursor/commands: Full directory structure maintained"
+    echo "  • .claude/commands: Full directory structure maintained"
+    echo "  • .gemini/commands: Full directory structure with TOML format"
+else
+    echo "  • Structure mode: FLAT (all commands in one directory)"
+    echo "  • .cursor/commands: Flattened to single directory"
+    echo "  • .claude/commands: Flattened to single directory"
+    echo "  • .gemini/commands: Flattened to single directory with TOML format"
+fi

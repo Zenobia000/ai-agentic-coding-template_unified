@@ -1,269 +1,111 @@
----
-command: review-code
-phase: quality-assurance
-version: 1.0.0
-timestamp: {{timestamp}}
-linked_commands: [/implement, /write-tests]
----
-
-# 🔍 Code Review Report
-
-## Review Summary
-**Review ID**: {{review_id}}
-**Reviewer**: {{reviewer}}
-**Review Date**: {{review_date}}
-**Repository**: {{repository_name}}
-**Branch**: {{branch_name}}
-**Commit Range**: {{commit_range}}
-
-## 📊 Overall Assessment
-
-### Quality Score: {{overall_score}}/100
-
-| Category | Score | Grade | Details |
-|----------|-------|-------|---------|
-| **Code Quality** | {{code_quality_score}}/25 | {{code_quality_grade}} | {{code_quality_summary}} |
-| **Architecture** | {{architecture_score}}/25 | {{architecture_grade}} | {{architecture_summary}} |
-| **Security** | {{security_score}}/25 | {{security_grade}} | {{security_summary}} |
-| **Performance** | {{performance_score}}/25 | {{performance_grade}} | {{performance_summary}} |
-
-### Risk Level: {{risk_level}}
-- **Critical Issues**: {{critical_count}}
-- **Major Issues**: {{major_count}}
-- **Minor Issues**: {{minor_count}}
-- **Suggestions**: {{suggestion_count}}
-
-## 🎯 Linus Torvalds "Good Taste" Assessment
-
-### Good Taste Score: {{taste_score}}
-{{#taste_assessment}}
-#### {{category}}
-- **Current Approach**: {{current_approach}}
-- **Issue**: {{issue}}
-- **Better Approach**: {{better_approach}}
-- **Why It's Better**: {{rationale}}
-{{/taste_assessment}}
-
-### Special Cases Detected
-{{#special_cases}}
-- **File**: `{{file_path}}:{{line_number}}`
-  - **Special Case**: {{special_case_description}}
-  - **How to Eliminate**: {{elimination_strategy}}
-{{/special_cases}}
-
-## 🚨 Critical Issues (Must Fix)
-
-{{#critical_issues}}
-### {{index}}. {{title}}
-**File**: `{{file_path}}:{{line_range}}`
-**Severity**: CRITICAL
-**Category**: {{category}}
-
-**Problem**:
-```{{language}}
-{{problematic_code}}
-```
-
-**Issue**: {{issue_description}}
-
-**Fix**:
-```{{language}}
-{{fixed_code}}
-```
-
-**Impact if Not Fixed**: {{impact}}
-{{/critical_issues}}
-
-## ⚠️ Major Issues (Should Fix)
-
-{{#major_issues}}
-### {{index}}. {{title}}
-**File**: `{{file_path}}:{{line_range}}`
-**Severity**: MAJOR
-**Category**: {{category}}
-
-**Current Code**:
-```{{language}}
-{{current_code}}
-```
-
-**Recommendation**: {{recommendation}}
-
-**Improved Code**:
-```{{language}}
-{{improved_code}}
-```
-{{/major_issues}}
-
-## 💡 Suggestions (Nice to Have)
-
-{{#suggestions}}
-### {{category}}: {{title}}
-- **Location**: `{{file_path}}`
-- **Suggestion**: {{suggestion}}
-- **Benefit**: {{benefit}}
-{{/suggestions}}
-
-## 🔒 Security Analysis
-
-### Vulnerabilities Found
-{{#vulnerabilities}}
-- **Type**: {{vulnerability_type}}
-- **Severity**: {{severity}}
-- **Location**: `{{file_path}}:{{line}}`
-- **CWE**: {{cwe_id}}
-- **Fix**: {{fix_description}}
-{{/vulnerabilities}}
-
-### Security Best Practices
-{{#security_checklist}}
-- [{{status}}] {{practice}}
-{{/security_checklist}}
-
-## ⚡ Performance Analysis
-
-### Performance Issues
-{{#performance_issues}}
-#### {{title}}
-- **Location**: `{{file_path}}`
-- **Issue**: {{issue}}
-- **Impact**: {{performance_impact}}
-- **Solution**: {{solution}}
-{{/performance_issues}}
-
-### Complexity Analysis
-| File | Cyclomatic Complexity | Cognitive Complexity | Recommendation |
-|------|----------------------|---------------------|----------------|
-{{#complexity_analysis}}
-| {{file}} | {{cyclomatic}} | {{cognitive}} | {{recommendation}} |
-{{/complexity_analysis}}
-
-## 🏗️ Architecture Review
-
-### Design Patterns
-{{#design_patterns}}
-- **Pattern**: {{pattern_name}}
-- **Usage**: {{usage_context}}
-- **Assessment**: {{assessment}}
-{{/design_patterns}}
-
-### SOLID Principles
-{{#solid_principles}}
-- **{{principle}}**: {{status}} - {{notes}}
-{{/solid_principles}}
-
-### Coupling & Cohesion
-- **Coupling Level**: {{coupling_level}}
-- **Cohesion Level**: {{cohesion_level}}
-- **Modularity Score**: {{modularity_score}}/10
-
-## 📝 Code Style & Standards
-
-### Style Violations
-{{#style_violations}}
-- `{{file}}:{{line}}` - {{violation}}
-{{/style_violations}}
-
-### Naming Conventions
-{{#naming_issues}}
-- **Issue**: {{issue}}
-- **Location**: `{{location}}`
-- **Suggestion**: {{suggestion}}
-{{/naming_issues}}
-
-## 🧪 Test Coverage Impact
-
-### Coverage Metrics
-- **Lines Covered**: {{lines_covered}}%
-- **Branches Covered**: {{branches_covered}}%
-- **Functions Covered**: {{functions_covered}}%
-
-### Untested Code
-{{#untested_code}}
-- `{{file}}:{{line_range}}` - {{description}}
-{{/untested_code}}
-
-### Test Recommendations
-{{#test_recommendations}}
-1. {{recommendation}}
-{{/test_recommendations}}
-
-## 📊 Technical Debt
-
-### Debt Items
-{{#tech_debt}}
-- **Type**: {{debt_type}}
-- **Location**: {{location}}
-- **Effort to Fix**: {{effort_estimate}}
-- **Priority**: {{priority}}
-{{/tech_debt}}
-
-### Debt Score: {{debt_score}}/100
-- **New Debt Added**: {{new_debt}}
-- **Debt Removed**: {{debt_removed}}
-- **Net Change**: {{debt_change}}
-
-## ✅ Good Practices Found
-
-{{#good_practices}}
-### {{practice}}
-- **Location**: `{{location}}`
-- **Why It's Good**: {{reason}}
-{{/good_practices}}
-
-## 📋 Action Items
-
-### Immediate Actions (Block Merge)
-{{#immediate_actions}}
-- [ ] {{action}}
-{{/immediate_actions}}
-
-### Required Actions (Before Production)
-{{#required_actions}}
-- [ ] {{action}}
-{{/required_actions}}
-
-### Recommended Actions (Technical Debt)
-{{#recommended_actions}}
-- [ ] {{action}}
-{{/recommended_actions}}
-
-## 🔄 Links to Implementation
-
-### Related Implementation Files
-{{#implementation_files}}
-- `{{file_path}}` - {{description}}
-{{/implementation_files}}
-
-### Implementation Guide Reference
-- **Guide**: `memory-bank/implementation/guide-{{implementation_version}}.md`
-- **Phase**: {{implementation_phase}}
-- **Task**: {{implementation_task}}
-
-## 📈 Metrics Comparison
-
-### Compared to Previous Review
-| Metric | Previous | Current | Change |
-|--------|----------|---------|--------|
-{{#metrics_comparison}}
-| {{metric}} | {{previous}} | {{current}} | {{change}} |
-{{/metrics_comparison}}
-
-## Review Decision
-
-**Decision**: {{decision}}
-
-{{#approval_conditions}}
-### Conditions for Approval
-1. {{condition}}
-{{/approval_conditions}}
-
-{{#rejection_reasons}}
-### Reasons for Rejection
-1. {{reason}}
-{{/rejection_reasons}}
+# 代碼審查報告 (Code Review Report) - [儲存庫/模組名稱]
 
 ---
-*Code Review by {{ai_tool}}*
-*Review Session: {{session_id}}*
-*Generated: {{timestamp}}*
+
+**文件版本 (Document Version):** `v1.0`
+**審查日期 (Review Date):** `YYYY-MM-DD`
+**審查者 (Reviewer):** `[AI Agent / 審查人員]`
+**被審查代碼 (Target Code):** `[分支 / Commit Hash / 檔案路徑]`
+**狀態 (Status):** `[通過 (Approved) / 需修改 (Request Changes) / 拒絕 (Rejected)]`
+
+---
+
+## 目錄 (Table of Contents)
+
+1. [審查總結 (Review Summary)](#1-審查總結-review-summary)
+2. [Linus Torvalds 品味評估 (Taste Assessment)](#2-linus-torvalds-品味評估-taste-assessment)
+3. [問題詳情 (Issue Details)](#3-問題詳情-issue-details)
+   - [🚨 致命問題 (Critical)](#-致命問題-critical)
+   - [⚠️ 主要問題 (Major)](#-主要問題-major)
+   - [💡 改進建議 (Suggestions)](#-改進建議-suggestions)
+4. [安全性與效能 (Security & Performance)](#4-安全性與效能-security--performance)
+5. [行動項目 (Action Items)](#5-行動項目-action-items)
+
+---
+
+## 1. 審查總結 (Review Summary)
+
+### 📊 總體評估
+
+| 評分項目 | 分數 (0-100) | 等級 | 評語摘要 |
+| :--- | :--- | :--- | :--- |
+| **代碼品質** | `[分數]` | `[S/A/B/C/F]` | `[簡評]` |
+| **架構設計** | `[分數]` | `[S/A/B/C/F]` | `[簡評]` |
+| **安全性** | `[分數]` | `[S/A/B/C/F]` | `[簡評]` |
+| **可維護性** | `[分數]` | `[S/A/B/C/F]` | `[簡評]` |
+| **總分** | **`[總分]`** | **`[總等級]`** | **`[總結]`** |
+
+### 風險等級
+- **Critical Issues**: `[數量]`
+- **Major Issues**: `[數量]`
+- **Minor Issues**: `[數量]`
+
+---
+
+## 2. Linus Torvalds 品味評估 (Taste Assessment)
+
+> "Good taste" is about seeing the big patterns and avoiding special cases.
+
+### 品味分數: `[🟢 好品味 / 🟡 湊合 / 🔴 垃圾]`
+
+### 核心洞察 (Core Insights)
+*   **資料結構 (Data Structures):**
+    *   `[評論代碼是否選擇了正確的資料結構。Bad programmers worry about the code. Good programmers worry about data structures and their relationships.]`
+*   **特殊情況 (Special Cases):**
+    *   `[指出代碼中是否充滿了 `if (edge_case)`。好的代碼應該通過更好的抽象消除特殊情況。]`
+*   **簡潔性 (Simplicity):**
+    *   `[代碼是否過度設計？函式是否過長？縮進是否超過 3 層？]`
+
+---
+
+## 3. 問題詳情 (Issue Details)
+
+### 🚨 致命問題 (Critical)
+*必須立即修復，否則不可合併。*
+
+#### 1. `[問題標題]`
+- **位置**: `[檔案路徑:行號]`
+- **問題描述**: `[詳細描述問題為何嚴重，例如導致崩潰、安全漏洞或嚴重邏輯錯誤]`
+- **建議修復**:
+```[語言]
+[修復後的代碼範例]
+```
+
+### ⚠️ 主要問題 (Major)
+*強烈建議修復，影響代碼品質或維護性。*
+
+#### 1. `[問題標題]`
+- **位置**: `[檔案路徑:行號]`
+- **問題描述**: `[描述問題，例如違反設計模式、效能瓶頸、複製貼上代碼]`
+- **建議修復**: `[修復建議]`
+
+### 💡 改進建議 (Suggestions)
+*Nice to have，優化建議。*
+
+- `[檔案路徑]`: `[建議內容，例如命名優化、註解補充]`
+
+---
+
+## 4. 安全性與效能 (Security & Performance)
+
+### 🔒 安全性檢查
+- [ ] **注入攻擊 (Injection)**: 是否檢查了 SQL/Command 注入風險？
+- [ ] **敏感資料**: 是否有硬編碼的密碼或 Key？
+- [ ] **權限控制**: 是否驗證了用戶權限？
+- **審查結果**: `[通過 / 發現漏洞]`
+
+### ⚡ 效能分析
+- **時間複雜度**: `[分析關鍵路徑的複雜度，例如 O(n)]`
+- **資源洩漏**: `[是否有未關閉的連線或 File Handle]`
+- **N+1 問題**: `[資料庫查詢是否存在 N+1 問題]`
+
+---
+
+## 5. 行動項目 (Action Items)
+
+- [ ] **必須修復**: `[列出必須完成的項目]`
+- [ ] **建議優化**: `[列出建議完成的項目]`
+- [ ] **技術債記錄**: `[如果是權衡後的決定，記錄為技術債]`
+
+---
+*Generated by AI Code Reviewer*

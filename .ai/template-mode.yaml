@@ -1,0 +1,159 @@
+# Template System Mode Configuration
+# 模板系統模式配置 - 在規則與創意之間取得平衡
+
+version: "2.0"
+updated: "2024-01-12"
+
+# 系統模式
+system:
+  mode: "flexible"  # flexible | strict | hybrid
+  description: |
+    flexible: 引導式架構，提供方向但不限制創意
+    strict: 規則式模板，必須填充所有欄位（v1.0 行為）
+    hybrid: 核心欄位必填，其他部分自由發揮
+
+# 命令配置
+commands:
+  /van:
+    mode: "flexible"
+    guide: "guides/van-guide.md"
+    enforcement:
+      level: "minimal"  # minimal | moderate | strict
+      required_elements:
+        - "問題陳述"
+        - "目標"
+        - "成功標準"
+      optional_guidance:
+        - "使用者故事"
+        - "約束條件"
+        - "假設"
+
+  /creative:
+    mode: "flexible"
+    guide: "guides/creative-guide.md"
+    enforcement:
+      level: "minimal"
+      required_elements:
+        - "架構概覽"
+        - "技術選型"
+        - "關鍵決策"
+      creative_freedom:
+        - "視覺化方式"
+        - "架構風格"
+        - "文檔深度"
+
+  /implement:
+    mode: "flexible"
+    guide: "guides/implement-guide.md"
+    enforcement:
+      level: "minimal"
+      required_elements:
+        - "模組劃分"
+        - "介面定義"
+        - "實作策略"
+      team_choices:
+        - "測試策略"
+        - "代碼組織"
+        - "開發順序"
+
+  /plan:
+    mode: "hybrid"
+    guide: "guides/plan-guide.md"
+    enforcement:
+      level: "moderate"
+      required_structure:
+        - "任務分解"
+        - "優先順序"
+        - "依賴關係"
+      flexible_areas:
+        - "估時方法"
+        - "視覺呈現"
+
+  /adr:
+    mode: "hybrid"
+    template: "outputs/adr/adr-template.md"
+    enforcement:
+      level: "moderate"
+      # ADR 有產業標準格式，保持一定結構
+      required_fields:
+        - "標題"
+        - "狀態"
+        - "背景"
+        - "決策"
+        - "後果"
+      optional_fields:
+        - "替代方案"
+        - "相關連結"
+
+# 引導原則
+principles:
+  flexibility:
+    - "形式服務於內容"
+    - "價值優於合規"
+    - "適配優於統一"
+
+  quality:
+    - "清晰表達核心觀點"
+    - "為讀者創造價值"
+    - "保持可維護性"
+
+  creativity:
+    - "鼓勵領域特定解決方案"
+    - "允許實驗性方法"
+    - "重視團隊共識"
+
+# Hook 配置
+hooks:
+  pre_command:
+    - type: "guidance"
+      script: "hooks/template-guide.py"
+      action: "suggest"  # suggest | warn | block
+
+  post_command:
+    - type: "feedback"
+      script: "hooks/template-enforcer-flexible.py"
+      action: "advise"  # advise | validate | enforce
+
+# LLM 指導配置
+llm_guidance:
+  enabled: true
+  style: "socratic"  # socratic | directive | freestyle
+  prompts:
+    prefix: |
+      你是一個架構思考引導者，而非模板填充機器。
+      根據提供的引導框架，幫助創建適合專案的文檔。
+      重視價值創造勝過形式符合。
+
+    suffix: |
+      記住：
+      1. 這些是引導而非規則
+      2. 根據專案特性調整深度
+      3. 創新是被鼓勵的
+      4. 簡潔但不簡陋
+
+# 遷移配置（從 v1 到 v2）
+migration:
+  from_version: "1.0"
+  to_version: "2.0"
+  strategy: "gradual"  # gradual | immediate
+  compatibility:
+    maintain_v1_templates: true
+    v1_location: "outputs/"
+    v2_location: "guides/"
+
+# 團隊偏好（可覆蓋全域設定）
+team_preferences:
+  language: "zh-TW"  # 預設語言
+  diagram_tool: "mermaid"  # mermaid | plantuml | draw.io
+  doc_style: "narrative"  # narrative | structured | minimal
+  code_examples: "practical"  # practical | comprehensive | minimal
+
+# 監控與回饋
+monitoring:
+  collect_feedback: true
+  feedback_channel: "memory-bank/feedback/"
+  metrics:
+    - "文檔完成度"
+    - "團隊滿意度"
+    - "創意程度"
+    - "價值達成"

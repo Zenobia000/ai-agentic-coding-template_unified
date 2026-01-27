@@ -1,97 +1,86 @@
-
 ## 桑尼核彈火神銃一波流
-# AI Agentic Coding Template
+# 🚀 Universal AI Copilot Template
 
 > **Enterprise-grade architecture workflow for AI-assisted development**
->
-> Unified framework for Cursor, Claude Code, and Gemini CLI with Level 4 Architecture Maturity
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Node.js Version](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen.svg)](https://nodejs.org/)
-[![AI Tools](https://img.shields.io/badge/AI-Cursor%20%7C%20Claude%20%7C%20Gemini-blue.svg)](#supported-ai-tools)
-[![Architecture Level](https://img.shields.io/badge/Architecture-Level%204-purple.svg)](./MATURITY_ASSESSMENT.md)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./CONTRIBUTING.md)
-
-## 🚀 Quick Start
-
-### Day 1 - First Time Setup
-
-```bash
-# Clone the repository
-git clone https://github.com/yourusername/ai-agentic-coding-template.git
-cd ai-agentic-coding-template
-
-# Run Day 1 initialization (one command does everything!)
-npm run init
-
-# This will:
-# ✅ Install all dependencies
-# ✅ Initialize AI structure
-# ✅ Sync commands to all editor directories
-# ✅ Setup Git hooks
-# ✅ Create memory bank structure
-# ✅ Verify CLAUDE.md configuration
-```
-
-### Manual Setup (if needed)
-
-```bash
-# Install dependencies
-npm install
-
-# Sync commands to all editors
-npm run sync-commands
-
-# Generate AI tool configurations (choose one or all)
-npm run ai-sync           # Generate all: Cursor, Claude Code, Gemini CLI
-npm run ai-sync:cursor    # Generate only Cursor configuration
-npm run ai-sync:claude    # Generate only Claude Code configuration
-npm run ai-sync:gemini    # Generate only Gemini CLI configuration
-
-# Start with your preferred AI tool
-# All tools use the same unified commands
-/resume  # Load project context
-/van     # Initialize project with Memory Bank
-```
-
-## 📋 Table of Contents
-
-- [Quick Start](#-quick-start)
-- [Features](#-features)
-- [Architecture](#-architecture)
-- [Project Structure](#-project-structure)
-- [Commands](#-commands)
-- [AI Agents](#-ai-agents)
-- [Usage Examples](#-usage-examples)
-- [Configuration](#-configuration)
-- [Contributing](#-contributing)
-- [Documentation](#-documentation)
-- [Support](#-support)
-- [License](#-license)
+A unified, production-ready template for integrating AI assistants (Cursor, Claude Code, and Gemini CLI) into your development workflow. This template provides a single source of truth for AI configurations with automatic synchronization and format conversion.
 
 ## ✨ Features
 
-- **🤖 Multi-AI Support**: Unified commands for three major AI coding assistants
-  - **Cursor**: AI-powered IDE with intelligent code completion
-  - **Claude Code**: Anthropic's coding assistant with deep reasoning
-  - **Gemini CLI**: Google's command-line AI development tool
-- **🏗️ Architecture-First**: Seven-step architect-level design workflow
-- **🧠 7 AI Agents**: Complete coverage from design to deployment
-- **📊 95% Automation**: Spec generation, validation, and compliance checks
-- **🔄 Memory Bank**: Persistent context shared across all AI tools and team members
-- **🛡️ Enterprise Security**: Built-in security scanning and compliance validation
+- **🔄 Unified Configuration**: Single source of truth in `.ai/` directory
+- **🎯 Multi-Tool Support**: Cursor, Claude Code, and Gemini CLI
+- **🔧 Automatic Format Conversion**: Markdown to TOML for Gemini
+- **📂 Structured Commands**: Organized in system/utility/workflow categories
+- **🧠 Memory Bank**: Persistent knowledge base for project context
+- **🛡️ Built-in Safeguards**: Hooks and skills for safe AI operations
+- **📦 Zero Configuration**: One command setup
 
-## 🏗️ Architecture
 
-### Seven-Step Architecture Workflow
-
-Our workflow follows enterprise architecture best practices:
+### Directory Structure
 
 ```
-/van → /plan → /adr → /creative → /design-validator → /implement → /reflect
+.ai/                    # Source of Truth
+├── adapters/          # Tool-specific configurations
+│   ├── claude-code/   # Claude agents, hooks, skills
+│   ├── cursor/        # Cursor rules and settings
+│   └── gemini-cli/    # Gemini converters
+├── commands/          # Universal command definitions
+│   ├── system/        # Git, PR, deployment commands
+│   ├── utility/       # Debug, review, test commands
+│   └── workflow/      # Plan, implement, creative commands
+└── template/          # Configuration templates
+
+Generated Directories (by npm run init):
+.claude/               # Claude Code runtime config
+.cursor/               # Cursor runtime config
+.gemini/               # Gemini CLI runtime config (TOML)
+memory-bank/           # Project knowledge persistence
 ```
 
-### Workflow Diagram
+## 📦 Installation
+
+### Quick Start (Recommended)
+
+```bash
+# Clone the template
+git clone https://github.com/Zenobia000/ai-agentic-coding-template_unified.git
+cd ai-agentic-coding-template_unified
+
+# One command initialization (for first time setup)
+npm run init
+```
+
+This will:
+1. Install all dependencies (`npm install`)
+2. Generate tool configurations (`.claude/`, `.cursor/`, `.gemini/`)
+3. Convert commands to appropriate formats (TOML for Gemini)
+4. Create Memory Bank structure
+5. Set up all hooks and safeguards
+
+### Manual Setup
+
+```bash
+# Install dependencies only
+npm install
+
+# Sync configurations after modifying .ai/ directory
+npm run ai-sync          # Sync all tools
+npm run ai-sync:cursor   # Sync Cursor only
+npm run ai-sync:claude   # Sync Claude Code only
+npm run ai-sync:gemini   # Sync Gemini CLI only
+```
+
+### When to Use Which Command?
+
+| Command | Purpose | Use Case |
+|---------|---------|----------|
+| `npm run init` | **Full initialization** | • First time setup<br>• After cloning repository<br>• Fresh start |
+| `npm run ai-sync` | **Update configurations** | • After modifying `.ai/` contents<br>• Daily development<br>• No need to reinstall packages |
+| `npm run ai-sync:[tool]` | **Update specific tool** | • When only changing one tool's config<br>• Faster than full sync |
+
+## 🔄 Seven-Step Architecture Workflow
+
+The template implements a proven enterprise architecture workflow:
 
 ```mermaid
 graph TD
@@ -127,201 +116,226 @@ graph TD
     class I,J,K utility
 ```
 
-## 📁 Project Structure
+### 1️⃣ **VAN** - Requirements Analysis (`/van`)
+- Understand and validate requirements
+- Identify constraints and dependencies
+- Define success criteria
+- Output: `memory-bank/requirements/`
 
-```
-project/
-├── .ai/                    # Configuration Center
-│   ├── template/          # Templates
-│   ├── commands/          # Command definitions
-│   ├── agents/           # AI agent configs
-│   └── config.yaml       # Main configuration
-│
-├── memory-bank/           # Shared Memory Bank
-│   ├── tasks.md          # Task tracking
-│   ├── activeContext.md  # Current context
-│   └── progress.md       # Progress tracking
-│
-├── scripts/              # Build scripts
-│   └── sync-ai-config.js # Config synchronization
-│
-└── [Generated]           # Auto-generated by npm run ai-sync
-    ├── .cursorrules      # Cursor configuration
-    ├── CLAUDE.md         # Claude Code configuration
-    └── GEMINI.md         # Gemini CLI configuration
-```
+### 2️⃣ **PLAN** - Task Planning (`/plan`)
+- Break down requirements into tasks
+- Prioritize and sequence work
+- Identify technical approaches
+- Output: Structured task list
 
-## 🎮 Commands
+### 3️⃣ **ADR** - Architecture Decisions (`/adr`)
+- Document key technical decisions
+- Evaluate trade-offs
+- Record rationale
+- Output: `memory-bank/decisions/`
 
-### Core Workflow Commands
+### 4️⃣ **CREATIVE** - Design Solutions (`/creative`)
+- Generate innovative approaches
+- Explore alternatives
+- Design system architecture
+- Output: `memory-bank/designs/`
 
-| Command | Purpose | AI Enhancement |
-|---------|---------|----------------|
-| `/van` | Initialize requirements analysis | Architecture Advisor |
-| `/plan` | Conceptual design & task breakdown | Domain Modeling |
-| `/adr` | Document architecture decisions | Automated ADR |
-| `/creative` | System architecture design | Pattern Suggestions |
-| `/design-validator` | Generate specs & validate | 95% Automation |
-| `/implement` | Code implementation | Performance Optimizer |
-| `/reflect` | Review & optimize | Metrics Tracker |
+### 5️⃣ **DESIGN-VALIDATOR** - Validate Design (`/design-validator`)
+- Review against requirements
+- Check architectural compliance
+- Validate technical feasibility
+- Output: `memory-bank/validation/`
 
-### Utility Commands
+### 6️⃣ **IMPLEMENT** - Build Solution (`/implement`)
+- Execute implementation plan
+- Follow coding standards
+- Apply best practices
+- Output: `memory-bank/implementation/`
 
-| Command | Purpose | Description |
-|---------|---------|-------------|
-| `/task-next` | Get PM suggestions | AI-powered task prioritization |
-| `/debug` | Smart debugging | Systematic error analysis |
-| `/review-code` | Code review | Architecture & quality checks |
-| `/write-tests` | Test generation | Automated test creation |
-| `/commit` | Git commits | Conventional commit messages |
+### 7️⃣ **REFLECT** - Review & Optimize (`/reflect`)
+- Assess implementation quality
+- Identify improvements
+- Update documentation
+- Output: `memory-bank/metrics/`
 
-### NPM Scripts
+### 📊 Workflow Example
 
 ```bash
-# Configuration Management
-npm run setup              # Interactive setup wizard
-npm run ai-sync            # Generate all AI tool configs
-npm run ai-sync:cursor     # Generate Cursor config only
-npm run ai-sync:claude     # Generate Claude Code config only
-npm run ai-sync:gemini     # Generate Gemini CLI config only
-npm run ai-verify          # Verify configuration integrity
-
-# Development
-npm test                   # Run test suite
-npm run lint              # Code quality checks
+# Start a new feature
+/resume          # Load project context
+/van            # Analyze requirements
+/plan           # Create task breakdown
+/adr            # Document architecture decisions
+/creative       # Design solution
+/design-validator # Validate approach
+/implement      # Build the feature
+/reflect        # Review and optimize
 ```
 
-## 🤖 AI Agents
+## 🎯 Universal Commands
 
-Our intelligent agent ecosystem provides comprehensive development support:
+All tools share the same command set, organized by category:
 
-| Agent | Role | Automation |
-|-------|------|------------|
-| **Architecture Advisor** | Technical decisions & patterns | 85% |
-| **Design Validator** | Spec generation & validation | 95% |
-| **Performance Optimizer** | Performance monitoring & optimization | 85% |
-| **Security Scanner** | Security & compliance checks | 95% |
-| **Code Reviewer** | Code quality & best practices | 80% |
-| **Test Runner** | Automated testing & coverage | 90% |
-| **Metrics Tracker** | Development metrics & insights | 90% |
+### System Commands (`/system`)
+- `/commit` - Generate commit messages
+- `/pr` - Create pull requests
+- `/resume` - Load project context
+- `/ship` - Deploy to production
+- `/start` - Start new feature branch
 
-## 💡 Usage Examples
+### Utility Commands (`/utility`)
+- `/adr` - Create Architecture Decision Records
+- `/debug` - Systematic debugging
+- `/design-validator` - Validate design decisions
+- `/review-code` - Comprehensive code review
+- `/task-next` - Get next task recommendation
+- `/write-tests` - Generate test strategies
 
-### Team Collaboration
+### Workflow Commands (`/workflow`)
+- `/archive` - Archive completed work
+- `/creative` - Creative problem solving
+- `/implement` - Implementation guidance
+- `/plan` - Task planning
+- `/van` - Requirements analysis
 
-```bash
-# Alice starts with Cursor
-/van      # Initialize project
-/plan     # Create task breakdown
+## 🧠 Memory Bank
 
-# Bob continues with Claude Code
-# (Memory Bank automatically syncs context)
-/creative # Design architecture
-/implement # Start coding
+The Memory Bank provides persistent project context:
 
-# Charlie reviews with Gemini CLI
-/reflect  # Generate progress report
 ```
-
-### Solo Development
-
-```bash
-# Complete workflow example
-/van                    # Understand requirements
-/plan                   # Design domain model
-/adr database-choice    # Document DB decision
-/creative               # Design system architecture
-/design-validator       # Generate API specs
-/implement              # Code with AI assistance
-/reflect               # Review and optimize
+memory-bank/
+├── requirements/      # Project requirements
+├── decisions/        # Architecture Decision Records
+├── metrics/          # Performance metrics
+├── designs/          # Design documents
+├── validation/       # Validation reports
+└── implementation/   # Implementation guides
 ```
 
 ## 🔧 Configuration
 
-### Customizing Workflows
+### Customizing Commands
 
-Edit templates in `.ai/template/`:
-- `CLAUDE.md` - Claude Code behavior
-- `GEMINI.md` - Gemini CLI behavior
-- `.cursorrules` - Cursor rules
+Edit command definitions in `.ai/commands/`:
 
-### Adding Custom Commands
-
-Create new command definitions in `.ai/commands/`:
 ```yaml
-# .ai/commands/workflow/custom.md
+# .ai/commands/system/commit.md
 ---
-name: custom
-description: Your custom command
-phase: workflow
+name: "Commit"
+description: "Generate high-quality commit message"
+tools:
+  cursor:
+    trigger: "/commit"
+  claude-code:
+    trigger: "/commit"
+  gemini-cli:
+    trigger: "/commit"
 ---
+```
+
+### Adding New Commands
+
+1. Create command file in appropriate category:
+   ```bash
+   .ai/commands/utility/my-command.md
+   ```
+
+2. Run sync to propagate:
+   ```bash
+   npm run ai-sync
+   ```
+
+### Tool-Specific Features
+
+#### Claude Code
+- **Agents**: AI sub-agents for complex tasks
+- **Hooks**: Event-triggered scripts
+- **Output Styles**: Response formatting
+- **Skills**: Auto-triggered protections
+
+#### Cursor
+- **Rules**: Coding standards and patterns
+- **Principles**: AI behavior guidelines
+- **Testing**: Test generation rules
+
+#### Gemini CLI
+- **TOML Format**: Automatic MD to TOML conversion
+- **Converters**: Format transformation utilities
+
+## 🛡️ Safety Features
+
+### Built-in Protections
+- **Repo Guard**: Prevents dangerous git operations
+- **Branch Protection**: No direct commits to main
+- **Command Validation**: Validates commands before execution
+- **Sensitive Data Protection**: Prevents credential exposure
+
+### Hooks (Claude Code)
+- `tool-use-before`: Pre-execution validation
+- `tool-use-after`: Post-execution cleanup
+- `user-prompt-submit`: Input validation
+
+## 🔄 Updating
+
+To update the template with latest changes:
+
+```bash
+# Pull latest changes
+git pull origin main
+
+# Re-sync configurations
+npm run ai-sync
+```
+
+## 📁 Project Structure
+
+```
+.
+├── .ai/                 # Source configurations
+├── scripts/
+│   ├── sync-ai-config.js    # Main sync script
+│   ├── template-generator.js # Template processor
+│   └── publish.js           # NPM publisher
+├── docs/                # Documentation
+├── package.json        # Project configuration
+└── README.md          # This file
 ```
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md) for details.
-
-### How to Contribute
-
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-### Development Setup
+## 📝 License
 
-```bash
-# Clone your fork
-git clone https://github.com/yourusername/ai-agentic-coding-template.git
-cd ai-agentic-coding-template
+MIT License - see LICENSE file for details
 
-# Install dependencies
-npm install
+## 🔗 Links
 
-# Run tests
-npm test
+- [GitHub Repository](https://github.com/Zenobia000/ai-agentic-coding-template_unified)
+- [Issue Tracker](https://github.com/Zenobia000/ai-agentic-coding-template_unified/issues)
+- [Documentation](https://github.com/Zenobia000/ai-agentic-coding-template_unified/tree/main/docs)
 
-# Run linter
-npm run lint
-```
+## 💡 Tips
 
-### Code of Conduct
+1. **First Time**: Use `npm run init` for complete setup (installs packages + syncs configs)
+2. **Daily Work**: Use `npm run ai-sync` after modifying `.ai/` contents (no package install needed)
+3. **Backup**: Use `npm run backup` before major changes
+4. **Memory Bank**: Keep your Memory Bank updated for better AI context
+5. **Custom Commands**: Add project-specific commands in `.ai/commands/`
+6. **Tool Selection**: Use tool-specific sync (e.g., `npm run ai-sync:cursor`) for faster updates
 
-Please read our [Code of Conduct](./CODE_OF_CONDUCT.md) before contributing.
+## 🚨 Breaking Changes (Latest)
 
-## 📚 Documentation
-
-### Core Documentation
-- [Architecture Overview](./architecture-diagram.md) - System architecture diagrams
-- [AI Workflow Guide](./AI_WORKFLOW.md) - Detailed workflow documentation
-- [Configuration Reference](./.ai/config.yaml) - Main configuration file
-
-### AI Agent Documentation
-- [Architecture Advisor](./.ai/agents/architecture-advisor.md) - Technical decisions & patterns
-- [Design Validator](./.ai/agents/design-validator.md) - Spec generation & validation
-- [Performance Optimizer](./.ai/agents/performance-optimizer.md) - Performance optimization
-- [Security Scanner](./.ai/agents/security-scanner.md) - Security & compliance
-- [Code Reviewer](./.ai/agents/code-reviewer.md) - Code quality checks
-- [Test Runner](./.ai/agents/test-runner.md) - Automated testing
-- [Metrics Tracker](./.ai/agents/metrics-tracker.md) - Development metrics
-
-## 🌟 Support
-
-- **Issues**: [GitHub Issues](https://github.com/yourusername/ai-agentic-coding-template/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/yourusername/ai-agentic-coding-template/discussions)
-- **Wiki**: [Project Wiki](https://github.com/yourusername/ai-agentic-coding-template/wiki)
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- Thanks to all contributors who have helped shape this project
-- Inspired by enterprise architecture best practices
-- Built with ❤️ for the developer community
+- Old init scripts removed - use `npm run init` instead
+- Memory Bank now generated by `ai-sync`
+- Gemini commands now in TOML format (automatic conversion)
+- Simplified command structure from 15 to 9 npm scripts
+- Removed 6 obsolete scripts for cleaner codebase
 
 ---
 
-**Made with 🤖 by the AI-Assisted Development Community**
+Built with ❤️ for the AI-assisted development community

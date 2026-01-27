@@ -10,9 +10,10 @@
 .cursor/
 .claude/
 .gemini/
-.cursorrules
-CLAUDE.md
-GEMINI.md
+# Only ignore root level AI config files (not template files)
+/.cursorrules
+/CLAUDE.md
+/GEMINI.md
 
 ## 專案特定檔案 (模板使用時需要自訂)
 # 這些檔案在模板中保留，但在實際專案中可能需要忽略
@@ -306,3 +307,9 @@ tags
 
 ## 保留目錄結構的檔案
 # 確保空目錄被保留但不包含內容
+
+## 專案特定文檔 (非初始化流程產生)
+AI_WORKFLOW.md
+architecture-diagram.md
+gemini_cli_with_claude.md
+MATURITY_ASSESSMENT.md

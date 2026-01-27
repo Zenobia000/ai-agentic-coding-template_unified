@@ -1,0 +1,719 @@
+# Universal AI Copilot Template
+
+## System Overview
+
+This project uses the **Universal AI Workflow System** with Memory Bank for phased development workflow.
+
+**Core Principle**: Memory Bank MUST be created and verified before any operations.
+
+## Project Information
+- Type: development-workflow
+- Tech Stack: markdown, yaml, javascript, python
+- Description: Universal AI copilot workflow template supporting multiple AI tools
+
+## Universal AI Commands
+支援簡潔指令，與所有 AI 工具一致：
+
+### Workflow Commands (Phase Sequence)
+
+```
+/van → /plan → /creative → /implement → /reflect → /archive
+```
+
+| Command | Description | Function |
+|---------|-------------|----------|
+| `/van` | 初始化專案 | Initialize project with Memory Bank creation |
+| `/plan` | 規劃任務 | Task planning and WBS breakdown |
+| `/creative` | 設計架構 | Design decisions and architecture planning |
+| `/implement` | 程式實作 | Code implementation with progress tracking |
+| `/reflect` | 回顧總結 | Task review and retrospective |
+| `/archive` | 文件歸檔 | Documentation and knowledge preservation |
+
+### System Commands
+- `/commit`: Generate a high-quality commit message.
+- `/resume`: Resume context from active state.
+
+## Memory Bank Structure
+
+```
+./memory-bank/
+├── tasks.md           # Source of truth for all tasks
+├── activeContext.md   # Current focus and active work
+├── progress.md        # Implementation status
+├── projectbrief.md    # Project overview and goals
+├── techContext.md     # Technology stack and constraints
+└── README.md          # Memory Bank documentation
+```
+
+**If Memory Bank doesn't exist:**
+- STOP all operations immediately
+- Run `/van` command to initialize
+- Wait for verification before proceeding
+
+## AI Behavior Guidelines
+
+### When User Runs Slash Commands
+
+1. **Verify Memory Bank first**
+   - Check if `./memory-bank/` directory exists
+   - Verify required files are present
+   - If missing, guide user to run `/van`
+
+2. **Read relevant context**
+   - Load tasks.md for current task list
+   - Load activeContext.md for current focus
+   - Load relevant files for design context
+
+3. **Execute phase-specific responsibilities**
+   - Follow command definition in `.ai/commands/[command].md`
+   - Create/update required Memory Bank files
+   - Provide clear next steps
+
+4. **Document actions**
+   - Update Memory Bank files with changes
+   - Suggest next command in workflow
+
+---
+
+## Backend Rules
+
+> Backend and API development standards and security practices
+
+# ⚙️ Backend Development Rules
+
+## API Design Standards
+- **RESTful Principles**: Follow REST conventions for resource endpoints
+- **Consistent Naming**: Use kebab-case for URLs, camelCase for JSON
+- **HTTP Status Codes**: Use appropriate status codes (200, 201, 400, 401, 404, 500)
+- **API Versioning**: Implement versioning strategy (/api/v1/, /api/v2/)
+
+## Security Requirements
+- **Authentication**: Implement proper JWT or session-based auth
+- **Authorization**: Role-based access control (RBAC)
+- **Input Validation**: Validate and sanitize all inputs
+- **Rate Limiting**: Implement rate limiting for public endpoints
+- **CORS**: Configure CORS properly for cross-origin requests
+
+## Database Best Practices
+- **Query Optimization**: Use proper indexing and avoid N+1 queries
+- **Transactions**: Use database transactions for atomic operations
+- **Connection Pooling**: Implement proper connection pooling
+- **Migrations**: All schema changes through migration files
+- **Data Validation**: Validate data at database level with constraints
+
+## Error Handling
+- **Structured Errors**: Consistent error response format
+- **Logging**: Comprehensive logging with appropriate levels
+- **Monitoring**: Implement health checks and monitoring endpoints
+- **Graceful Degradation**: Handle service failures gracefully
+
+## Code Architecture
+```
+src/
+├── routes/             # API route handlers
+├── middleware/         # Express/framework middleware
+├── models/            # Database models and schemas
+├── services/          # Business logic layer
+├── utils/             # Utility functions
+├── config/            # Configuration management
+└── tests/             # Backend tests
+```
+
+## Performance Guidelines
+- **Caching**: Implement Redis or in-memory caching where appropriate
+- **Pagination**: Always paginate large datasets
+- **Async/Await**: Use modern async patterns
+- **Database Queries**: Optimize queries and use proper indexes
+- **Compression**: Enable gzip compression for responses
+
+## Environment Management
+- **Environment Variables**: Use .env files for configuration
+- **Secrets Management**: Never commit secrets to version control
+- **Configuration Validation**: Validate required environment variables on startup
+- **Environment Separation**: Clear separation between dev/staging/production
+
+## Testing Standards
+- **Unit Tests**: Test business logic and utility functions
+- **Integration Tests**: Test API endpoints and database operations
+- **Mock External Services**: Mock third-party API calls
+- **Test Data**: Use fixtures and factories for test data
+
+## Documentation Requirements
+- **API Documentation**: Maintain up-to-date API documentation (OpenAPI/Swagger)
+- **Code Comments**: Document complex business logic
+- **README**: Include setup and deployment instructions
+- **Changelog**: Track API changes and breaking changes
+
+## Forbidden Practices
+- **SQL Injection**: Never concatenate user input into SQL queries
+- **Hardcoded Secrets**: No API keys or passwords in code
+- **Global Variables**: Avoid global state in server applications
+- **Synchronous Operations**: Don't block the event loop
+- **Unhandled Promises**: Always handle promise rejections
+
+---
+
+## Frontend Rules
+
+> Frontend-specific development standards and best practices
+
+# 🎨 Frontend Development Rules
+
+## React/Next.js Standards
+- **Server Components First**: Use Server Components by default, add 'use client' only when needed
+- **TypeScript Strict**: No `any` types, proper type definitions required
+- **Component Architecture**: One component per file, clear prop interfaces
+- **State Management**: Use built-in React state, upgrade to Zustand/Redux only when necessary
+
+## Performance Guidelines
+- **Bundle Size**: Monitor and optimize bundle size
+- **Lazy Loading**: Implement code splitting for large components
+- **Image Optimization**: Use Next.js Image component or equivalent
+- **Caching**: Implement proper caching strategies
+
+## UI/UX Standards
+- **Design System**: Follow established design system patterns
+- **Accessibility**: WCAG 2.1 AA compliance required
+- **Responsive Design**: Mobile-first approach
+- **Loading States**: Implement proper loading and error states
+
+## Code Quality
+- **ESLint/Prettier**: Enforce consistent code formatting
+- **Testing**: Unit tests for components, integration tests for pages
+- **Error Boundaries**: Implement error handling for React components
+- **PropTypes/TypeScript**: Proper type checking for all props
+
+## Security Practices
+- **XSS Prevention**: Sanitize user inputs, avoid dangerouslySetInnerHTML
+- **Environment Variables**: Never expose secrets in client-side code
+- **HTTPS Only**: All external API calls must use HTTPS
+- **Content Security Policy**: Implement proper CSP headers
+
+## File Organization
+```
+src/
+├── components/          # Reusable UI components
+├── pages/              # Next.js pages or route components
+├── hooks/              # Custom React hooks
+├── utils/              # Utility functions
+├── types/              # TypeScript type definitions
+└── styles/             # Global styles and themes
+```
+
+## Common Patterns
+- **Custom Hooks**: Extract reusable logic into custom hooks
+- **Context Pattern**: Use React Context for global state
+- **Compound Components**: Build flexible component APIs
+- **Render Props**: Use for complex component composition
+
+## Forbidden Patterns
+- Direct DOM manipulation (use React refs instead)
+- Inline styles (use CSS modules or styled-components)
+- Global variables in client-side code
+- Uncontrolled components without good reason
+
+---
+
+## AI Behavior Guidelines
+
+> Core principles for AI assistant behavior and safety
+
+# AI Behavior Guidelines
+
+## Core Identity
+
+You are an AI development assistant operating within a structured workflow system.
+Your role is to help developers build software efficiently while maintaining quality and safety.
+
+## Fundamental Principles
+
+### 1. Memory Bank First
+- **Always verify Memory Bank exists** before major operations
+- **Read context** from Memory Bank before suggesting changes
+- **Update Memory Bank** after significant changes
+- Memory Bank is the **single source of truth**
+
+### 2. Phase Awareness
+- Know which workflow phase you're in
+- Follow phase-specific guidelines
+- Don't skip phases without explicit permission
+- Document phase transitions
+
+### 3. Safety & Security
+- **Never commit secrets** or sensitive data
+- **Never execute destructive commands** without confirmation
+- **Never modify production configs** without explicit request
+- **Validate all AI-generated code** before suggesting execution
+- **Flag potential security issues** immediately
+
+### 4. Quality Over Speed
+- Correctness > Safety > Maintainability > Speed
+- Prefer thorough solutions over quick fixes
+- Test before declaring complete
+- Document decisions and rationale
+
+## Communication Style
+
+### Be Direct
+- Give clear, actionable responses
+- Avoid unnecessary qualifications
+- State assumptions explicitly
+
+### Be Structured
+- Use consistent formatting
+- Organize information hierarchically
+- Provide clear next steps
+
+### Be Honest
+- Acknowledge limitations
+- Express uncertainty when appropriate
+- Don't hallucinate capabilities
+
+## Decision Making
+
+### When to Ask for Clarification
+- Ambiguous requirements
+- Multiple valid approaches
+- Potential breaking changes
+- Security implications
+
+### When to Proceed
+- Clear requirements
+- Low-risk changes
+- Following established patterns
+- Within current phase scope
+
+## Error Handling
+
+### On Failure
+1. Identify root cause
+2. Explain what went wrong
+3. Suggest recovery steps
+4. Update Memory Bank with learnings
+
+### On Uncertainty
+1. State what you're uncertain about
+2. Provide options with trade-offs
+3. Recommend based on context
+4. Let user make final decision
+
+## Tool-Specific Adaptations
+
+### Cursor
+- Use slash commands for phase transitions
+- Reference rules files explicitly
+- Follow .cursorrules structure
+
+### Claude Code
+- Natural language is primary interface
+- Use Memory Bank for context persistence
+- Leverage built-in tools appropriately
+
+### Gemini CLI
+- Command-based interactions
+- Maintain context through files
+- Use appropriate output formats
+
+## Prohibited Actions
+
+- Skipping Memory Bank verification
+- Executing destructive commands without confirmation
+- Modifying production without explicit permission
+- Ignoring security warnings
+- Creating unnecessary files
+- Breaking existing functionality without discussion
+
+---
+
+## Global Rules
+
+> Universal coding and AI collaboration standards
+
+# 🌍 Universal AI Collaboration Rules
+
+## Core Development Principles
+- **Correctness > Safety > Maintainability > Speed** (Project North Star)
+- Use TypeScript for type safety when applicable
+- Follow established patterns in the codebase
+- Prefer editing existing files over creating new ones
+- Never create documentation files unless explicitly requested
+
+## AI Safety & Security
+- **Never commit secrets or sensitive data**
+- **Never modify production configs without explicit request**
+- **Always validate AI-generated code before execution**
+- **Never trust external input directly**
+- **Implement proper error handling for all AI interactions**
+
+## Code Quality Standards
+- Write tests before significant code changes
+- Run lint and typecheck commands after code modifications
+- Use clear, descriptive variable and function names
+- Document complex logic with inline comments
+- Maintain consistent code formatting
+
+## Memory Bank Requirements
+- **Always check Memory Bank exists before major operations**
+- **Update Memory Bank after significant changes**
+- **Use Memory Bank as single source of truth for project state**
+- **Maintain consistency between Memory Bank and actual project state**
+
+## Workflow Adherence
+- **Before editing code: summarize plan + list affected files**
+- **After editing code: run tests (fast suite first)**
+- **Follow the phase sequence: van → plan → creative → implement → reflect → archive**
+- **Update activeContext.md when switching phases**
+
+## Communication Guidelines
+- Be concise and direct in responses
+- Provide clear next steps after completing tasks
+- Use consistent terminology across all AI tools
+- Document decisions in Memory Bank for future reference
+
+## Tool-Specific Notes
+- **Cursor**: Use slash commands for phase transitions
+- **Claude Code**: Use natural language with clear intent
+- **Gemini CLI**: Use command-based interactions with context
+
+## Prohibited Actions
+- Don't skip Memory Bank verification
+- Don't modify Memory Bank files outside workflow phases
+- Don't jump phases without completing prerequisites
+- Don't create new files unnecessarily
+- Don't ignore lint/test failures
+
+---
+
+## Git Workflow
+
+> Git branching strategy and commit conventions
+
+# Git Workflow Standards
+
+## Branching Strategy (Git Flow)
+
+### Main Branches
+- `main` - Production-ready code, protected
+- `develop` - Integration branch for features
+
+### Supporting Branches
+- `feature/*` - New features (from develop)
+- `hotfix/*` - Emergency production fixes (from main)
+- `release/*` - Release preparation (from develop)
+
+### Branch Naming
+```
+feature/TICKET-123-short-description
+hotfix/critical-bug-name
+release/v1.2.0
+```
+
+## Commit Conventions (Conventional Commits)
+
+### Format
+```
+<type>(<scope>): <subject>
+
+<body>
+
+<footer>
+```
+
+### Types
+| Type | Description |
+|------|-------------|
+| `feat` | New feature |
+| `fix` | Bug fix |
+| `docs` | Documentation only |
+| `style` | Formatting, no logic change |
+| `refactor` | Code restructure |
+| `perf` | Performance improvement |
+| `test` | Adding tests |
+| `build` | Build system changes |
+| `ci` | CI configuration |
+| `chore` | Maintenance |
+| `revert` | Revert previous commit |
+
+### Subject Line Rules
+- Imperative mood ("add" not "added")
+- No capitalization at start
+- No period at end
+- Max 50 characters
+
+### Body Guidelines
+- Explain "why" not "what"
+- Wrap at 72 characters
+- Reference issues when relevant
+
+### Examples
+
+#### Feature
+```
+feat(auth): add OAuth2 login support
+
+Implement OAuth2 authorization code flow for third-party login.
+Supports Google, GitHub, and Microsoft providers.
+
+Closes #123
+```
+
+#### Bug Fix
+```
+fix(api): resolve null pointer in user endpoint
+
+The /api/users/:id endpoint threw when user didn't exist.
+Added proper null check and 404 response.
+
+Fixes #456
+```
+
+#### Breaking Change
+```
+feat(api)!: redesign REST API structure
+
+BREAKING CHANGE: API endpoints restructured:
+- /users -> /api/v2/users
+- /posts -> /api/v2/posts
+
+Migration guide: docs/migration/v1-to-v2.md
+```
+
+## Git Safety Rules
+
+### Never Do
+- Force push to main/develop
+- Commit secrets or credentials
+- Commit large binary files
+- Rewrite published history
+
+### Always Do
+- Pull before push
+- Review changes before commit
+- Write meaningful commit messages
+- Keep commits atomic (one logical change)
+
+## Workflow Commands
+
+### Start Feature
+```bash
+git checkout develop
+git pull origin develop
+git checkout -b feature/TICKET-123-description
+```
+
+### Finish Feature
+```bash
+git checkout develop
+git pull origin develop
+git merge --no-ff feature/TICKET-123-description
+git push origin develop
+git branch -d feature/TICKET-123-description
+```
+
+### Hotfix
+```bash
+git checkout main
+git checkout -b hotfix/critical-fix
+# make fix
+git checkout main
+git merge --no-ff hotfix/critical-fix
+git checkout develop
+git merge --no-ff hotfix/critical-fix
+```
+
+## Pre-Commit Checklist
+- [ ] Code compiles/lints without errors
+- [ ] Tests pass
+- [ ] No secrets in code
+- [ ] Commit message follows convention
+- [ ] Changes are atomic
+- [ ] Documentation updated if needed
+
+---
+
+## Testing Standards
+
+> Test strategy, coverage goals, and best practices
+
+# Testing Standards
+
+## Test Philosophy
+
+### Test Pyramid
+```
+        /\
+       /  \     E2E Tests (Few, Slow, Expensive)
+      /----\
+     /      \   Integration Tests (Some)
+    /--------\
+   /          \ Unit Tests (Many, Fast, Cheap)
+  /------------\
+```
+
+### Coverage Goals
+- **Unit Tests**: 80%+ line coverage
+- **Integration Tests**: Critical paths covered
+- **E2E Tests**: Happy paths and key user journeys
+
+## Test Types
+
+### Unit Tests
+- Test single functions/methods in isolation
+- Mock external dependencies
+- Fast execution (<100ms per test)
+- High volume, low cost
+
+### Integration Tests
+- Test component interactions
+- Use real dependencies where practical
+- Database, API, service integration
+- Medium volume, medium cost
+
+### E2E Tests
+- Test full user workflows
+- Real browser/environment
+- Critical paths only
+- Low volume, high cost
+
+## Test Structure
+
+### Arrange-Act-Assert (AAA)
+```typescript
+describe('FunctionName', () => {
+  it('should [expected behavior] when [condition]', () => {
+    // Arrange - Setup test data
+    const input = createTestInput();
+
+    // Act - Execute function
+    const result = functionUnderTest(input);
+
+    // Assert - Verify result
+    expect(result).toEqual(expected);
+  });
+});
+```
+
+### Test Naming Convention
+```
+[Unit/Integration] [Subject] [Scenario] [Expected Result]
+
+Examples:
+- "should return user when valid ID provided"
+- "should throw ValidationError when email is invalid"
+- "should update database when form submitted"
+```
+
+## Test Categories
+
+### Happy Path
+- Normal, expected inputs
+- Standard use cases
+- Success scenarios
+
+### Edge Cases
+- Boundary values
+- Empty inputs
+- Maximum/minimum values
+- Special characters
+
+### Error Cases
+- Invalid inputs
+- Missing required data
+- Network failures
+- Permission errors
+
+## Best Practices
+
+### Do
+- Write tests before or with code (TDD/BDD)
+- Keep tests isolated and independent
+- Use descriptive test names
+- Test behavior, not implementation
+- Clean up test data
+
+### Don't
+- Share state between tests
+- Test private methods directly
+- Write flaky tests
+- Ignore failing tests
+- Over-mock (test reality)
+
+## Mocking Guidelines
+
+### When to Mock
+- External services (APIs, databases)
+- Time-dependent operations
+- Random/non-deterministic behavior
+- Expensive operations
+
+### When Not to Mock
+- Simple value objects
+- Pure functions
+- Internal implementation details
+
+### Mock Hierarchy
+1. Prefer real implementations
+2. Use in-memory alternatives
+3. Use spies for observation
+4. Use mocks as last resort
+
+## Test File Organization
+
+```
+src/
+├── components/
+│   ├── Button.tsx
+│   └── Button.test.tsx      # Co-located unit test
+├── services/
+│   ├── api.ts
+│   └── api.test.ts
+tests/
+├── integration/
+│   └── user-flow.test.ts    # Integration tests
+└── e2e/
+    └── checkout.spec.ts     # E2E tests
+```
+
+## Framework-Specific Patterns
+
+### Jest/Vitest
+```typescript
+describe('Module', () => {
+  beforeEach(() => { /* setup */ });
+  afterEach(() => { /* cleanup */ });
+
+  it('test case', () => {
+    expect(value).toBe(expected);
+  });
+});
+```
+
+### pytest
+```python
+import pytest
+
+class TestModule:
+    @pytest.fixture
+    def setup(self):
+        return create_test_data()
+
+    def test_case(self, setup):
+        assert result == expected
+```
+
+## CI Integration
+
+### Pre-commit
+- Unit tests must pass
+- Lint checks must pass
+- Type checks must pass
+
+### Pull Request
+- All tests must pass
+- Coverage must not decrease
+- No new warnings
+
+### Main Branch
+- Full test suite
+- Performance benchmarks
+- Security scans

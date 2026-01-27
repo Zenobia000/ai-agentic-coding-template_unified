@@ -3,20 +3,15 @@
   "version": "1.0.0",
   "description": "Universal AI copilot workflow template supporting Cursor, Claude Code, and Gemini CLI",
   "scripts": {
-    "init": "./scripts/init-day1.sh",
-    "setup": "node scripts/setup.js",
-    "publish": "node scripts/publish.js",
-    "sync-commands": "./scripts/sync-commands.sh",
-    "ai-sync": "node scripts/sync-ai-config.js && npm run template:init",
+    "init": "npm install && npm run ai-sync",
+    "ai-sync": "node scripts/sync-ai-config.js",
     "ai-sync:cursor": "node scripts/sync-ai-config.js --tool cursor",
     "ai-sync:claude": "node scripts/sync-ai-config.js --tool claude",
     "ai-sync:gemini": "node scripts/sync-ai-config.js --tool gemini",
-    "ai-verify": "node scripts/verify-setup.js",
     "template:init": "node scripts/template-generator.js --init",
     "template:generate": "node scripts/template-generator.js",
-    "sync-ai": "bash scripts/sync-ai-unified.sh",
-    "migrate-ai-structure": "bash scripts/migrate-ai-structure.sh",
-    "backup-ai": "tar -czf ai-backup-$(date +%Y%m%d-%H%M%S).tar.gz .ai .claude .cursor .gemini"
+    "publish": "node scripts/publish.js",
+    "backup": "tar -czf ai-backup-$(date +%Y%m%d-%H%M%S).tar.gz .ai/"
   },
   "keywords": [
     "ai",

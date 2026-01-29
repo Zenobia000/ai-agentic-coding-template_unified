@@ -1,3 +1,0 @@
-# Requirements
-
-Project requirements and specifications.
